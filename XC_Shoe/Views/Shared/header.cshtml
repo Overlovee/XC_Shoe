@@ -1,0 +1,196 @@
+﻿
+<header>
+    <div class="top-header">
+        <div id="right-top-header">
+            <ul>
+                <li>
+                    <a target="_blank"
+                       href="@("https://www.google.com/maps/search/Nike/@10.7865558,106.62541,13z/data=!3m1!4b1")">
+                        Find a store
+                    </a>
+                </li>
+                <li>| &nbsp;<a href="@Url.Action("SignIn", "User")" id="sign-in">Sign In</a></li>
+                <li>| &nbsp;<a href="@Url.Action("SignUp", "User")" id="sign-up">Sign Up</a></li>
+            </ul>
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <div class="logo header-item">
+                <a href="@Url.Action("ShowHomePage", "User")">
+                    <svg id="logo-nike" viewBox="0 0 24 24" width="60px" height="60px">
+                        <path d="M 7 6 L 9 6 L 11 9 L 11 11 L 9 14 L 7 14 L 10 10 L 10
+                      10 L 7 6 m 11 1 L 20 7 L 20 6 L 18 6 C 13 6 13 14 18 14
+                      L 20 14 L 20 13 L 18 13 C 15 12 15 8 18 7 M 21 13 C 21
+                      13 21 12 22 13 C 19 10 19 15 23 14 C 24 13 22 12 22 11 C
+                      22 11 24 12 23 12 C 24 12 23 11 21 10 C 24 14 21 14 21 13
+                      M 11 9 L 13 6 L 15 6 L 12 10 L 12 10 L 15 14 L 13 14 L 11 11">
+                        </path>
+                    </svg>
+                </a>
+            </div>
+            <button class="navbar-toggler header-item" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-item-title" href="@Url.Action("ShowHomePage", "User")"
+                           rel="noopener noreferrer">Home</a>
+                        <div class="sub-nav-box">
+                            <ul class="sub-nav">
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="./index.html">New & Featured</a>
+                                        <li><a href="./product-pages/kid-shoes.html">Latest Shoes</a></li>
+                                        <li>
+                                            <a href="./product-pages/women-clothing.html">Latest Clothing</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="./product-pages/men-clothing.html">
+                                            New
+                                            For
+                                            Men
+                                        </a>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Men" })">Shoes</a></li>
+                                        <li><a href="./product-pages/men-clothing.html">Clothing</a></li>
+                                    </ul>
+                                </li>
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="./product-pages/women-clothing.html">
+                                            New
+                                            For
+                                            Women
+                                        </a>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Women" })">Shoes</a></li>
+                                        <li><a href="./product-pages/women-clothing.html">Clothing</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-item-title" href="./product-pages/men-clothing.html" target="_blank" rel="noopener noreferrer">Men</a>
+                        <div class="sub-nav-box">
+                            <ul class="sub-nav">
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Men" })">Shoes</a>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Men" })">All Shoes</a></li>
+                                    </ul>
+                                </li>
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="./product-pages/men-clothing.html">Clothing</a>
+                                        <li><a href="./product-pages/men-clothing.html">All Clothing</a></li>
+                                    </ul>
+                                </li>
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="./product-pages/men-clothing.html">Sale</a>
+                                        <li><a href="./product-pages/men-shoes.html">Shoes</a></li>
+                                        <li><a href="./product-pages/men-clothing.html">Clothing</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-item-title" href="./product-pages/women-clothing.html" target="_blank" rel="noopener noreferrer">Women</a>
+                        <div class="sub-nav-box">
+                            <ul class="sub-nav">
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Women" })">Shoes</a>
+                                        <li>@Html.ActionLink("Show ALL", "ShoesPage", new { gender = "Women" })</li>
+                                    </ul>
+                                </li>
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="./product-pages/women-clothing.html">Clothing</a>
+                                        <li><a href="./product-pages/women-clothing.html">All Clothing</a></li>
+                                    </ul>
+                                </li>
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="./product-pages/women-clothing.html">Sale</a>
+                                        <li><a href="./product-pages/women-shoes.html">Shoes</a></li>
+                                        <li><a href="./product-pages/women-clothing.html">Clothing</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-item-title" href="./product-pages/kid-clothing.html" target="_blank" rel="noopener noreferrer">Sale</a>
+                        <div class="sub-nav-box">
+                            <ul class="sub-nav">
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="./index.html">Featured</a>
+                                        <li><a href="./product-pages/kid-clothing.html">Shop All Sale</a></li>
+                                    </ul>
+                                </li>
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="./product-pages/men-shoes.html">Men's sale</a>
+                                        <li><a href="./product-pages/men-shoes.html">Shoes</a></li>
+                                        <li><a href="./product-pages/men-shoes.html">Clothing</a></li>
+                                    </ul>
+                                </li>
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="./product-pages/women-shoes.html">Women's sale</a>
+                                        <li><a href="./product-pages/women-shoes.html">Shoes</a></li>
+                                        <li><a href="./product-pages/women-shoes.html">Clothing</a></li>
+                                    </ul>
+                                </li>
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="./product-pages/kid-shoes.html">Kid's sale</a>
+                                        <li><a href="./product-pages/kid-shoes.html">Shoes</a></li>
+                                        <li><a href="./product-pages/kid-shoes.html">Clothing</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="search-box header-item">
+                <div class="search-input-box" type="search">
+                    <button class="search-btn">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <input type="text" id="search-input" placeholder="Search">
+                    <button id="clear-search-input">
+                        <i class="fa-solid fa-x"></i>
+                    </button>
+                </div>
+                <div class="cancel-search-box">
+                    <button class="cancel-search-box-btn">
+                        Cancel
+                    </button>
+                </div>
+                <div class="search-frame">
+                    <p>yameta</p>
+                </div>
+            </div>
+
+            <div id="action-btn" class="header-item" style="font-size: 2.2rem;">
+                <a href="@Url.Action("ShowFavoritePage", "Favorite")" id="favorite" style="float: left;">
+                    <i class="fa-sharp fa-regular fa-heart"></i>
+                </a>
+                <a href="@Url.Action("ShowBagPage", "Bag")" id="bag-shopping" style="float: right;">
+                    <i class="fa-sharp fa-solid fa-cart-shopping"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+</header>

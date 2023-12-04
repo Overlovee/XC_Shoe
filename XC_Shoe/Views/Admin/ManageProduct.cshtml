@@ -1,0 +1,306 @@
+﻿@model IEnumerable<XC_Shoe.Models.Shoe>
+
+@{
+    ViewBag.Title = "Manage Products";
+    Layout = "~/Views/Shared/AdminLayoutPage.cshtml";
+    string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+}
+
+<nav class="navbar navbar-expand-md box">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <button class="add-new-btn" aria-current="page" href="#"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Add new
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content" style="height:60%">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add New Shoes</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <hr class="my-4">
+                                    <div class="container mt-5">
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#innerModal">
+                                            New Icon
+                                        </button>
+                                        <div class="mb-3">
+                                            <!-- Label và Dropdown -->
+                                            <label for="dropdownExample" class="form-label fs-6">Icon</label>
+                                            <select class="form-select sm-6" id="dropdownExample" aria-label="Select Icon">
+                                                <option value="Jordan">Jordan</option>
+                                                <option value="Air Force 1">Air Force 1</option>
+                                                <option value="Air Max">Air Max</option>
+                                            </select>
+                                        </div>
+                                        <hr class="my-2 ">
+                                        <div class="mb-3">
+                                            <label for="dropdownStyleShoes" class="form-label fs-6">Style Shoes</label>
+                                            <select class="form-select sm-6" id="dropdownExample" aria-label="Select StyleShoes">
+                                                <option value="Football">Football</option>
+                                                <option value="Golf">Golf</option>
+                                                <option value="Lifestyle">Lifestyle</option>
+                                            </select>
+                                        </div>
+                                        <hr class="my-2 ">
+
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label fs-6">StyleType</label>
+                                            <input type="text" class="form-control text-center" id="name" name="name" placeholder="Enter Shoes Name" style="height:17%;font-size:12px;width:100%; background-color:azure" required>
+                                        </div>
+                                        <hr class="my-2 ">
+                                        <div class="mb-3">
+                                            <label for="price" class="form-label fs-6">Price</label>
+                                            <input type="text" class="form-control text-center" id="price" name="price" placeholder="Enter Price" style="height: 17%; font-size: 12px; width: 100%; background-color: azure" required>
+                                        </div>
+                                        <hr class="my-2 ">
+
+                                        <div class="mb-3">
+                                            <label for="dropdownStyleType" class="form-label fs-6">Styletype</label>
+                                            <select class="form-select sm-6" id="dropdownExample" aria-label="Select Gender">
+                                                <option value="Men">Men</option>
+                                                <option value="Women">Women</option>
+                                            </select>
+                                        </div>
+                                        <hr class="my-2 ">
+                                        <div class="container mt-5">
+                                            <label class="form-label fs-6">Color Options</label>
+                                            <div class="mb-3">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="colorOption" id="red" value="1" style="width:20px;border-radius:50%;background-color:red">
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="colorOption" id="white" value="2" style="width:20px;border-radius:50%;background-color:white;">
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="colorOption" id="black" value="3" style="width:20px;border-radius:50%;background-color:black">
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="colorOption" id="beige" value="4" style="width:20px;border-radius:50%;background-color:beige">
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="colorOption" id="gray" value="5" style="width:20px;border-radius:50%;background-color:gray">
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="colorOption" id="pink" value="6" style="width: 20px; border-radius: 50%; background-color: pink">
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="colorOption" id="lightskyblue" value="7" style="width: 20px; border-radius: 50%; background-color:lightskyblue">
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="colorOption" id="lightgreen" value="8" style="width: 20px; border-radius: 50%; background-color: lightgreen">
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="colorOption" id="brown" value="9" style="width: 20px; border-radius: 50%; background-color: brown">
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="colorOption" id="mediumpurple" value="10" style="width: 20px; border-radius: 50%; background-color: mediumpurple">
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="colorOption" id="blue" value="11" style="width: 20px; border-radius: 50%; background-color: blue">
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="colorOption" id="darkolivegreen" value="12" style="width: 20px; border-radius: 50%; background-color: darkolivegreen">
+                                                </div>
+                                                <!-- Add more color options as needed -->
+                                            </div>
+                                        </div>
+
+                                        <hr class="my-2 ">
+
+                                        <div class="mb-3">
+                                            <label for="image" class="form-label fs-6">Image URL</label>
+                                            <div class="mb-3">
+                                                <button id="folderSelectorBtn" class="btn btn-primary">Select Image Folder</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Inner Modal -->
+                    <div class="modal fade" id="innerModal" tabindex="-1" aria-labelledby="innerModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content" style="height:60%">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="innerModalLabel">Add New Icon</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label fs-6">StyleType</label>
+                                        <input type="text" class="form-control text-center" id="IconID" name="IconID" placeholder="Enter IconID" style="height:17%;font-size:12px;width:100%; background-color:azure" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label fs-6">StyleType</label>
+                                        <input type="text" class="form-control text-center" id="IconName" name="IconName" placeholder="Enter Icon Name" style="height:17%;font-size:12px;width:100%; background-color:azure" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            @using (Html.BeginForm("ManageProduct", "Admin", FormMethod.Get, new { @class = "d-flex search-box justify-content-end" }))
+            {
+                <input type="hidden" name="styleStyle" value="@ViewBag.Style" />
+                <input type="hidden" name="sort" value="@ViewBag.Sort" />
+                <input class="form-control" type="search" placeholder="Search" name="search"
+                       aria-label="Search" value="@ViewBag.SearchValue">
+                <button class="search-btn" type="submit">Search</button>
+            }
+        </div>
+    </div>
+</nav>
+<div class="box list-box d-flex flex-column">
+    <div class="header-list-box d-flex justify-content-between flex-column">
+        <div class="list-box-title d-flex">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSort" data-bs-toggle="dropdown" aria-expanded="false">
+                    @ViewBag.Style
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonSort">
+                    <li><a class="dropdown-item" href="@Url.Action("ManageProduct", "Admin", new { styleStyle = "Men", search = ViewBag.SearchValue})">Men</a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("ManageProduct", "Admin", new { styleStyle = "Women", search = ViewBag.SearchValue })">Women</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSort" data-bs-toggle="dropdown" aria-expanded="false">
+                    Sort
+                    @{
+                        if (ViewBag.Sort == "ASC")
+                        {
+                            <i class="fa-solid fa-arrow-down-a-z"></i>
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-arrow-down-z-a"></i>
+                        }
+
+                    }
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonSort">
+                    <li><a class="dropdown-item" href="@Url.Action("ManageProduct", "Admin", new { styleStyle = ViewBag.Style, sort = "ASC", search = ViewBag.SearchValue })">Sort <i class="fa-solid fa-arrow-down-a-z"></i></a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("ManageProduct", "Admin", new { styleStyle = ViewBag.Style, sort = "DESC", search = ViewBag.SearchValue })">Sort <i class="fa-solid fa-arrow-down-z-a"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <nav aria-label="Page navigation example" class="pagination-nav d-flex justify-content-center">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content-list-box product-list">
+        <div class="row products">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3">
+                    <div class="card">
+                        <a href="#">
+                            @{
+                                string resourcesPath = "~/Resources/Shoes/";
+                                string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", @item.Url);
+                                resourcesPath = Path.Combine(resourcesPath, @item.Url);
+
+                                string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
+
+                                string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                                string fileNameOnly = Path.GetFileName(imagePath);
+                                resourcesPath = Path.Combine(resourcesPath, fileNameOnly);
+                                }
+                            <img class="card-img-top img-fluid" alt="Men" src="@Url.Content(resourcesPath)">
+                        </a>
+                        <div class="card-body">
+                            <a href="#">
+                                <h2 class="card-title">@Html.DisplayFor(modelItem => item.NameShoes)</h2>
+                            </a>
+                            <p class="card-text type-shoes">@Html.DisplayFor(modelItem => item.TypeShoesName)</p>
+                            <p class="card-text colour">@Html.DisplayFor(modelItem => item.NameColor)</p>
+                            <p class="shoes-price">@Html.DisplayFor(modelItem => item.Price) <span class"unit">VND</span></p>
+                        </div>
+                        <div class="card-footer d-flex">
+                            <button class="edit-btn col"
+                                    data-bs-toggle="modal" data-bs-target="#@item.ShoesID">
+                                Edit
+                            </button>
+                            <button class="delete-btn col">@Html.ActionLink("Delete", "Delete", new { id = item.ShoesID })</button>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="@item.ShoesID" data-bs-backdrop="static"
+                         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">@Html.DisplayFor(modelItem => item.NameShoes)</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+    <div class="footer-list-box d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <p class="quantity">
+                12/140 Total
+            </p>
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

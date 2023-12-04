@@ -1,0 +1,357 @@
+﻿@model IEnumerable<XC_Shoe.Models.Bag>
+
+@{
+    ViewBag.Title = "Show Bag Page";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+
+}
+<div class="row justify-content-center">
+    <div class="bag-content row justify-content-center">
+        <div class="bag col-lg-8 position-relative mt-4">
+            <div class="bag-content-title row">
+                <h2>Bag</h2>
+            </div>
+            @foreach (var item in Model)
+            {
+
+
+                <div class="bag-items row gx-5 selected">
+                    <div class="bag-items-img col-2 position-relative">
+                        <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName})">
+                            @{
+                                string resourcesPath = "~/Resources/Shoes/";
+                                string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", @item.Url);
+                                resourcesPath = Path.Combine(resourcesPath, @item.Url);
+
+                                string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
+
+                                string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                                string fileNameOnly = Path.GetFileName(imagePath);
+                                resourcesPath = Path.Combine(resourcesPath, fileNameOnly);
+                            }
+                            <img class="card-img-top img-fluid" alt="Men" src="@Url.Content(resourcesPath)">
+                        </a>
+                    </div>
+                    <div class="bag-item-details col-10 position-relative" style="padding: 0">
+                        <div class="row">
+                            <div class="bag-items-infomation col-9 position-relative">
+                                <div class="bag-items-infomation-details">
+                                    <a class="details-title" href="#">@item.ShoesName</a>
+                                    <p class="details-describe">
+                                        @item.StyleType's @item.TypeName Shoes <br>
+                                        @item.ColorName
+                                    </p>
+                                    <div class="details-options row justify-content-start">
+                                        <div class="select-line col-sm-4">
+                                            <span>Size: </span>
+                                            <select name="details-options-size">
+                                                <option value="@item.Size">@item.Size</option>
+                                                <option value="38">38</option>
+                                                <option value="39">39</option>
+                                                <option value="40">40</option>
+                                                <option value="41">41</option>
+                                                <option value="42">42</option>
+                                            </select>
+                                            <i class="fa-solid fa-chevron-down"></i>
+                                        </div>
+                                        <div class="select-line col-sm-4">
+                                            <span>Quantity: </span>
+                                            <select name="details-options-quantity"
+                                                    class="details-options-quantity">
+                                                <option value="@item.Quantity">@item.Quantity</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="1">6</option>
+                                                <option value="2">7</option>
+                                                <option value="3">8</option>
+                                                <option value="4">9</option>
+                                                <option value="5">10</option>
+                                            </select>
+                                            <i class="fa-solid fa-chevron-down"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3 position-relative" style="padding: 0">
+                                <div class="bag-items-money col align-self-start">
+                                    <span class="prices">@item.Price</span>
+                                    <span class="unit">đ</span>
+                                </div>
+                                <div class="clear-bag-items col align-self-end">
+                                    <div>
+                                        <button class="btn select-group-btn">
+                                            <i class="fa-regular fa-square-check"></i>
+                                        </button>
+                                        <button class="btn clear-item">
+                                            <i class="fa-solid fa-x"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-seperate mt-4"></div>
+                </div>
+            }          
+        </div>
+        <div class="col-lg-4 position-relative mt-4">
+            <div id="summary-box">
+                <section class="title">
+                    Summary
+                </section>
+
+                <div class="sub-total-line">
+                    <div class="summary-box-line">
+                        <span>Subtotal</span>
+                        <div class="summary-box-money-items">
+                            <span class="money" id="sub-total">1</span>
+                            <span class="unit">đ</span>
+                        </div>
+                    </div>
+                    <div class="summary-box-line">
+                        <span>Delivery Fee</span>
+                        <div class="summary-box-money-items">
+                            <span class="money" id="delivery-fee"></span>
+                            <span class="unit">đ</span>
+                        </div>
+                    </div>
+                    <div class="line-seperate"></div>
+                </div>
+                <div id="total-line">
+                    <div class="summary-box-line">
+                        <span>Total</span>
+                        <div class="summary-box-money-items">
+                            <span class="money" id="total"></span>
+                            <span class="unit">đ</span>
+                        </div>
+                    </div>
+                    <div class="line-seperate"></div>
+                </div>
+                <button id="checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+    <div class="recommended-purchase row justify-content-center">
+        <div class="recommended-purchase-title row">
+            <h2>You Might Also Like</h2>
+        </div>
+        <div class="recommended-purchase-list row gx-5">
+            <div class="recommended-purchase-item col-lg-4 position-relative mt-4">
+                <div class="card">
+                    <a href="#">
+                        <img class="card-img-top img-fluid" alt="Men"
+                             src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
+                    </a>
+                    <div class="card-body">
+                        <a href="#">
+                            <h2 class="card-title">Basketball</h2>
+                        </a>
+                        <p class="card-text type-shoes">Sport shoes</p>
+                        <p class="card-text number-colour">1 Colour</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn categories-shoes-btn shoes-price">3,200,00</a>
+                    </div>
+                </div>
+            </div>
+            <div class="recommended-purchase-item col-lg-4 position-relative mt-4">
+                <div class="card">
+                    <a href="#">
+                        <img class="card-img-top img-fluid" alt="Men"
+                             src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
+                    </a>
+                    <div class="card-body">
+                        <a href="#">
+                            <h2 class="card-title">Basketball</h2>
+                        </a>
+                        <p class="card-text type-shoes">Sport shoes</p>
+                        <p class="card-text number-colour">1 Colour</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn categories-shoes-btn shoes-price">3,200,00</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommended-purchase-item col-lg-4 position-relative mt-4">
+                <div class="card">
+                    <a href="#">
+                        <img class="card-img-top img-fluid" alt="Men"
+                             src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
+                    </a>
+                    <div class="card-body">
+                        <a href="#">
+                            <h2 class="card-title">Basketball</h2>
+                        </a>
+                        <p class="card-text type-shoes">Sport shoes</p>
+                        <p class="card-text number-colour">1 Colour</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn categories-shoes-btn shoes-price">3,200,00</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function Summary() {
+        //Summary
+        const deliveryFeeElement = document.querySelector('#delivery-fee');
+        const subTotalElement = document.querySelector('#sub-total');
+        const totalElement = document.querySelector('#total');
+        const noItemsElement = document.querySelector('#no-items');
+        // Tinh tong tien
+
+
+        const checkOutBtn = document.querySelector('#checkout-btn');
+
+        var subTotal = 0;
+        const selectedItems = document.querySelectorAll('.selected');
+
+        if (!noItemsElement && selectedItems.length != 0) {
+            const items = document.querySelectorAll('.bag-items');
+            const quantitiesChange = document.querySelectorAll('.details-options-quantity');
+
+
+            Array.from(items).forEach(item => {
+                if (item.classList.contains('selected')) {
+                    var quantity = parseFloat(item.querySelector('.details-options-quantity').value);
+                    var prices = parseFloat(item.querySelector('.prices').textContent.replace(/,/g, ''));
+
+                    subTotal += quantity * prices;
+                }
+            });
+            //Delivery-fee = 250,000đ
+            var deliveryFee = 250000;
+            deliveryFeeElement.innerHTML = deliveryFee.toLocaleString();
+            //Đưa subTotal vao` element id= "sub-total"
+
+            subTotalElement.innerHTML = subTotal.toLocaleString();
+
+            //Tính total = subtotal + delivery-fee
+            var total = subTotal + deliveryFee;
+            //Đưa subTotal vao` element id= "sub-total"
+
+            totalElement.innerHTML = total.toLocaleString();
+
+            //Lắng nghe sự kiện thay đổi select của các phần tử quantity của các item
+            quantitiesChange.forEach(quantityElement => {
+                quantityElement.addEventListener("change", function () {
+                    subTotal = 0;
+                    Array.from(items).forEach(item => {
+                        if (item.classList.contains('selected')) {
+                            var quantity = parseFloat(item.querySelector('.details-options-quantity').value);
+                            var prices = parseFloat(item.querySelector('.prices').textContent.replace(/,/g, ''));
+
+                            subTotal += quantity * prices;
+
+                            //Đưa subTotal vao` element id= "sub-total"
+
+                            subTotalElement.innerHTML = subTotal.toLocaleString();
+
+                            //Tính total = subtotal + delivery-fee
+                            total = subTotal + deliveryFee;
+                            //Đưa subTotal vao` element id= "sub-total"
+
+                            totalElement.innerHTML = total.toLocaleString();
+                        }
+                    });
+                });
+            });
+
+            checkOutBtn.removeAttribute('disabled');
+            checkOutBtn.style.cursor = "pointer";
+
+            checkOutBtn.onclick = function (e) {
+                e.preventDefault();//bỏ action mặc định
+
+                sessionStorage.setItem('subTotal', subTotal.toString());
+                sessionStorage.setItem('total', total.toString());
+                sessionStorage.setItem('deliveryFee', deliveryFee.toString());
+
+                window.location.href = 'checkout.html';
+            }
+        }
+        else {
+            deliveryFeeElement.innerHTML = "0";
+            subTotalElement.innerHTML = "0";
+            totalElement.innerHTML = "0";
+
+            checkOutBtn.setAttribute('disabled', 'disabled');
+            checkOutBtn.classList.add('disabled');
+            checkOutBtn.setAttribute("style", "background-color: #edededcc !important; color: #cccc !important;");
+        }
+    }
+    //Xoá bag-item
+    function getBagItemsElement(element, selector = '.bag-items') {
+        while (element.parentElement) {
+            if (element.parentElement.matches(selector)) {
+                return element.parentElement;
+            }
+            element = element.parentElement;
+        }
+    }
+    function deleteBagItem() {
+
+        const clearItemElements = document.querySelectorAll('.clear-item');
+        //Lặp qua các nút clear và lắng nghe sự kiện click
+        var index = clearItemElements.length;
+        clearItemElements.forEach(function (clearElement) {
+            clearElement.onclick = function () {
+                const bagItemsElement = getBagItemsElement(clearElement);
+
+                bagItemsElement.remove();
+
+                index--;
+                if (index == 0) {
+                    // Tạo phần tử <h3> và thiết lập thuộc tính id và nội dung
+                    const h3Element = document.createElement('h3');
+                    h3Element.setAttribute('id', 'no-items');
+                    h3Element.textContent = 'There are no items in your bag.';
+
+                    // Chọn phần tử có class "bag"
+                    const bagElement = document.querySelector('.bag');
+
+                    // Thêm phần tử <h3> vào phần tử "bag"
+                    bagElement.appendChild(h3Element);
+                }
+                Summary();
+            }
+        });
+    }
+
+    const selectGroupItemElements = document.querySelectorAll('.select-group-btn');
+
+    selectGroupItemElements.forEach(function (elementSelectGroup) {
+        elementSelectGroup.onclick = function () {
+
+            const bagItemsElement = getBagItemsElement(elementSelectGroup);
+
+            const iconSelectionItem = elementSelectGroup.querySelector(".fa-regular");
+
+            if (bagItemsElement.classList.contains('selected')) {
+                iconSelectionItem.classList.remove('fa-square-check');
+                iconSelectionItem.classList.add('fa-square');
+
+            } else {
+                iconSelectionItem.classList.remove('fa-square');
+                iconSelectionItem.classList.add('fa-square-check');
+            }
+            console.log(bagItemsElement);
+            bagItemsElement.classList.toggle("selected");
+            Summary();
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        deleteBagItem();
+        Summary();
+    });
+</script>
+

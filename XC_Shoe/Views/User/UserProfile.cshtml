@@ -1,0 +1,399 @@
+﻿@model XC_Shoe.Models.User
+@{
+    ViewBag.Title = "User Profile";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<div class="profile row">
+    <div class="header-profile row">
+        <div class="avt-img">
+            <a href="#">
+                <img src="https://scontent.fsgn19-1.fna.fbcdn.net/v/t39.30808-6/387823916_335737738965711_7433931418569751694_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_ohc=yCQpdKnYZmAAX997ksK&_nc_ht=scontent.fsgn19-1.fna&oh=00_AfBRDfek383UvxdxavuNDET1HbBMMoaBDzP35zYS-gNlWA&oe=655B3E02"
+                     alt="Minh Thu">
+            </a>
+            <button class="edit-avt-btn">Choose <i class="fa-regular fa-pen-to-square"></i></button>
+        </div>
+        <div class="user-name-box">
+            <div class="d-flex align-items-center" style="flex-wrap: wrap; height:100%">
+                <div class="name-box">
+                    <h2 class="full-name">@Html.DisplayFor(model => model.UserName)</h2>
+                    <p class="user-name">#@Html.DisplayFor(model => model.NameTag)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="row justify-content-center">
+            <div class="d-lex">
+                <button id="purchased-products" class="information-action information-action-selected"
+                        data-target="purchased">
+                    Purchased
+                </button>
+                <button id="account-management" class="information-action"
+                        data-target="account-info">
+                    Account
+                </button>
+                <button id="delivery-addresses" class="information-action"
+                        data-target="delivery-info">
+                    Delivery
+                </button>
+                <div class="line-seperate mt-3"></div>
+            </div>
+        </div>
+        <div class="tab-content row justify-content-start">
+            <div id="purchased" class="tab-pane show active">
+                <div class="row justify-content-start">
+                    <div class="col-sm-3 mb-4">
+                        <div class="card">
+                            <a href="#">
+                                <img class="card-img-top img-fluid" alt="Men"
+                                     src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
+                            </a>
+                            <div class="card-body">
+                                <a href="#">
+                                    <h2 class="card-title">Basketball</h2>
+                                </a>
+                                <p class="card-text type-shoes">Sport shoes</p>
+                                <p class="card-text number-colour">1 Colour</p>
+                                <p class="card-text size">Size: 40</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="#" class="btn categories-shoes-btn">Shopping again</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 mb-4">
+                        <div class="card">
+                            <a href="#">
+                                <img class="card-img-top img-fluid" alt="Men"
+                                     src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
+                            </a>
+                            <div class="card-body">
+                                <a href="#">
+                                    <h2 class="card-title">Basketball</h2>
+                                </a>
+                                <p class="card-text type-shoes">Sport shoes</p>
+                                <p class="card-text number-colour">1 Colour</p>
+                                <p class="card-text size">Size: 40</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="#" class="btn categories-shoes-btn">Shopping again</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 mb-4">
+                        <div class="card">
+                            <a href="#">
+                                <img class="card-img-top img-fluid" alt="Men"
+                                     src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
+                            </a>
+                            <div class="card-body">
+                                <a href="#">
+                                    <h2 class="card-title">Basketball</h2>
+                                </a>
+                                <p class="card-text type-shoes">Sport shoes</p>
+                                <p class="card-text number-colour">1 Colour</p>
+                                <p class="card-text size">Size: 40</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="#" class="btn categories-shoes-btn">Shopping again</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="account-info" class="tab-pane">
+                <div class="row account-info-title">
+                    <h2>Account Details</h2>
+                </div>
+                <div class="row account-info-content justify-content-center">
+                    <div id="username-box" class="col-5 account-info-item">
+                        <div class="account-info-item-header">
+                            <section class="account-info-item-title">
+                                Username
+                            </section>
+                            <button class="account-info-edit-btn">
+                                Edit
+                            </button>
+                        </div>
+                        <input name="user-name" type="text" placeholder="@Html.DisplayFor(model => model.UserName)" class="disabled-input" disabled>
+                    </div>
+                </div>
+                <div class="row account-info-content justify-content-center">
+                    <div id="email-box" class="col-5 account-info-item">
+                        <div class="account-info-item-header">
+                            <section class="account-info-item-title">
+                                Email
+                            </section>
+                            <button class="account-info-edit-btn">
+                                Edit
+                            </button>
+                        </div>
+                        <input name="user-email" type="text" placeholder="@Html.DisplayFor(model => model.Email)" class="disabled-input" disabled>
+                    </div>
+                </div>
+                <div class="row account-info-content justify-content-center">
+                    <div id="password-box" class="col-5 account-info-item">
+                        <div class="account-info-item-header">
+                            <section class="account-info-item-title">
+                                Password
+                            </section>
+                            <button type="button" class="password-editing-btn" data-bs-toggle="modal" data-bs-target="#password-editor">
+                                Edit
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="password-editor" tabindex="-1" aria-labelledby="password-editorLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="password-editorLabel">Edit Password</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="mb-5">
+                                                    <input type="password" class="form-control" id="current-password" placeholder="Current Password">
+                                                </div>
+                                                <div class="mb-5">
+                                                    <input type="password" class="form-control" id="new-password" placeholder="New Password">
+                                                </div>
+                                                <div class="mb-5">
+                                                    <input type="password" class="form-control" id="confirm-new-password" placeholder="Confirm New Password">
+                                                </div>
+                                            </form>
+                                            <div class="password-requirement">
+                                                <ul>
+                                                    <li>
+                                                        Password requirements:
+                                                    </li>
+                                                    <li>
+                                                        Minimum of 8 characters
+                                                    </li>
+                                                    <li>
+                                                        Uppercase, lowercase letters and one number
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="save-btn disabled-btn">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input name="user-password" type="password" placeholder="*********" class="disabled-input" disabled>
+                    </div>
+                </div>
+                <div class="row account-info-content justify-content-center">
+                    <div id="phonenumber-box" class="col-5 account-info-item">
+                        <div class="account-info-item-header">
+                            <section class="account-info-item-title">
+                                Phone Number
+                            </section>
+                            <button class="account-info-edit-btn">
+                                Edit
+                            </button>
+                        </div>
+                        <input name="user-phonenumber" type="tel" placeholder="@Html.DisplayFor(model => model.PhoneNumber)" class="disabled-input" disabled>
+                    </div>
+                </div>
+                <div class="row account-info-content justify-content-center" style="margin:0; padding: 0;">
+                    <div class="col-5" style="margin:0; padding: 0;">
+                        <div class="line-seperate mt-2"></div>
+                    </div>
+                </div>
+                <div class="row account-info-content justify-content-center" style="margin:0; padding: 0; margin-bottom: 0.6rem;">
+                    <div id="delete-account-box" class="col-5 account-info-item" style="margin:0; padding: 0;">
+                        <div class="d-flex">
+                            <div class="delete-content">
+                                <h3 class="delete-content-title">Delete Acount</h3>
+                            </div>
+                            <div class="delete-content delete-content-action">
+                                <button id="delete-account-btn">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row account-info-content justify-content-center" style="margin:0; padding: 0;">
+                    <div class="col-5" style="margin:0; padding: 0;">
+                        <div class="line-seperate mt-2"></div>
+                    </div>
+                </div>
+                <div class="row account-info-content justify-content-center" style="margin:0; padding: 0; margin-bottom: 0.6rem;">
+                    <div id="saving-box" class="col-5 account-info-item" style="margin:0; padding: 0;">
+                        <div class="saving-tag">
+                            <button id="saving-btn" class="disabled-btn" disabled>Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="delivery-info" class="tab-pane">
+                <div class="deliver-info-title row justify-content-between">
+                    <div class="col-4">
+                        <h2>Deliver Addresses</h2>
+                    </div>
+                    <div class="col-4">
+                        <a href="#" class="float-end">Create New</a>
+                    </div>
+                    <div class="line-seperate mt-4"></div>
+                </div>
+                @foreach (var item in ViewBag.UserShipment)
+                {
+                    <div class="deliver-info-item row">
+                        <div class="row justify-content-between">
+                            <div class="delivery-item-heading row justify-content-between">
+                                <div class="col-8">
+                                    <h2 class="recipient-name">@item.UserName</h2>
+                                    <p class="recipient-phone-number">@item.PhoneNumber</p>
+                                </div>
+                                <div class="col-4">
+                                    <a class="delete-recipient-info float-end recipient-info-action-btn">Delete</a>
+                                    <a class="edit-recipient-info float-end recipient-info-action-btn">Edit</a>
+                                </div>
+                            </div>
+                            <div class="delivery-item-address row justify-content-between">
+                                <div class="col-8">
+                                    <p class="specific-address">@item.AdministrativeBoundaries</p>
+                                    <p class="administrative-boundaries">@item.SpecificAddress</p>
+                                </div>
+                                <div class="col-4">
+                                    <a class="set-default-delivery float-end recipient-info-action-btn text-end">Set Default</a>
+                                </div>
+                            </div>
+                            <div class="line-seperate mt-3"></div>
+                        </div>
+                    </div>
+                }
+                @*<div class="deliver-info-item row">
+                        <div class="row justify-content-between">
+                            <div class="delivery-item-heading row justify-content-between">
+                                <div class="col-8">
+                                    <h2 class="recipient-name">Minh Thư</h2>
+                                    <p class="recipient-phone-number">012312366</p>
+                                </div>
+                                <div class="col-4">
+                                    <a class="delete-recipient-info float-end recipient-info-action-btn">Delete</a>
+                                    <a class="edit-recipient-info float-end recipient-info-action-btn">Edit</a>
+                                </div>
+                            </div>
+                            <div class="delivery-item-address row justify-content-between">
+                                <div class="col-8">
+                                    <p class="specific-address">27A đường T1</p>
+                                    <p class="administrative-boundaries">Phường Tây Thạnh, Quận Tân Phú, TP. Hồ Chí Minh</p>
+                                </div>
+                                <div class="col-4">
+                                    <a class="set-default-delivery float-end recipient-info-action-btn text-end">Set Default</a>
+                                </div>
+                            </div>
+                            <div class="line-seperate mt-3"></div>
+                        </div>
+                    </div>
+                    <div class="deliver-info-item row">
+                        <div class="row justify-content-between">
+                            <div class="delivery-item-heading row justify-content-between">
+                                <div class="col-8">
+                                    <h2 class="recipient-name">Minh Thư</h2>
+                                    <p class="recipient-phone-number">012312366</p>
+                                </div>
+                                <div class="col-4">
+                                    <a class="delete-recipient-info float-end recipient-info-action-btn">Delete</a>
+                                    <a class="edit-recipient-info float-end recipient-info-action-btn">Edit</a>
+                                </div>
+                            </div>
+                            <div class="delivery-item-address row justify-content-between">
+                                <div class="col-8">
+                                    <p class="specific-address">27A đường T1</p>
+                                    <p class="administrative-boundaries">Phường Tây Thạnh, Quận Tân Phú, TP. Hồ Chí Minh</p>
+                                </div>
+                                <div class="col-4">
+                                    <a class="set-default-delivery float-end recipient-info-action-btn text-end">Set Default</a>
+                                </div>
+                            </div>
+                            <div class="line-seperate mt-3"></div>
+                        </div>
+                    </div>
+                    <div class="deliver-info-item row">
+                        <div class="row justify-content-between">
+                            <div class="delivery-item-heading row justify-content-between">
+                                <div class="col-8">
+                                    <h2 class="recipient-name">Minh Thư</h2>
+                                    <p class="recipient-phone-number">012312366</p>
+                                </div>
+                                <div class="col-4">
+                                    <a class="delete-recipient-info float-end recipient-info-action-btn">Delete</a>
+                                    <a class="edit-recipient-info float-end recipient-info-action-btn">Edit</a>
+                                </div>
+                            </div>
+                            <div class="delivery-item-address row justify-content-between">
+                                <div class="col-8">
+                                    <p class="specific-address">27A đường T1</p>
+                                    <p class="administrative-boundaries">Phường Tây Thạnh, Quận Tân Phú, TP. Hồ Chí Minh</p>
+                                </div>
+                                <div class="col-4">
+                                    <a class="set-default-delivery float-end recipient-info-action-btn text-end">Set Default</a>
+                                </div>
+                            </div>
+                            <div class="line-seperate mt-3"></div>
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        const actionButtons = document.querySelectorAll('.information-action');
+
+        actionButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                actionButtons.forEach(btn => {
+                    btn.classList.remove('information-action-selected');
+                });
+
+                this.classList.add('information-action-selected');
+                const target = this.getAttribute('data-target');
+                // Ẩn tất cả tab-pane
+                const tabPanes = document.querySelectorAll('.tab-pane');
+                tabPanes.forEach(tabPane => {
+                    tabPane.classList.remove('show', 'active');
+                });
+
+                // Hiển thị tab-pane tương ứng với nút được chọn
+                const selectedTab = document.getElementById(target);
+                selectedTab.classList.add('show', 'active');
+
+            });
+        });
+</script>
+<script>
+        function getInputTagOfEditBtn(element, selector = '.account-info-item') {
+            while (element.parentElement) {
+                if (element.parentElement.matches(selector)) {
+                    return element.parentElement.querySelector('input');
+                }
+                element = element.parentElement;
+            }
+        }
+        const editInfoBtns = document.querySelectorAll('.account-info-edit-btn');
+        editInfoBtns.forEach(button => {
+            button.addEventListener('click', function () {
+                const targetInput = getInputTagOfEditBtn(button);
+                if (this.matches('.account-info-edit-btn-selected')) {
+                    this.classList.remove('account-info-edit-btn-selected');
+                    targetInput.setAttribute("disabled", "disabled");
+                    targetInput.classList.add('disabled-input');
+                }
+                else {
+                    this.classList.add('account-info-edit-btn-selected');
+                    targetInput.removeAttribute("disabled");
+                    targetInput.classList.remove('disabled-input');
+                }
+            });
+        });
+</script>
+

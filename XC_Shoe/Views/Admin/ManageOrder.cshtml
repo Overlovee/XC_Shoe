@@ -1,0 +1,256 @@
+﻿@model IEnumerable<XC_Shoe.Models.Order>
+
+@{
+    ViewBag.Title = "Manage Orders";
+    Layout = "~/Views/Shared/AdminLayoutPage.cshtml";
+    string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+}
+
+<nav class="navbar navbar-expand-md box d-flex flex-column">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <button class="add-new-btn" aria-current="page" href="#">Add new</button>
+                </li>
+            </ul>
+            @using (Html.BeginForm("ManageOrder", "Admin", FormMethod.Get, new { @class = "d-flex search-box justify-content-end" }))
+            {
+                <input type="hidden" name="status" value="@ViewBag.Status" />
+                <input type="hidden" name="sort" value="@ViewBag.Sort" />
+
+                <input class="form-control" type="search" placeholder="Search" name="search"
+                       aria-label="Search" value="@ViewBag.SearchValue">
+                <button class="search-btn" type="submit">Search</button>
+            }
+        </div>
+    </div>
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#orderListSelectBox" aria-controls="orderListSelectBox"
+                aria-expanded="false" aria-label="Toggle navigation">
+            @ViewBag.Status
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="orderListSelectBox">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="classify-btn" aria-current="page"
+                       href="@Url.Action("ManageOrder", "Admin", new { status = "Wait for confirmation", sort = "ASC", search = "" })">
+                        Wait for confirmation
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="classify-btn" aria-current="page" 
+                       href="@Url.Action("ManageOrder", "Admin", new { status = "All", sort = "ASC", search = "" })">
+                        All
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="classify-btn" aria-current="page" 
+                       href="@Url.Action("ManageOrder", "Admin", new { status = "Confirmed", sort = "ASC", search = "" })">
+                        Confirmed
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="classify-btn" aria-current="page" 
+                       href="@Url.Action("ManageOrder", "Admin", new { status = "Cancelled", sort = "ASC", search = "" })">
+                        Cancelled
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="box list-box d-flex flex-column">
+    <div class="header-list-box d-flex flex-column">
+        <div class="list-box-title d-flex">
+            <h3 class="list-box-title-text list-box-total">Total: @ViewBag.Total</h3>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSort" data-bs-toggle="dropdown" aria-expanded="false">
+                    Sort
+                    @{
+                        if (ViewBag.Sort == "ASC")
+                        {
+                            <i class="fa-solid fa-arrow-down-1-9"></i>
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-arrow-down-9-1"></i>
+                        }
+
+                    }
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonSort">
+                    <li><a class="dropdown-item" href="@Url.Action("ManageOrder", "Admin", new { status = ViewBag.Status, sort = "ASC", search = ViewBag.SearchValue })">Sort <i class="fa-solid fa-arrow-down-1-9"></i></a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("ManageOrder", "Admin", new { status = ViewBag.Status, sort = "DESC", search = ViewBag.SearchValue })">Sort <i class="fa-solid fa-arrow-down-9-1"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <nav aria-label="Page navigation example" class="pagination-nav d-flex justify-content-center">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content-list-box order-list">
+        <div class="row">
+            <div class="col-md">
+                @foreach (var item in Model)
+                {
+                    ViewBag.NumberProductInPage = ViewBag.NumberProductInPage + 1;
+
+            <div class="row order-item">
+                <div class="card">
+                    <div class="card-serial">
+                        <h2 class="serial">@ViewBag.NumberProductInPage</h2>
+                    </div>
+                    <div class="card-body col-md d-flex flex-row">
+                        <div class="flex-child">
+                            <a href="#" class="order-id">
+                                @item.OrderID
+                            </a>
+                        </div>
+                        <div class="flex-child">
+                            <span class="card-text">@item.OrderDate</span>
+                        </div>
+                        <div class="flex-child">
+                            <span class="card-text">Total: @item.Total VND</span>
+                        </div>
+                    </div>
+                    <div class="col-md action-btn d-flex">
+                        <div class="wait-for-confirm-box col">
+                            <span class="card-text">
+                                @item.orderSystem.Status
+                            </span>
+                        </div>
+                        <button class="detail-btn col"
+                                data-bs-toggle="collapse" href="#@item.OrderID" role="button"
+                                aria-expanded="false" aria-controls="@item.OrderID">
+                            Detail
+                        </button>
+                    </div>
+                </div>
+                <div class="collapse" id="@item.OrderID">
+                    <div class="detail-order">
+                        <div class="infor-customer row">
+                            <div class="col-md-3">
+                                <span class="card-text">@item.RecipientName</span>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="card-text">@item.RecipientPhoneNumber</span>
+                            </div>
+                            <div class="col-md-3">
+                                <span class="card-text">@item.Email</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="card-text">@item.RecipientAddress</span>
+                            </div>
+                        </div>
+                        <div class="order-product-list">
+                            @foreach (var detail in item.orderDetails)
+                            {
+                                <div class="product-item row">
+                                    <a href="#" class="col-md-2 product-img">
+                                        @{
+                                            string url = @detail.ShoesID + "-" + @detail.StyleType + "-" + @detail.ColourID;
+                                            string resourcesPath = "~/Resources/Shoes/";
+                                            string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", url);
+                                            resourcesPath = Path.Combine(resourcesPath, url);
+
+                                            string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
+
+                                            string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                                            string fileNameOnly = Path.GetFileName(imagePath);
+                                            resourcesPath = Path.Combine(resourcesPath, fileNameOnly);
+                                        }
+                                        <img class="img-fluid" alt="Product-Img"
+                                             src="@Url.Content(resourcesPath)">
+                                    </a>
+                                    <div class="card-body col-md-5">
+                                        <a href="#">
+                                            <h2 class="card-title">@detail.ProductName</h2>
+                                        </a>
+                                        <p class="card-text type-shoes">@detail.StyleType</p>
+                                        <p class="card-text number-colour">@detail.ColourName</p>
+                                    </div>
+                                    <div class="quantity-box col-md-3">
+                                        <span class="card-text quantity">@detail.Quantity</span> x
+                                        <span class="shoes-price">@detail.Price <span class"unit">VND</span></span>
+                                    </div>
+                                    <div class="summary-box col-md-2">
+                                        @{ 
+                                            decimal totalOfOrder = @detail.Quantity * @detail.Price;
+                                        }
+                                        <p class="card-text total-of-product-item">@totalOfOrder <span class"unit">VND</span></p>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="footer-detail-order">
+                            <a class="delete-btn col">
+                                Cancel order
+                            </a>
+                            <a class="edit-btn col"
+                               @Url.Action("ConfirmOrder", "Admin", new { id = item.OrderID, status = ViewBag.Status, sort = ViewBag.Sort, search = ViewBag.Search })>
+                                Confirm order
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+            </div>
+        </div>
+    </div>
+    <div class="footer-list-box d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <p class="quantity">
+                @ViewBag.NumberProductInPage/@ViewBag.Total Total
+            </p>
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script>
+    var statusValue = "@ViewBag.Status";
+
+    var classifyBtns = document.querySelectorAll('.classify-btn');
+    classifyBtns.forEach(function (btn) {
+        if (btn.textContent.trim() === statusValue) {
+            btn.classList.add('classify-btn-selected');
+        }
+    });
+</script>

@@ -1,0 +1,210 @@
+﻿@model IEnumerable<XC_Shoe.Models.Purchased>
+
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/AdminLayoutPage.cshtml";
+    string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+    int i = 0;
+}
+
+
+<div class="top-content row g-lg-5">
+    <div class="col-lg position-relative">
+        <div class="card">
+            <div class="card-body">
+                <a href="#">
+                    <h2 class="card-title">Total Order</h2>
+                </a>
+                <p class="card-text main-card-text">@ViewBag.TotalOrder orders</p>
+                @{
+                    if (ViewBag.OrderGrowthPercent > 0)
+                    {
+                        <p class="card-text sub-card-text">+@ViewBag.OrderGrowthPercent%</p>
+                    }
+                    else
+                    {
+                        <p class="card-text sub-card-text" style="color: #FF395A">-@ViewBag.OrderGrowthPercent%</p>
+                    }
+                }
+
+            </div>
+            <div class="card-icon">
+                <i class="fa-solid fa-cart-arrow-down"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg position-relative">
+        <div class="card">
+            <div class="card-body">
+                <a href="#">
+                    <h2 class="card-title">Monthly Sales</h2>
+                </a>
+                <p class="card-text main-card-text">@ViewBag.ThisMonthIncome <span class="unit">VND</span></p>
+                @{
+                    if (ViewBag.OrderGrowthPercent > 0)
+                    {
+                        <p class="card-text sub-card-text">+@ViewBag.OrderGrowthPercent%</p>
+                    }
+                    else
+                    {
+                        <p class="card-text sub-card-text" style="color: #FF395A">-@ViewBag.OrderGrowthPercent%</p>
+                    }
+                }
+            </div>
+            <div class="card-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg position-relative">
+        <div class="card">
+            <div class="card-body">
+                <a href="#">
+                    <h2 class="card-title">Total Income</h2>
+                </a>
+                <p class="card-text main-card-text">@ViewBag.TotalIncome <span class="unit">VND</span></p>
+                @{
+                    if (ViewBag.OrderGrowthPercent > 0)
+                    {
+                        <p class="card-text sub-card-text">+@ViewBag.OrderGrowthPercent%</p>
+                    }
+                    else
+                    {
+                        <p class="card-text sub-card-text" style="color: #FF395A">-@ViewBag.OrderGrowthPercent%</p>
+                    }
+                }
+            </div>
+            <div class="card-icon">
+                <i class="fa-solid fa-dollar-sign"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="body-content">
+    <div class="row">
+        <div class="item-box col">
+            <div class="box-title row">
+                <div class="col-6">
+                    <h2>Best Selling Products</h2>
+                </div>
+                <div class="col-6">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSort" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sort 
+                            @{
+                                if (ViewBag.Sort == "ASC")
+                                {
+                                    <i class="fa-solid fa-arrow-down-1-9"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-arrow-down-9-1"></i>
+                                }
+
+                            }
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonSort">
+                            <li><a class="dropdown-item" href="@Url.Action("Home", "Admin", new { sort = "ASC" })">Sort <i class="fa-solid fa-arrow-down-1-9"></i></a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Home", "Admin", new { sort = "DESC" })">Sort <i class="fa-solid fa-arrow-down-9-1"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="content-box">
+                @foreach (var item in Model)
+                {
+                    i = i + 1;
+                    <div class="card">
+                        <div class="card-serial">
+                            <h2 class="serial">@i</h2>
+                        </div>
+                        <div class="card-img">
+                            @{
+                                string resourcesPath = "~/Resources/Shoes/";
+                                string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", @item.Url);
+                                resourcesPath = Path.Combine(resourcesPath, @item.Url);
+
+                                string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
+
+                                string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                                string fileNameOnly = Path.GetFileName(imagePath);
+                                resourcesPath = Path.Combine(resourcesPath, fileNameOnly);
+                            }
+                            <img src="@Url.Content(resourcesPath)"
+                                 alt="Alternate Text" />
+                        </div>
+                        <div class="card-body">
+                            <a href="#">
+                                <h2 class="card-title">@item.ShoesName</h2>
+                            </a>
+                            <p class="card-text colour">@item.StyleType</p>
+                            <p class="card-text colour">@item.ColorName</p>
+                            <p class="card-text quantity-sold">@item.Price <span class="unit">VND</span> | Sold: @item.PurchasedQuantity</p>
+                        </div>
+                        <div class="card-statistic">
+                            <p class="statistic-amount">@item.Total <span>VND</span></p>
+                            @{ 
+                                decimal percent = 100 * item.Total / ViewBag.TotalIncome;
+                                percent = Math.Round(percent, 2);
+                            }
+                            <p class="percent">@percent%</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: @percent.ToString("0.##")%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row home-chart-box">
+        <div class="item-box col">
+            <div class="box-title row">
+                <div class="col-6">
+                    <h2>Total Order</h2>
+                </div>
+                <div class="col-6">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSort" data-bs-toggle="dropdown" aria-expanded="false">
+                            By Month <i class="fa-regular fa-calendar"></i></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonSort">
+                            <li><a class="dropdown-item" href="#">By Month</a></li>
+                            <li><a class="dropdown-item" href="#">By Year</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="statistic-chart-box">
+                <div id="curve_chart" style="width: 100%; height: 100%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Day', 'Orders', 'Order has been cancelled'],
+                ['Jan 21', 1000, 0],
+                ['Jan 22', 1170, 10],
+                ['Jan 23', 660, 120],
+                ['Jan 24', 1030, 2]
+            ]);
+
+            var options = {
+                title: 'Total order in this month',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+        }
+</script>

@@ -1,0 +1,281 @@
+﻿@model XC_Shoe.Models.Shoe
+@{
+    ViewBag.Title = "Show Shoes Detail";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+}
+
+<div class="row justify-content-center">
+    <div class="shoes-detail-box row justify-content-center">
+        <div class="main-detail row gx-5">
+            <div class="col-lg-8 position-relative mt-4">
+                <div class="detail-img-box row">
+                    <div class="sub-img-detail col col-sm-2">
+                        <div class="sub-content-img">
+                            <ul class="list-unstyled d-flex flex-wrap image-list">
+                                <li class="image-item">
+                                    <img src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/f8dfa191-60b3-44c1-b730-b25e0a908c35/air-force-1-07-flyease-shoes-LKXPhZ.png"
+                                         alt="">
+                                </li>
+                                <li class="image-item">
+                                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/145d4145-6224-468f-9d2e-296ca821709d/air-force-1-07-flyease-shoes-LKXPhZ.png"
+                                         alt="">
+                                </li>
+                                <li class="image-item">
+                                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/192e92e5-474f-4092-902b-70ec0d0e379f/air-force-1-07-flyease-shoes-LKXPhZ.png"
+                                         alt="">
+                                </li>
+                                <li class="image-item">
+                                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/0030f99e-f45d-4042-b3e1-669952e3c24e/air-force-1-07-flyease-shoes-LKXPhZ.png"
+                                         alt="">
+                                </li>
+                                <li class="image-item">
+                                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/70bf202c-aad4-447b-948f-c7c2863459b3/air-force-1-07-flyease-shoes-LKXPhZ.png"
+                                         alt="">
+                                </li>
+                                <li class="image-item">
+                                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/15aaeb16-9a06-4d08-a978-91820283c097/air-force-1-07-flyease-shoes-LKXPhZ.png"
+                                         alt="">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="main-img-detail col col-sm-10">
+                        @{
+                            string resourcesPath = "~/Resources/Shoes/";
+                            string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", @Html.DisplayFor(model => model.Url).ToString());
+                            resourcesPath = Path.Combine(resourcesPath, @Html.DisplayFor(model => model.Url).ToString());
+
+                            string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
+
+                            string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                            string fileNameOnly = Path.GetFileName(imagePath);
+                            resourcesPath = Path.Combine(resourcesPath, fileNameOnly);
+                        }
+                        <img class="card-img-top img-fluid" alt="Men" src="@Url.Content(resourcesPath)">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 position-relative mt-4">
+                <div class="shoes-detail">
+                    <div class="shoes-infor">
+
+                        <p class="details-title">@Html.DisplayFor(model => model.NameShoes)</p>
+                        <p class="details-describe">@Html.DisplayFor(model => model.StyleType)'s @Html.DisplayFor(model => model.TypeShoesName) Shoes</p>
+                        <span id="formattedPrice" class="detail-price">@Html.DisplayFor(model => model.Price)</span>
+
+                        <script>
+                            // JavaScript function to format number with commas
+                            function formatNumberWithCommas(number) {
+                                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            }
+
+                            // Example usage with the provided model property
+                            var originalPrice = @Html.Raw(Json.Encode(Model.Price));
+                            var formattedPrice = formatNumberWithCommas(originalPrice);
+
+                            // Insert the formatted price into the designated span element
+                            document.getElementById('formattedPrice').innerText = formattedPrice;
+                        </script>
+                        <span class="unit-money">VND</span>
+                    </div>
+                    <div class="shoes-Colour-Shoes-box">
+                        <div class="form-group select-size">
+                            <div class="select-group grid-layout-3col">
+                                @foreach (var item in ViewBag.ShoesColor)
+                                {
+                                    <div class="radio-size">
+                                        <div class="css-b8rwz8 tooltip-component-container">
+                                            @{
+                                                string resourcesPath1 = "~/Resources/Shoes/";
+                                                string directoryPath1 = Path.Combine(projectDirectory, "Resources", "Shoes", item.Url);
+                                                resourcesPath1 = Path.Combine(resourcesPath1, item.Url);
+
+                                                string[] imageFiles1 = Directory.GetFiles(directoryPath1, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath1, "*-AVT.png")).ToArray();
+
+                                                string imagePath1 = imageFiles1.Length > 0 ? Path.Combine(directoryPath1, Path.GetFileName(imageFiles1[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                                                string fileNameOnly1 = Path.GetFileName(imagePath1);
+                                                resourcesPath1 = Path.Combine(resourcesPath1, fileNameOnly1);
+                                            }
+                                            <label for="radio-size" >
+                                                    <img class="radio-size card-img-top img-fluid w-60" alt="Men" src="@Url.Content(resourcesPath1)">
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                            <div class="shoes-size-box">
+                                <div class="form-group select-size">
+                                    <label class="form-heading">Select Size</label>
+                                    <div class="select-group grid-layout-3col">
+                                        @foreach (var item in ViewBag.size)
+                                        {
+                                            <input class="radio-size" type="button" id="size-@item.SizeName" value="@item.SizeName">
+
+                                        }
+                                        <span class="form-message" style="clear: both;"></span>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="action-box">
+                                <a class="btn" id="add-bag-btn">
+                                    Add to cart <i class="fa-solid fa-cart-shopping"></i>
+                                </a>
+                                <a class="btn" id="unfavorite-btn" href="@Url.Action("AddToFavorite", "Favorite", new {userID = ViewBag.UserID ,Shoesid = @Html.DisplayFor(model => model.ShoesID),colourName = @Html.DisplayFor(model => model.NameColor),styletype = @Html.DisplayFor(model => model.StyleType)})">
+                                    Favourite <i class="fa-regular fa-heart"></i>
+                                </a>
+                            </div>
+                            <div class="review-box">
+                                <a class="review-show" data-bs-toggle="collapse" href="#load-reviews" role="button" aria-expanded="false" aria-controls="load-reviews">
+                                    <div class="review-box-title">Reviews</div>
+                                    <div class="dropdown-icon"><i class="fa-solid fa-chevron-down"></i></div>
+                                    <div class="review-box-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+
+                                </a>
+                                <div class="collapse" id="load-reviews">
+                                    <div class="card card-body">
+                                        <div class="total-rating-star-box"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> <span class="total-star-rating">4.8 Stars</span></div>
+                                        <div class="reviews">
+                                            <ul>
+                                                <li class="review-item">
+                                                    <div class="star-rating">
+                                                        <span class="number-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+                                                        <span class="user-name">Takagi</span>
+                                                        <span class="rating-date">12 Oct 2023</span>
+                                                    </div>
+                                                    <div class="rating-describe">Honestly the most iconic shoe ever. So classy and can wear with literally everything. Really comfortable for the price as well. Love everything abt it.</div>
+                                                </li>
+                                                <li class="review-item">
+                                                    <div class="star-rating">
+                                                        <span class="number-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+                                                        <span class="user-name">Takagi</span>
+                                                        <span class="rating-date">12 Oct 2023</span>
+                                                    </div>
+                                                    <div class="rating-describe">Honestly the most iconic shoe ever. So classy and can wear with literally everything. Really comfortable for the price as well. Love everything abt it.</div>
+                                                </li>
+                                                <li class="review-item">
+                                                    <div class="star-rating">
+                                                        <span class="number-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+                                                        <span class="user-name">Takagi</span>
+                                                        <span class="rating-date">12 Oct 2023</span>
+                                                    </div>
+                                                    <div class="rating-describe">Honestly the most iconic shoe ever. So classy and can wear with literally everything. Really comfortable for the price as well. Love everything abt it.</div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+    <div class="recommended-purchase row justify-content-center">
+        <div class="recommended-purchase-title row">
+            <h2>You Might Also Like</h2>
+        </div>
+        <div class="recommended-purchase-list row gx-5">
+            <div class="recommended-purchase-item col-md-4 position-relative mt-4">
+                <div class="card">
+                    <a href="#">
+                        <img class="card-img-top img-fluid" alt="Men"
+                             src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
+                    </a>
+                    <div class="card-body">
+                        <a href="#">
+                            <h2 class="card-title">Basketball</h2>
+                        </a>
+                        <p class="card-text type-shoes">Sport shoes</p>
+                        <p class="card-text number-colour">1 Colour</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn categories-shoes-btn shoes-price">3,200,00</a>
+                    </div>
+                </div>
+            </div>
+            <div class="recommended-purchase-item col-md-4 position-relative mt-4">
+                <div class="card">
+                    <a href="#">
+                        <img class="card-img-top img-fluid" alt="Men"
+                             src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
+                    </a>
+                    <div class="card-body">
+                        <a href="#">
+                            <h2 class="card-title">Basketball</h2>
+                        </a>
+                        <p class="card-text type-shoes">Sport shoes</p>
+                        <p class="card-text number-colour">1 Colour</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn categories-shoes-btn shoes-price">3,200,00</a>
+                    </div>
+                </div>
+            </div>
+            <div class="recommended-purchase-item col-md-4 position-relative mt-4">
+                <div class="card">
+                    <a href="#">
+                        <img class="card-img-top img-fluid" alt="Men"
+                             src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
+                    </a>
+                    <div class="card-body">
+                        <a href="#">
+                            <h2 class="card-title">Basketball</h2>
+                        </a>
+                        <p class="card-text type-shoes">Sport shoes</p>
+                        <p class="card-text number-colour">1 Colour</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn categories-shoes-btn shoes-price">3,200,00</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const radios = document.querySelectorAll('.radio-size');
+    radios.forEach(radio => {
+        radio.addEventListener('click', () => {
+            radios.forEach(radio => radio.classList.remove('btn-checked'));
+            radio.classList.add('btn-checked');
+
+            const selectGroup = radio.parentElement.parentElement;
+            selectGroup.style.color = "black";
+            selectGroup.querySelector('.select-group').classList.remove('unselected');
+            selectGroup.querySelector('.form-message').textContent = "";
+            // console.log(radio);
+        });
+    });
+
+    //sub-content-img-item
+    const subContentImgItemSelector = document.querySelectorAll('.image-item');
+    const mainContentImgItemSelector = document.querySelector('.main-img-detail');
+    subContentImgItemSelector.forEach(subElementTarget => {
+        subElementTarget.addEventListener('mouseenter', () => {
+            mainContentImgItemSelector.querySelector('img').src = subElementTarget.querySelector('img').src;
+        });
+    });
+</script>
+
+<script>
+    function updateCSS() {
+        const mainImage = document.querySelector(".main-img-detail");
+        if (window.innerWidth < 1024) {
+            const containerWidth = mainImage.offsetWidth;
+            mainImage.getElementsByTagName("img")[0].style.height = containerWidth + "px";
+            mainImage.getElementsByTagName("img")[0].style.width = containerWidth + "px";
+        }
+        else {
+            mainImage.getElementsByTagName("img")[0].style.height = "600px";
+            mainImage.getElementsByTagName("img")[0].style.width = "500px";
+        }
+    }
+    window.addEventListener('load', updateCSS);
+    window.addEventListener('resize', updateCSS);
+
+</script>

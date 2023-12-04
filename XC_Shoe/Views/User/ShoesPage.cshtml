@@ -1,0 +1,118 @@
+﻿@model IEnumerable<XC_Shoe.Models.Shoe>
+@{
+    ViewBag.Title = "Show Shoes Page";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="menu-content">
+                <h3 class="title-content"><b>Men's Shoes</b></h3>
+                @Html.Action("TypeShoesPartial", "Shoes")
+                @*<h3 class="title-content">Colour</h3>
+
+                    @Html.Action("ColoursPartial", "TypeShoes")*@
+
+                <h3 class="title-content"><b>Gender</b></h3>
+                <ul class="list-group list-group-flush text-left">
+                    <li class="list-group-item">
+                        <input type="checkbox" value="Men" />
+                        <label>Men</label>
+                    </li>
+                    <li class="list-group-item">
+                        <input type="checkbox" value="Women" />
+                        <label>Women</label>
+                    </li>
+                </ul>
+                <h3 class="title-content"><b>Icon</b></h3>
+
+                @Html.Action("IconsPartial", "Shoes")
+                @*<ul id="menu-content-list">
+                        <a href="#">
+                        <li>Lifestyle</li>
+                        </a>
+                        <a href="#">
+                        <li>Running</li>
+                        </a>
+                        <a href="#">
+                        <li>Basketball</li>
+                        </a>
+                        <a href="#">
+                        <li>Football</li>
+                        </a>
+                        <a href="#">
+                        <li>Training & Gym</li>
+                        </a>
+                    </ul>
+                    <div class="line-seperate"></div>*@
+            </div>
+        </div>
+        <div class="col-sm-10">
+            <div class="product-list-box mt-5">
+                <div class="container">
+                    <div class="row">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-sm-4">
+                                <!-- col-sm-4 to make three columns in a row for small screens -->
+                                <div class="product-list-box mt-5">
+                                    <div class="card">
+
+                                        <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.NameColor})">
+                                            @{
+                                                string resourcesPath = "~/Resources/Shoes/";
+                                                string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", @item.Url);
+                                                resourcesPath = Path.Combine(resourcesPath, @item.Url);
+
+                                                string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
+
+                                                string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                                                string fileNameOnly = Path.GetFileName(imagePath);
+                                                resourcesPath = Path.Combine(resourcesPath, fileNameOnly);
+                                            }
+                                            <img class="card-img-top img-fluid" alt="Men" src="@Url.Content(resourcesPath)">
+                                        </a>
+                                        <div class="card-body">
+                                            <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.NameColor})">
+                                                <h2 class="card-title">@Html.DisplayFor(modelItem => item.NameShoes)</h2>
+                                            </a>
+                                            <p class="card-text type-shoes">
+                                                @Html.DisplayFor(modelItem => item.StyleType) @Html.DisplayFor(modelItem => item.TypeShoesName) Shoes
+                                            </p>
+
+                                            <p class="card-text number-colour">@Html.DisplayFor(modelItem => item.NumberColor) Colours</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.NameColor})" class="btn categories-shoes-btn shoes-price" id="Moneycolor_@item.ShoesID" class="btn categories-shoes-btn shoes-price" id="Moneycolor_@item.ShoesID">
+                                                @Html.DisplayFor(modelItem => item.Price) VND
+                                            </a>
+                                        </div>
+
+                                        <script defer>
+                                            // JavaScript function to format number with commas
+                                            function formatNumberWithCommas(number) {
+                                                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                            }
+
+                                            // Example usage with the provided model property
+                                            var originalPrice_@item.ShoesID = @Html.DisplayFor(modelItem => item.Price);
+                                            var formattedPrice_@item.ShoesID = formatNumberWithCommas(originalPrice_@item.ShoesID);
+
+                                            // Insert the formatted price into the designated anchor element
+                                            document.getElementById('Moneycolor_@item.ShoesID').innerText = formattedPrice_@item.ShoesID + " VND";
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

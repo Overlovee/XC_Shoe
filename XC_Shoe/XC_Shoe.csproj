@@ -1,0 +1,353 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D6A3DBB9-BCE3-4293-8CCE-47FC82352179}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>XC_Shoe</RootNamespace>
+    <AssemblyName>XC_Shoe</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.9\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.9\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.9\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.1\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contents\admin_js.js" />
+    <Content Include="Contents\admin_site.css" />
+    <Content Include="Contents\API_GoogleDrive.js" />
+    <Content Include="Contents\site.css" />
+    <Content Include="Databases\DB_XC_Insert.sql" />
+    <Content Include="Databases\DB_XC_Select.sql" />
+    <Content Include="Databases\DB_XC_Shoes_Store.sql" />
+    <Content Include="Databases\DB_XC_Trigger&amp;StoreProcedure&amp;Function.sql" />
+    <Content Include="Global.asax" />
+    <Content Include="Resources\Account\User.jpg" />
+    <Content Include="Resources\Account\z4263646737653_b71c2a8b1f0f08aedc2b8fb8c85dfe12.jpg" />
+    <Content Include="Resources\Shoes\AF1-Men-2\download %281%29.jpg" />
+    <Content Include="Resources\Shoes\AF1-Men-2\download %282%29.jpg" />
+    <Content Include="Resources\Shoes\AF1-Men-2\download-AVT.jpg" />
+    <Content Include="Resources\Shoes\AF1-Men-2\download.jpg" />
+    <Content Include="Resources\Shoes\AF1-Men-3\download %281%29.jpg" />
+    <Content Include="Resources\Shoes\AF1-Men-3\download %282%29.jpg" />
+    <Content Include="Resources\Shoes\AF1-Men-3\download-AVT.jpg" />
+    <Content Include="Resources\Shoes\AF1-Men-3\download.jpg" />
+    <Content Include="Resources\Shoes\AF1-Men-4\download %281%29.jpg" />
+    <Content Include="Resources\Shoes\AF1-Men-4\download %282%29.jpg" />
+    <Content Include="Resources\Shoes\AF1-Men-4\download-AVT.jpg" />
+    <Content Include="Resources\Shoes\AF1-Men-4\download.jpg" />
+    <Content Include="Resources\Shoes\AF2-Men-1\download %281%29.jpg" />
+    <Content Include="Resources\Shoes\AF2-Men-1\download %282%29.jpg" />
+    <Content Include="Resources\Shoes\AF2-Men-1\download-AVT.jpg" />
+    <Content Include="Resources\Shoes\AF2-Men-1\download.jpg" />
+    <Content Include="Resources\Shoes\AF2-Men-2\download %281%29.jpg" />
+    <Content Include="Resources\Shoes\AF2-Men-2\download %282%29.jpg" />
+    <Content Include="Resources\Shoes\AF2-Men-2\download-AVT.jpg" />
+    <Content Include="Resources\Shoes\AF2-Men-2\download.jpg" />
+    <Content Include="Resources\Shoes\AF2-Men-5\download %281%29.jpg" />
+    <Content Include="Resources\Shoes\AF2-Men-5\download %282%29.jpg" />
+    <Content Include="Resources\Shoes\AF2-Men-5\download-AVT.jpg" />
+    <Content Include="Resources\Shoes\AF2-Men-5\download.jpg" />
+    <Content Include="Resources\Shoes\AF3-Women-4\download %281%29.jpg" />
+    <Content Include="Resources\Shoes\AF3-Women-4\download %282%29.jpg" />
+    <Content Include="Resources\Shoes\AF3-Women-4\download-AVT.jpg" />
+    <Content Include="Resources\Shoes\AF3-Women-4\download.jpg" />
+    <Content Include="Resources\Shoes\AF3-Women-6\download %281%29.jpg" />
+    <Content Include="Resources\Shoes\AF3-Women-6\download %282%29.jpg" />
+    <Content Include="Resources\Shoes\AF3-Women-6\download-AVT.jpg" />
+    <Content Include="Resources\Shoes\AF3-Women-6\download.jpg" />
+    <Content Include="Resources\Shoes\AF3-Women-7\download %281%29.jpg" />
+    <Content Include="Resources\Shoes\AF3-Women-7\download %282%29.jpg" />
+    <Content Include="Resources\Shoes\AF3-Women-7\download-AVT.jpg" />
+    <Content Include="Resources\Shoes\AF3-Women-7\download.jpg" />
+    <Content Include="Resources\Shoes\AM1-Men-2\a64256d7-1f44-4d58-8531-0ad59e897815.jpg" />
+    <Content Include="Resources\Shoes\AM1-Men-2\ba167834-731f-47d5-bdc3-8578415c02df.jpg" />
+    <Content Include="Resources\Shoes\AM1-Men-2\c860e8ec-4bdc-41bb-9077-6a8006779e4d.jppg.jpg" />
+    <Content Include="Resources\Shoes\AM1-Men-2\fa167834-731f-47d5-bdc3-8578415c02df-AVT.jpg" />
+    <Content Include="Resources\Shoes\AM1-Men-5\6d693bac-1fcd-4476-89f7-a6683f99879a.jpg" />
+    <Content Include="Resources\Shoes\AM1-Men-5\7fc8d633-7646-4952-a2da-852b5f716b36-AVT.jpg" />
+    <Content Include="Resources\Shoes\AM1-Men-5\7fc8d633-7646-4952-a2da-852b5f716b36.jpg" />
+    <Content Include="Resources\Shoes\AM1-Men-5\b38d93ca-9c6a-4f3b-97a8-394998350a41.jpg" />
+    <Content Include="Resources\Shoes\AM1-Men-7\2d26097f-c98b-415a-9417-4c50b99c7d50.jpg" />
+    <Content Include="Resources\Shoes\AM1-Men-7\3eba0f82-5e2e-41cb-b86b-465cfbb8d26f.jpg" />
+    <Content Include="Resources\Shoes\AM1-Men-7\ebef2e5f-bd5b-4a33-b009-e13f7875c21d-AVT.jpg" />
+    <Content Include="Resources\Shoes\AM1-Men-7\ebef2e5f-bd5b-4a33-b009-e13f7875c21d.jpg" />
+    <Content Include="Resources\Shoes\AM2-Men-1\v2 %281%29.jpg" />
+    <Content Include="Resources\Shoes\AM2-Men-1\v2 %282%29.jpg" />
+    <Content Include="Resources\Shoes\AM2-Men-1\v2-AVT.jpg" />
+    <Content Include="Resources\Shoes\AM2-Men-1\v2.jpg" />
+    <Content Include="Resources\Shoes\AM2-Men-2\v2%281%29.jpg" />
+    <Content Include="Resources\Shoes\AM2-Men-2\v2%282%29.jpg" />
+    <Content Include="Resources\Shoes\AM2-Men-2\v2-AVT.jpg" />
+    <Content Include="Resources\Shoes\AM2-Men-2\v2.jpg" />
+    <Content Include="Resources\Shoes\AM2-Men-3\v2 %281%29.jpg" />
+    <Content Include="Resources\Shoes\AM2-Men-3\v2 %282%29.jpg" />
+    <Content Include="Resources\Shoes\AM2-Men-3\v2 %283%29.jpg" />
+    <Content Include="Resources\Shoes\AM2-Men-3\v2-AVT.jpg" />
+    <Content Include="Resources\Shoes\AM3-Women-12\z4937397765075_f94afdabd5357f06487b376a76e1cacd.jpg" />
+    <Content Include="Resources\Shoes\AM3-Women-12\z4937397766214_658830d7e87dcd6677a6f4214d0b2705-AVT.jpg" />
+    <Content Include="Resources\Shoes\AM3-Women-12\z4937397766214_658830d7e87dcd6677a6f4214d0b2705.jpg" />
+    <Content Include="Resources\Shoes\AM3-Women-12\z4937397769429_2aaad368f791a1eddfb63aaa277ed737.jpg" />
+    <Content Include="Resources\Shoes\AM3-Women-5\z4937392675835_4f35548386c1d0b04c410b49c9bff113-AVT.jpg" />
+    <Content Include="Resources\Shoes\AM3-Women-5\z4937392675835_4f35548386c1d0b04c410b49c9bff113.jpg" />
+    <Content Include="Resources\Shoes\AM3-Women-5\z4937396802319_a52f7deb979bcf1ec86d8912914a3b7d.jpg" />
+    <Content Include="Resources\Shoes\AM3-Women-5\z4937396806385_4d4a6cf5fa2dfe0ae9f77131e6e3d788.jpg" />
+    <Content Include="Resources\Shoes\AM3-Women-6\z4937397608188_db9734037a73dac072c2d429f3c5c597-AVT.jpg" />
+    <Content Include="Resources\Shoes\AM3-Women-6\z4937397608188_db9734037a73dac072c2d429f3c5c597.jpg" />
+    <Content Include="Resources\Shoes\AM3-Women-6\z4937397610215_d5b6c9d8a4edd8638f62fad18fd83997.jpg" />
+    <Content Include="Resources\Shoes\AM3-Women-6\z4937397613992_c47c8ea7b5fe92f916c5c90542057092.jpg" />
+    <Content Include="Resources\Shoes\JD1-Men-2\z4937397873838_199e48196d757085d38967cea07dd8c9.jpg" />
+    <Content Include="Resources\Shoes\JD1-Men-2\z4937397880758_e61a359b2979c95813f5eee33fe1e12a.jpg" />
+    <Content Include="Resources\Shoes\JD1-Men-2\z4937397882746_7901f7bd91c8250a119e9873357d553a-AVT.jpg" />
+    <Content Include="Resources\Shoes\JD1-Men-2\z4937397882746_7901f7bd91c8250a119e9873357d553a.jpg" />
+    <Content Include="Resources\Shoes\JD1-Men-3\z4937397967616_761ee6cff3af14f6e6d08ff5f38c49ab.jpg" />
+    <Content Include="Resources\Shoes\JD1-Men-3\z4937397967617_40a141cf098e7fd39ec30dc54b1a3143-AVT.jpg" />
+    <Content Include="Resources\Shoes\JD1-Men-3\z4937397967617_40a141cf098e7fd39ec30dc54b1a3143.jpg" />
+    <Content Include="Resources\Shoes\JD1-Men-3\z4937397971992_7f25e3a1a8d56aae9d03eb3dc713843f.jpg" />
+    <Content Include="Resources\Shoes\JD2-Men-2\z4937398065622_a86b86e4f4fd806eb75bb483393d2f59.jpg" />
+    <Content Include="Resources\Shoes\JD2-Men-2\z4937398065624_84b28aef2cd92c463548188f1ad199d8.jpg" />
+    <Content Include="Resources\Shoes\JD2-Men-2\z4937398066419_6a3a616edc4e92ac10dadedaefb665ef-AVT.jpg" />
+    <Content Include="Resources\Shoes\JD2-Men-2\z4937398066419_6a3a616edc4e92ac10dadedaefb665ef.jpg" />
+    <Content Include="Resources\Shoes\JD2-Men-6\z4938646419524_dfa663978de232394badd9b0a3c055e2-AVT.jpg" />
+    <Content Include="Resources\Shoes\JD2-Men-6\z4938646419524_dfa663978de232394badd9b0a3c055e2.jpg" />
+    <Content Include="Resources\Shoes\JD2-Men-6\z4938646422717_88b9cfbcb57188f4a671d7d405f47f44.jpg" />
+    <Content Include="Resources\Shoes\JD2-Men-6\z4938646441120_5158795a3395dbd51bb387a9c7cb0ea2.jpg" />
+    <Content Include="Resources\Shoes\JD2-Men-7\z4937399248647_6a1897868f70e722c01560c819bf6359.jpg" />
+    <Content Include="Resources\Shoes\JD2-Men-7\z4937399258144_27966977f33eb437e7bdc03ae6d8c450-AVT.jpg" />
+    <Content Include="Resources\Shoes\JD2-Men-7\z4937399258144_27966977f33eb437e7bdc03ae6d8c450.jpg" />
+    <Content Include="Resources\Shoes\JD2-Men-7\z4937399259445_0cf0fd46decda028f92521b193c7beef.jpg" />
+    <Content Include="Resources\Shoes\JD3-Women-10\z4937400121010_083ad09bb0564f19b4215b189a11b189.jpg" />
+    <Content Include="Resources\Shoes\JD3-Women-10\z4937400122767_b30173fee6093cb4b0663db4918b6855.jpg" />
+    <Content Include="Resources\Shoes\JD3-Women-10\z4937400124589_c177691f379108b549f08aa12c4015b7-AVT.jpg" />
+    <Content Include="Resources\Shoes\JD3-Women-10\z4937400124589_c177691f379108b549f08aa12c4015b7.jpg" />
+    <Content Include="Resources\Shoes\JD3-Women-4\z4937399981839_5e5d9ea14c6687f4e41055e801fc99b0.jpg" />
+    <Content Include="Resources\Shoes\JD3-Women-4\z4937399983736_7d90c3d032704d8bed82f58c35914484-AVT.jpg" />
+    <Content Include="Resources\Shoes\JD3-Women-4\z4937399983736_7d90c3d032704d8bed82f58c35914484.jpg" />
+    <Content Include="Resources\Shoes\JD3-Women-4\z4937399987154_0fc354241be4870e3d6ae017643f559d.jpg" />
+    <Content Include="Resources\Shoes\JD3-Women-6\z4937400044848_1f6e6a20cc3433f51840a1d1a517d725.jpg" />
+    <Content Include="Resources\Shoes\JD3-Women-6\z4937400044849_425c1ba168837e79b52b47b346ae4e4a.jpg" />
+    <Content Include="Resources\Shoes\JD3-Women-6\z4937400049854_ab7d1eb9089888659c589cac9a4bef28-AVT.jpg" />
+    <Content Include="Resources\Shoes\JD3-Women-6\z4937400049854_ab7d1eb9089888659c589cac9a4bef28.jpg" />
+    <Content Include="Resources\Shoes\SP1-Men-1\z4937400212159_54c95bda211f54b4cef6f354137549ac-AVT.jpg" />
+    <Content Include="Resources\Shoes\SP1-Men-1\z4937400212159_54c95bda211f54b4cef6f354137549ac.jpg" />
+    <Content Include="Resources\Shoes\SP1-Men-1\z4937400219600_f8c6633481f486b35f39269dfccd7ccb.jpg" />
+    <Content Include="Resources\Shoes\SP1-Men-1\z4937400224309_33b93323de9f4e8ada7b85b91ba6447b.jpg" />
+    <Content Include="Resources\Shoes\SP1-Men-2\z4937400285565_f3a36de82dd5489472fd393592a6f661.jpg" />
+    <Content Include="Resources\Shoes\SP1-Men-2\z4937400286733_34ece6c434e8275d95527eccd388e84f.jpg" />
+    <Content Include="Resources\Shoes\SP1-Men-2\z4937400292426_df04b127179e626c31d833f6066e4c0d-AVT.jpg" />
+    <Content Include="Resources\Shoes\SP1-Men-2\z4937400292426_df04b127179e626c31d833f6066e4c0d.jpg" />
+    <Content Include="Resources\Shoes\SP1-Men-3\z4937400357916_430f0ff6b6c8c44bd951582bbaf28cbf.jpg" />
+    <Content Include="Resources\Shoes\SP1-Men-3\z4937400359089_b8ce0ef3e850a1c8a121ab0ebe7e3c5b-AVT.jpg" />
+    <Content Include="Resources\Shoes\SP1-Men-3\z4937400359089_b8ce0ef3e850a1c8a121ab0ebe7e3c5b.jpg" />
+    <Content Include="Resources\Shoes\SP1-Men-3\z4937400360908_ec817df2b942925f02e25b0ae34e814e.jpg" />
+    <Content Include="Resources\Shoes\SP2-Men-3\z4938680708806_1d7b39858218b706cb83d3ddf7d5a80c.jpg" />
+    <Content Include="Resources\Shoes\SP2-Men-3\z4938680717675_6d247b39c3a0fc222e274120a86524c3-AVT.jpg" />
+    <Content Include="Resources\Shoes\SP2-Men-3\z4938680717675_6d247b39c3a0fc222e274120a86524c3.jpg" />
+    <Content Include="Resources\Shoes\SP2-Men-3\z4938680728521_b511505a5327ed73295990190a20f742.jpg" />
+    <Content Include="Resources\Shoes\SP2-Men-4\z4937400736059_299f0665015ebce940e60757d9c0ebfa.jpg" />
+    <Content Include="Resources\Shoes\SP2-Men-4\z4937400740556_3cef50781f563c38838fd3bccccfc2c2-AVT.jpg" />
+    <Content Include="Resources\Shoes\SP2-Men-4\z4937400740556_3cef50781f563c38838fd3bccccfc2c2.jpg" />
+    <Content Include="Resources\Shoes\SP2-Men-4\z4937400741196_cbc8e40639cb2c24399a17426b8207ba.jpg" />
+    <Content Include="Resources\Shoes\SP2-Men-8\z4937400813798_9baaf9b7fe6ed7723c3b35e2d3cee870-AVT.jpg" />
+    <Content Include="Resources\Shoes\SP2-Men-8\z4937400813798_9baaf9b7fe6ed7723c3b35e2d3cee870.jpg" />
+    <Content Include="Resources\Shoes\SP2-Men-8\z4937400816301_e3fafee95e3ab5b02a8b4c8f385529f0.jpg" />
+    <Content Include="Resources\Shoes\SP2-Men-8\z4937400816812_3023f48d4450d9363798f2b2081583e5.jpg" />
+    <Content Include="Resources\Shoes\SP3-Women-2\z4937400890055_dcf7d972d96a014b5959a5a5a542bd59.jpg" />
+    <Content Include="Resources\Shoes\SP3-Women-2\z4937400891151_12662b391f76db6b808c492737daf302-AVT.jpg" />
+    <Content Include="Resources\Shoes\SP3-Women-2\z4937400891151_12662b391f76db6b808c492737daf302.jpg" />
+    <Content Include="Resources\Shoes\SP3-Women-2\z4937400893105_1a0db7e9a64039d80f99e93372567b07.jpg" />
+    <Content Include="Resources\Shoes\SP3-Women-3\z4937401005021_9f6f897e541509cf63426ee580ba29f9-AVT.jpg" />
+    <Content Include="Resources\Shoes\SP3-Women-3\z4937401005021_9f6f897e541509cf63426ee580ba29f9.jpg" />
+    <Content Include="Resources\Shoes\SP3-Women-3\z4937401010183_501988cb7b2855ed4278d5bf604c747f.jpg" />
+    <Content Include="Resources\Shoes\SP3-Women-3\z4937401015710_260de386aeceb5a1bbb05d8bab0e0b63.jpg" />
+    <Content Include="Resources\Shoes\SP3-Women-6\z4937401072662_0a591afd25f47230d48799adc72a8169.jpg" />
+    <Content Include="Resources\Shoes\SP3-Women-6\z4937401082785_1c64fc10af3743e6f694ee3494c51b30-AVT.jpg" />
+    <Content Include="Resources\Shoes\SP3-Women-6\z4937401082785_1c64fc10af3743e6f694ee3494c51b30.jpg" />
+    <Content Include="Resources\Shoes\SP3-Women-6\z4937401084064_c3bfe18ae5c1b308dcc182b6fc5a2f7e.jpg" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Connects\ConnectBag.cs" />
+    <Compile Include="Connects\ConnectFavorite.cs" />
+    <Compile Include="Connects\ConnectIcons.cs" />
+    <Compile Include="Connects\ConnectOrders.cs" />
+    <Compile Include="Connects\ConnectPurchased.cs" />
+    <Compile Include="Connects\ConnectShoes.cs" />
+    <Compile Include="Connects\ConnectSize.cs" />
+    <Compile Include="Connects\ConnectTypeShoes.cs" />
+    <Compile Include="Connects\ConnectUsers.cs" />
+    <Compile Include="Connects\DbContext.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BagController.cs" />
+    <Compile Include="Controllers\FavoriteController.cs" />
+    <Compile Include="Controllers\ShoesController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Bag.cs" />
+    <Compile Include="Models\Favorite.cs" />
+    <Compile Include="Models\Icons.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderDetails.cs" />
+    <Compile Include="Models\OrderSystem.cs" />
+    <Compile Include="Models\Purchased.cs" />
+    <Compile Include="Models\Shoe.cs" />
+    <Compile Include="Models\Size.cs" />
+    <Compile Include="Models\TypeShoes.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserShipment.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config" />
+    <Content Include="Databases\DB_XC_Shoes_Store.bacpac" />
+    <None Include="packages.config" />
+    <Content Include="Views\Shared\AdminHeader.cshtml" />
+    <Content Include="Views\Shared\AdminLayoutPage.cshtml" />
+    <Content Include="Views\Shared\AdminTaskbar.cshtml" />
+    <Content Include="Views\Shared\footer.cshtml" />
+    <Content Include="Views\Shared\header.cshtml" />
+    <Content Include="Views\Shared\_LayoutPage.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\ShoesPage.cshtml" />
+    <Content Include="Views\User\ShowHomePage.cshtml" />
+    <Content Include="Views\User\ShowShoesDetail.cshtml" />
+    <Content Include="Views\User\SignIn.cshtml" />
+    <Content Include="Views\User\SignUp.cshtml" />
+    <Content Include="Views\User\UserProfile.cshtml" />
+    <Content Include="Views\Shoes\IconsPartial.cshtml" />
+    <Content Include="Views\Shoes\TypeShoesPartial.cshtml" />
+    <Content Include="Views\Favorite\ShowFavoritePage.cshtml" />
+    <Content Include="Views\Bag\ShowBagPage.cshtml" />
+    <Content Include="Views\Admin\Home.cshtml" />
+    <Content Include="Views\Admin\ManageAdmin.cshtml" />
+    <Content Include="Views\Admin\ManageOrder.cshtml" />
+    <Content Include="Views\Admin\ManageProduct.cshtml" />
+    <Content Include="Views\Admin\ManageUser.cshtml" />
+    <Content Include="Views\Admin\MyAccount.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>57352</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:57352/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

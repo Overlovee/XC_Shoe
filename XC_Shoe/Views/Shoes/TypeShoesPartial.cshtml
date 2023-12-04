@@ -1,0 +1,15 @@
+﻿@model IEnumerable<XC_Shoe.Models.TypeShoes>
+<ul class="list-group list-group-flush text-left">
+    @foreach (var item in Model)
+    {
+        <li class="list-group-item">
+            <a href="#">@item.NameTS</a>
+        </li>
+    }
+    <li class="list-group-item">
+        <a href="#" style="text-transform:uppercase; text-decoration:none;"> </a>
+    </li>
+
+</ul>
+
+

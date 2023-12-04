@@ -1,0 +1,212 @@
+﻿@model XC_Shoe.Models.User
+
+@{
+    ViewBag.Title = "My Account";
+    Layout = "~/Views/Shared/AdminLayoutPage.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    <div id="account-info" class="box list-box">
+        <div class="row justify-content-center">
+            <div id="avt" class="account-info-item">
+                <img id="previewImage" src="@Url.Content(ViewBag.ThisAccountImage)"
+                     alt="Alternate Text" />
+                <button class="edit-avt-btn" id="edit-avt-btn">Choose <i class="fa-regular fa-pen-to-square"></i></button>
+            </div>
+            <div class="account-info-item text-center">
+                <h2 style="font-size: 2.4rem; margin-top: 1rem; margin-bottom: 3rem;">@Model.UserName</h2>
+
+            </div>
+        </div>
+        <div class="row account-info-content justify-content-center">
+            <div id="fullname-box" class="account-info-item">
+                <div class="account-info-item-header">
+                    <section class="account-info-item-title">
+                        Full Name
+                    </section>
+                    <button class="account-info-edit-btn">
+                        Edit
+                    </button>
+                </div>
+                <input name="full-name" type="text" value="@Model.UserName" class="disabled-input" disabled>
+            </div>
+        </div>
+        <div class="row account-info-content justify-content-center">
+            <div id="username-box" class="account-info-item">
+                <div class="account-info-item-header">
+                    <section class="account-info-item-title">
+                        Account
+                    </section>
+                    <button class="account-info-edit-btn">
+                        Edit
+                    </button>
+                </div>
+                <input name="user-name" type="text" value="@Model.UserID" placeholder="#123haha" class="disabled-input" disabled>
+            </div>
+        </div>
+        <div class="row account-info-content justify-content-center">
+            <div id="email-box" class="account-info-item">
+                <div class="account-info-item-header">
+                    <section class="account-info-item-title">
+                        Email
+                    </section>
+                    <button class="account-info-edit-btn">
+                        Edit
+                    </button>
+                </div>
+                <input name="user-email" type="text" value="@Model.Email" placeholder="example@gmail.com" class="disabled-input" disabled>
+            </div>
+        </div>
+        <div class="row account-info-content justify-content-center">
+            <div id="password-box" class="account-info-item">
+                <div class="account-info-item-header">
+                    <section class="account-info-item-title">
+                        Password
+                    </section>
+                    <button type="button" class="password-editing-btn" data-bs-toggle="modal" data-bs-target="#password-editor">
+                        Edit
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="password-editor" tabindex="-1" aria-labelledby="password-editorLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="password-editorLabel">Edit Password</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-5">
+                                            <input type="password" class="form-control" id="current-password" placeholder="Current Password">
+                                        </div>
+                                        <div class="mb-5">
+                                            <input type="password" class="form-control" id="new-password" placeholder="New Password">
+                                        </div>
+                                        <div class="mb-5">
+                                            <input type="password" class="form-control" id="confirm-new-password" placeholder="Confirm New Password">
+                                        </div>
+                                    </form>
+                                    <div class="password-requirement">
+                                        <ul>
+                                            <li>
+                                                Password requirements:
+                                            </li>
+                                            <li>
+                                                Minimum of 8 characters
+                                            </li>
+                                            <li>
+                                                Uppercase, lowercase letters and one number
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="save-btn disabled-btn">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input name="user-password" type="password" placeholder="*********" class="disabled-input" disabled>
+            </div>
+        </div>
+        <div class="row account-info-content justify-content-center">
+            <div id="phonenumber-box" class="account-info-item">
+                <div class="account-info-item-header">
+                    <section class="account-info-item-title">
+                        Phone Number
+                    </section>
+                    <button class="account-info-edit-btn">
+                        Edit
+                    </button>
+                </div>
+                <input name="user-phonenumber" type="tel" value="@Model.PhoneNumber" placeholder="012xxxxxxx" class="disabled-input" disabled>
+            </div>
+        </div>
+        <div class="row account-info-content justify-content-center" style="margin:0; padding: 0;">
+            <div class="col-5" style="margin:0; padding: 0;">
+                <div class="line-seperate mt-2"></div>
+            </div>
+        </div>
+        <div class="row account-info-content justify-content-center" style="margin:0; padding: 0; margin-bottom: 0.6rem;">
+            <div id="delete-account-box" class="account-info-item" style="margin:0;">
+                <div class="d-flex">
+                    <div class="delete-content">
+                        <h3 class="delete-content-title">Delete Acount</h3>
+                    </div>
+                    <div class="delete-content delete-content-action">
+                        <button id="delete-account-btn">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row account-info-content justify-content-center" style="margin:0; padding: 0; margin-bottom: 2rem;">
+            <div id="saving-box" class="account-info-item" style="margin:0; padding: 0;">
+                <div class="saving-tag">
+                    <button id="saving-btn" class="disabled-btn" disabled>Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="file" id="fileInput" style="display: none;" accept="image/*">
+}
+
+
+<script>
+    var chooseImageButton = document.getElementById('edit-avt-btn');
+    var fileInput = document.getElementById('fileInput');
+    var previewImage = document.getElementById('previewImage');
+
+    chooseImageButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function () {
+        if (fileInput.files.length > 0) {
+            var selectedFile = fileInput.files[0];
+            console.log('Selected File:', selectedFile);
+
+            // ...
+            displayImage(selectedFile);
+        }
+    });
+    function displayImage(file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            previewImage.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    function getInputTagOfEditBtn(element, selector = '.account-info-item') {
+        while (element.parentElement) {
+            if (element.parentElement.matches(selector)) {
+                return element.parentElement.querySelector('input');
+            }
+            element = element.parentElement;
+        }
+    }
+    const editInfoBtns = document.querySelectorAll('.account-info-edit-btn');
+    editInfoBtns.forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            const targetInput = getInputTagOfEditBtn(button);
+            if (this.matches('.account-info-edit-btn-selected')) {
+                this.classList.remove('account-info-edit-btn-selected');
+                targetInput.setAttribute("disabled", "disabled");
+                targetInput.classList.add('disabled-input');
+            }
+            else {
+                this.classList.add('account-info-edit-btn-selected');
+                targetInput.removeAttribute("disabled");
+                targetInput.classList.remove('disabled-input');
+            }
+        });
+    });
+</script>

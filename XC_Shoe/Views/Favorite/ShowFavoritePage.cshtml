@@ -1,0 +1,118 @@
+﻿@model IEnumerable<XC_Shoe.Models.Favorite>
+@{
+    ViewBag.Title = "Show Favorite Page";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+}
+
+<div class="row justify-content-center">
+    <div class="favorite-content row justify-content-center">
+        <div class="favorite-content-title row">
+            <h2>Favorites</h2>
+        </div>
+        <div class="favorite-list row gx-5">
+            @foreach (var item in Model)
+            {
+                <div class="favorite-item col-lg-4 position-relative mt-4">
+                    <div class="card">
+                        <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName})">
+                            @{
+                                string resourcesPath = "~/Resources/Shoes/";
+                                string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", @item.ImageUrl);
+                                resourcesPath = Path.Combine(resourcesPath, @item.ImageUrl);
+
+                                string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
+
+                                string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                                string fileNameOnly = Path.GetFileName(imagePath);
+                                resourcesPath = Path.Combine(resourcesPath, fileNameOnly);
+                            }
+                            <img class="card-img-top img-fluid" alt="Men" src="@Url.Content(resourcesPath)">
+                        </a>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName})">
+                                        <h2 class="card-title">@item.NameShoes</h2>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName})" class="btn categories-shoes-btn shoes-price">@item.Price <span class="unit-money">VND</span></a>
+                                </div>
+                            </div>
+                            <p class="card-text type-shoes">@item.StyleType's @item.TypeName Shoes</p>
+                            <p class="card-text number-colour">@item.Number_Colour Colour</p>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn details-btn" href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName})">Go to product details</a>
+                            <a class="btn unfavorite-action" href="@Url.Action("DeleteShoesInFavorite", "Favorite", new {favoriteID = item.favoriteID, shoesID = item.ShoesID, colourName = item.ColorName,Styletype = item.StyleType})"><i class="fa-solid fa-heart"></i></a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="recommended-purchase row justify-content-center">
+        <div class="recommended-purchase-title row">
+            <h2>You Might Also Like</h2>
+        </div>
+        <div class="recommended-purchase-list row gx-5">
+            <div class="recommended-purchase-item col-lg-4 position-relative mt-4">
+                <div class="card">
+                    <a href="#">
+                        <img class="card-img-top img-fluid" alt="Men"
+                             src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
+                    </a>
+                    <div class="card-body">
+                        <a href="#">
+                            <h2 class="card-title">Basketball</h2>
+                        </a>
+                        <p class="card-text type-shoes">Sport shoes</p>
+                        <p class="card-text number-colour">1 Colour</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn categories-shoes-btn shoes-price">3,200,00</a>
+                    </div>
+                </div>
+            </div>
+            <div class="recommended-purchase-item col-lg-4 position-relative mt-4">
+                <div class="card">
+                    <a href="#">
+                        <img class="card-img-top img-fluid" alt="Men"
+                             src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
+                    </a>
+                    <div class="card-body">
+                        <a href="#">
+                            <h2 class="card-title">Basketball</h2>
+                        </a>
+                        <p class="card-text type-shoes">Sport shoes</p>
+                        <p class="card-text number-colour">1 Colour</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn categories-shoes-btn shoes-price">3,200,00</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommended-purchase-item col-lg-4 position-relative mt-4">
+                <div class="card">
+                    <a href="#">
+                        <img class="card-img-top img-fluid" alt="Men"
+                             src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
+                    </a>
+                    <div class="card-body">
+                        <a href="#">
+                            <h2 class="card-title">Basketball</h2>
+                        </a>
+                        <p class="card-text type-shoes">Sport shoes</p>
+                        <p class="card-text number-colour">1 Colour</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn categories-shoes-btn shoes-price">3,200,00</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

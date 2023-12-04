@@ -1,0 +1,17 @@
+﻿@model IEnumerable<XC_Shoe.Models.Icons>
+<ul class="list-group list-group-flush text-left">
+    @foreach (var item in Model)
+    {
+        <li class="list-group-item">
+            <input type="checkbox" value="@item.NameIcon" />
+            <label>@item.NameIcon</label>
+        </li>
+    }
+    <li class="list-group-item">
+        <a href="#" style="text-transform:uppercase; text-decoration:none;"> </a>
+    </li>
+
+</ul>
+
+
+
