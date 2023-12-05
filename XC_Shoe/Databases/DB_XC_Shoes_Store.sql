@@ -150,7 +150,7 @@ CREATE TABLE Order_Detail(
 	StyleType NVARCHAR(20),
 	ColourID INT,
 	Price DECIMAL(10, 2),
-	CONSTRAINT PK_Orders_Detail PRIMARY KEY (OrderID,ShoesID, ColourID, Size),
+	CONSTRAINT PK_Orders_Detail PRIMARY KEY (OrderID, ShoesID, ColourID, Size),
 	CONSTRAINT FK_Order_Detai_OrderID FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
 	CONSTRAINT FK_Order_Detai_ShoesID FOREIGN KEY (ShoesID) REFERENCES Shoes(ShoesID),
 );

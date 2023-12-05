@@ -34,7 +34,7 @@ namespace XC_Shoe.Controllers
             List<Shoe> ListShoes = connectShoes.GetRepresentData(gender);
             return View(ListShoes);
         }
-        public ActionResult ShowShoesDetail(string shoesID, String colourName)
+        public ActionResult ShowShoesDetail(string shoesID, string colourName)
         {
             ConnectShoes connectShoes = new ConnectShoes();
             ConnectSize connectSize = new ConnectSize();
@@ -47,7 +47,7 @@ namespace XC_Shoe.Controllers
             return View(shoes);
         }
         
-        public ActionResult UserProfile(String Email = "hoang2011@gmail.com")
+        public ActionResult UserProfile(string Email = "hoang2011@gmail.com")
         {
             ConnectUsers connectUser = new ConnectUsers();
             User User = connectUser.getUserData(Email);
