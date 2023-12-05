@@ -1,58 +1,70 @@
 ﻿@model XC_Shoe.Models.Shoe
+@using System.Web.Script.Serialization
 @{
     ViewBag.Title = "Show Shoes Detail";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
     string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
 }
 
+<style>
+    .radio-shoes-box {
+        border: 1px solid rgba(0,0,0,.125);
+        border-radius: 2px;
+    }
+
+        .radio-shoes-box:hover {
+            border: 1px solid black !important;
+            cursor: pointer;
+        }
+
+    .selected {
+        border: 1px solid black !important;
+    }
+</style>
+
 <div class="row justify-content-center">
     <div class="shoes-detail-box row justify-content-center">
         <div class="main-detail row gx-5">
             <div class="col-lg-8 position-relative mt-4">
                 <div class="detail-img-box row">
+                    @{
+                        string resourcesPath = "~/Resources/Shoes/";
+                        string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", @Html.DisplayFor(model => model.Url).ToString());
+                        resourcesPath = Path.Combine(resourcesPath, @Html.DisplayFor(model => model.Url).ToString());
+
+                        string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
+
+                        string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                        string[] images = Directory.GetFiles(directoryPath, "*.jpg")
+                                 .Union(Directory.GetFiles(directoryPath, "*.png"))
+                                 .ToArray();
+                        string fileNameOnly = Path.GetFileName(imagePath);
+                        string avt_img = Path.Combine(resourcesPath, fileNameOnly);
+                    }
                     <div class="sub-img-detail col col-sm-2">
                         <div class="sub-content-img">
-                            <ul class="list-unstyled d-flex flex-wrap image-list">
+                            <ul class="list-unstyled d-flex flex-wrap sub-image-list-item">
                                 <li class="image-item">
-                                    <img src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/f8dfa191-60b3-44c1-b730-b25e0a908c35/air-force-1-07-flyease-shoes-LKXPhZ.png"
+                                    <img src="@Url.Content(avt_img)"
                                          alt="">
                                 </li>
-                                <li class="image-item">
-                                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/145d4145-6224-468f-9d2e-296ca821709d/air-force-1-07-flyease-shoes-LKXPhZ.png"
-                                         alt="">
-                                </li>
-                                <li class="image-item">
-                                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/192e92e5-474f-4092-902b-70ec0d0e379f/air-force-1-07-flyease-shoes-LKXPhZ.png"
-                                         alt="">
-                                </li>
-                                <li class="image-item">
-                                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/0030f99e-f45d-4042-b3e1-669952e3c24e/air-force-1-07-flyease-shoes-LKXPhZ.png"
-                                         alt="">
-                                </li>
-                                <li class="image-item">
-                                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/70bf202c-aad4-447b-948f-c7c2863459b3/air-force-1-07-flyease-shoes-LKXPhZ.png"
-                                         alt="">
-                                </li>
-                                <li class="image-item">
-                                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/15aaeb16-9a06-4d08-a978-91820283c097/air-force-1-07-flyease-shoes-LKXPhZ.png"
-                                         alt="">
-                                </li>
+                                @foreach (var item in images)
+                                {
+                                    string fileName = Path.GetFileName(item);
+                                    string img_itemPath = Path.Combine(resourcesPath, fileName);
+                                    if (!img_itemPath.Contains(avt_img))
+                                    {
+                                        <li class="image-item">
+                                            <img src="@Url.Content(img_itemPath)"
+                                                 alt="">
+                                        </li>
+                                    }
+                                }
                             </ul>
                         </div>
                     </div>
                     <div class="main-img-detail col col-sm-10">
-                        @{
-                            string resourcesPath = "~/Resources/Shoes/";
-                            string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", @Html.DisplayFor(model => model.Url).ToString());
-                            resourcesPath = Path.Combine(resourcesPath, @Html.DisplayFor(model => model.Url).ToString());
-
-                            string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
-
-                            string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
-                            string fileNameOnly = Path.GetFileName(imagePath);
-                            resourcesPath = Path.Combine(resourcesPath, fileNameOnly);
-                        }
-                        <img class="card-img-top img-fluid" alt="Men" src="@Url.Content(resourcesPath)">
+                        <img class="card-img-top img-fluid" alt="Men" src="@Url.Content(avt_img)">
 
                     </div>
                 </div>
@@ -83,95 +95,105 @@
                     <div class="shoes-Colour-Shoes-box">
                         <div class="form-group select-size">
                             <div class="select-group grid-layout-3col">
+                                <div class="radio-shoes-box selected">
+                                    <div class="css-b8rwz8 tooltip-component-container">
+                                        <a class="radio-shoes" data-radio-shoe-url="@Html.DisplayFor(model => model.Url).ToString()">
+                                            <img class="card-img-top img-fluid w-60" alt="Men" src="@Url.Content(avt_img)">
+                                        </a>
+                                    </div>
+                                </div>
+
                                 @foreach (var item in ViewBag.ShoesColor)
                                 {
-                                    <div class="radio-size">
-                                        <div class="css-b8rwz8 tooltip-component-container">
-                                            @{
-                                                string resourcesPath1 = "~/Resources/Shoes/";
-                                                string directoryPath1 = Path.Combine(projectDirectory, "Resources", "Shoes", item.Url);
-                                                resourcesPath1 = Path.Combine(resourcesPath1, item.Url);
+                                    string resourcesPath1 = "~/Resources/Shoes/";
+                                    string directoryPath1 = Path.Combine(projectDirectory, "Resources", "Shoes", item.Url);
+                                    resourcesPath1 = Path.Combine(resourcesPath1, item.Url);
 
-                                                string[] imageFiles1 = Directory.GetFiles(directoryPath1, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath1, "*-AVT.png")).ToArray();
+                                    string[] imageFiles1 = Directory.GetFiles(directoryPath1, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath1, "*-AVT.png")).ToArray();
 
-                                                string imagePath1 = imageFiles1.Length > 0 ? Path.Combine(directoryPath1, Path.GetFileName(imageFiles1[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
-                                                string fileNameOnly1 = Path.GetFileName(imagePath1);
-                                                resourcesPath1 = Path.Combine(resourcesPath1, fileNameOnly1);
-                                            }
-                                            <label for="radio-size" >
-                                                    <img class="radio-size card-img-top img-fluid w-60" alt="Men" src="@Url.Content(resourcesPath1)">
-                                            </label>
+                                    string imagePath1 = imageFiles1.Length > 0 ? Path.Combine(directoryPath1, Path.GetFileName(imageFiles1[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                                    string fileNameOnly1 = Path.GetFileName(imagePath1);
+                                    resourcesPath1 = Path.Combine(resourcesPath1, fileNameOnly1);
+
+                                    if (!resourcesPath1.Contains(avt_img))
+                                    {
+                                        <div class="radio-shoes-box">
+                                            <div class="css-b8rwz8 tooltip-component-container">
+                                                <div class="radio-shoes" data-radio-shoe-url="@item.Url">
+                                                    <img class="card-img-top img-fluid w-60" alt="Men" src="@Url.Content(resourcesPath1)">
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
                                 }
                             </div>
                         </div>
                     </div>
-                            <div class="shoes-size-box">
-                                <div class="form-group select-size">
-                                    <label class="form-heading">Select Size</label>
-                                    <div class="select-group grid-layout-3col">
-                                        @foreach (var item in ViewBag.size)
-                                        {
-                                            <input class="radio-size" type="button" id="size-@item.SizeName" value="@item.SizeName">
+                    <div class="shoes-size-box">
+                        <div class="form-group select-size">
+                            <label class="form-heading">Select Size</label>
+                            <div class="select-group grid-layout-3col" id="radio-size-select-box">
+                                @foreach (var item in ViewBag.size)
+                                {
+                                    <input class="radio-size" type="button" id="size-@item.SizeName" value="@item.SizeName">
 
-                                        }
-                                        <span class="form-message" style="clear: both;"></span>
+                                }
+                                <span class="form-message" style="clear: both;"></span>
 
-                                    </div>
-                                </div>
                             </div>
-                            <div class="action-box">
-                                <a class="btn" id="add-bag-btn">
-                                    Add to cart <i class="fa-solid fa-cart-shopping"></i>
-                                </a>
-                                <a class="btn" id="unfavorite-btn" href="@Url.Action("AddToFavorite", "Favorite", new {userID = ViewBag.UserID ,Shoesid = @Html.DisplayFor(model => model.ShoesID),colourName = @Html.DisplayFor(model => model.NameColor),styletype = @Html.DisplayFor(model => model.StyleType)})">
-                                    Favourite <i class="fa-regular fa-heart"></i>
-                                </a>
-                            </div>
-                            <div class="review-box">
-                                <a class="review-show" data-bs-toggle="collapse" href="#load-reviews" role="button" aria-expanded="false" aria-controls="load-reviews">
-                                    <div class="review-box-title">Reviews</div>
-                                    <div class="dropdown-icon"><i class="fa-solid fa-chevron-down"></i></div>
-                                    <div class="review-box-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        </div>
+                    </div>
+                    <div class="action-box">
+                        <a class="btn" id="add-bag-btn">
+                            Add to cart <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                        <a class="btn" id="unfavorite-btn" href="@Url.Action("AddToFavorite", "Favorite", new { userID = ViewBag.UserID, Shoesid = @Html.DisplayFor(model => model.ShoesID), colourName = @Html.DisplayFor(model => model.NameColor), styletype = @Html.DisplayFor(model => model.StyleType) })">
+                            Favourite <i class="fa-regular fa-heart"></i>
+                        </a>
+                    </div>
+                    <div class="review-box">
+                        <a class="review-show" data-bs-toggle="collapse" href="#load-reviews" role="button" aria-expanded="false" aria-controls="load-reviews">
+                            <div class="review-box-title">Reviews</div>
+                            <div class="dropdown-icon"><i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="review-box-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
 
-                                </a>
-                                <div class="collapse" id="load-reviews">
-                                    <div class="card card-body">
-                                        <div class="total-rating-star-box"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> <span class="total-star-rating">4.8 Stars</span></div>
-                                        <div class="reviews">
-                                            <ul>
-                                                <li class="review-item">
-                                                    <div class="star-rating">
-                                                        <span class="number-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
-                                                        <span class="user-name">Takagi</span>
-                                                        <span class="rating-date">12 Oct 2023</span>
-                                                    </div>
-                                                    <div class="rating-describe">Honestly the most iconic shoe ever. So classy and can wear with literally everything. Really comfortable for the price as well. Love everything abt it.</div>
-                                                </li>
-                                                <li class="review-item">
-                                                    <div class="star-rating">
-                                                        <span class="number-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
-                                                        <span class="user-name">Takagi</span>
-                                                        <span class="rating-date">12 Oct 2023</span>
-                                                    </div>
-                                                    <div class="rating-describe">Honestly the most iconic shoe ever. So classy and can wear with literally everything. Really comfortable for the price as well. Love everything abt it.</div>
-                                                </li>
-                                                <li class="review-item">
-                                                    <div class="star-rating">
-                                                        <span class="number-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
-                                                        <span class="user-name">Takagi</span>
-                                                        <span class="rating-date">12 Oct 2023</span>
-                                                    </div>
-                                                    <div class="rating-describe">Honestly the most iconic shoe ever. So classy and can wear with literally everything. Really comfortable for the price as well. Love everything abt it.</div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                        </a>
+                        <div class="collapse" id="load-reviews">
+                            <div class="card card-body">
+                                <div class="total-rating-star-box"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> <span class="total-star-rating">4.8 Stars</span></div>
+                                <div class="reviews">
+                                    <ul>
+                                        <li class="review-item">
+                                            <div class="star-rating">
+                                                <span class="number-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+                                                <span class="user-name">Takagi</span>
+                                                <span class="rating-date">12 Oct 2023</span>
+                                            </div>
+                                            <div class="rating-describe">Honestly the most iconic shoe ever. So classy and can wear with literally everything. Really comfortable for the price as well. Love everything abt it.</div>
+                                        </li>
+                                        <li class="review-item">
+                                            <div class="star-rating">
+                                                <span class="number-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+                                                <span class="user-name">Takagi</span>
+                                                <span class="rating-date">12 Oct 2023</span>
+                                            </div>
+                                            <div class="rating-describe">Honestly the most iconic shoe ever. So classy and can wear with literally everything. Really comfortable for the price as well. Love everything abt it.</div>
+                                        </li>
+                                        <li class="review-item">
+                                            <div class="star-rating">
+                                                <span class="number-star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+                                                <span class="user-name">Takagi</span>
+                                                <span class="rating-date">12 Oct 2023</span>
+                                            </div>
+                                            <div class="rating-describe">Honestly the most iconic shoe ever. So classy and can wear with literally everything. Really comfortable for the price as well. Love everything abt it.</div>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="recommended-purchase row justify-content-center">
@@ -238,32 +260,95 @@
 </div>
 
 <script>
-    const radios = document.querySelectorAll('.radio-size');
-    radios.forEach(radio => {
-        radio.addEventListener('click', () => {
-            radios.forEach(radio => radio.classList.remove('btn-checked'));
-            radio.classList.add('btn-checked');
+    function HoverAction() {
+        const radios = document.querySelectorAll('.radio-size');
+        radios.forEach(radio => {
+            radio.addEventListener('click', () => {
+                radios.forEach(radio => radio.classList.remove('btn-checked'));
+                radio.classList.add('btn-checked');
 
-            const selectGroup = radio.parentElement.parentElement;
-            selectGroup.style.color = "black";
-            selectGroup.querySelector('.select-group').classList.remove('unselected');
-            selectGroup.querySelector('.form-message').textContent = "";
-            // console.log(radio);
+                const selectGroup = radio.parentElement.parentElement;
+                selectGroup.style.color = "black";
+                selectGroup.querySelector('.select-group').classList.remove('unselected');
+                selectGroup.querySelector('.form-message').textContent = "";
+                // console.log(radio);
+            });
         });
-    });
 
-    //sub-content-img-item
-    const subContentImgItemSelector = document.querySelectorAll('.image-item');
-    const mainContentImgItemSelector = document.querySelector('.main-img-detail');
-    subContentImgItemSelector.forEach(subElementTarget => {
-        subElementTarget.addEventListener('mouseenter', () => {
-            mainContentImgItemSelector.querySelector('img').src = subElementTarget.querySelector('img').src;
+        //sub-content-img-item
+        const subContentImgItemSelector = document.querySelectorAll('.image-item');
+        const mainContentImgItemSelector = document.querySelector('.main-img-detail');
+        subContentImgItemSelector.forEach(subElementTarget => {
+            subElementTarget.addEventListener('mouseenter', () => {
+                mainContentImgItemSelector.querySelector('img').src = subElementTarget.querySelector('img').src;
+            });
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".radio-shoes").click(function () {
+            $(".radio-shoes-box").removeClass("selected");
+
+            $(this).closest(".radio-shoes-box").addClass("selected");
+
+            var folderName = $(this).data("radio-shoe-url");
+            $.ajax({
+                url: "/User/GetImages",
+                method: 'POST',
+                data: { url: folderName },
+                success: function (result) {
+                    var avtImg = result.avtImg;
+                    var imagesFile = result.imagesFile;
+
+                    const mainContentImgItemSelector = document.querySelector('.main-img-detail');
+                    mainContentImgItemSelector.querySelector('img').src = avtImg;
+
+                    const subImageListItem = document.querySelector('.sub-image-list-item');
+                    while (subImageListItem.firstChild) {
+                        subImageListItem.removeChild(subImageListItem.firstChild);
+                    }
+
+                    var liEle = document.createElement("li");
+                    liEle.classList.add('image-item')
+                    var imgEle = document.createElement("img");
+
+                    imgEle.src = avtImg;
+                    imgEle.alt = "Images";
+
+                    liEle.appendChild(imgEle);
+
+                    subImageListItem.appendChild(liEle);
+
+                    for (var imagePath of imagesFile) {
+                        if (imagePath != avtImg) {
+                            var liElement = document.createElement("li");
+                            liElement.classList.add('image-item')
+                            var imgElement = document.createElement("img");
+
+                            imgElement.src = imagePath;
+                            imgElement.alt = "Images";
+
+                            liElement.appendChild(imgElement);
+                            subImageListItem.appendChild(liElement);
+                        }
+                    }
+
+                    console.log(avtImg);
+                    console.log(imagesFile);
+                    HoverAction()
+                },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+            });
         });
     });
 </script>
 
 <script>
-    function updateCSS() {
+    function updateCSSInThisPage() {
         const mainImage = document.querySelector(".main-img-detail");
         if (window.innerWidth < 1024) {
             const containerWidth = mainImage.offsetWidth;
@@ -275,7 +360,7 @@
             mainImage.getElementsByTagName("img")[0].style.width = "500px";
         }
     }
-    window.addEventListener('load', updateCSS);
-    window.addEventListener('resize', updateCSS);
-
+    window.addEventListener('load', updateCSSInThisPage);
+    window.addEventListener('resize', updateCSSInThisPage);
+    HoverAction();
 </script>

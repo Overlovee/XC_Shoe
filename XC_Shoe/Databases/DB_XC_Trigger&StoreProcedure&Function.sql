@@ -150,7 +150,38 @@ BEGIN
 	VALUES(@ShoesID,@Name,@Image)
 END
 GO
-
+CREATE PROCEDURE AddFavorite
+	@UserID VARCHAR(10),
+	@ShoesID VARCHAR(10),
+	@ColourName NVARCHAR(255),
+    @StyleType NVARCHAR(20)
+AS
+BEGIN
+    DECLARE @FavoriteID INT,@ColourID INT;
+    SET @FavoriteID =(SELECT f.FavoriteID FROM Favorites F WHERE f.UserID = @UserID )
+	SET @ColourID =(SELECT c.ColourID FROM Colours c WHERE c.Name = @ColourName )
+	INSERT INTO Favorite_Detaill (FavoriteID, ShoesID, ColourID, StyleType)
+	VALUES 
+		(@FavoriteID,@ShoesID,@ColourID,@StyleType);
+END
+GO
+--EXEC dbo.AddFavorite 'US3','AM1','White Blue','Men'
+GO
+CREATE PROCEDURE DeletoShoesInFavorite
+	@FavoriteID int,
+	@ShoesID VARCHAR(10),
+	@ColourName NVARCHAR(255),
+    @StyleType NVARCHAR(20)
+AS
+BEGIN
+    DECLARE @ColourID INT;
+	SET @ColourID =(SELECT c.ColourID FROM Colours c WHERE c.Name = @ColourName )
+	DELETE FROM Favorite_Detaill
+	WHERE FavoriteID = @FavoriteID AND ShoesID = @ShoesID AND ColourID = @ColourID AND StyleType = @StyleType;
+END
+GO
+--EXEC dbo.DeletoShoesInFavorite 1,'AM1','White Blue','Men'
+--Function
 CREATE FUNCTION GetBeforeMailString(@EMAIL NVARCHAR(155))
 RETURNS NVARCHAR(100)
 AS 
@@ -162,3 +193,201 @@ BEGIN
 END
 GO
 --EXEC dbo.AddNewShoes 'SP',5,N'Nike Spoting 28',6200000,N'Nam','Sport.jpg'
+CREATE FUNCTION COUNT_Colour(@shoesID VARCHAR(10))
+RETURNS INT
+AS
+BEGIN 
+	DECLARE @Number_colour INT;
+	SET @Number_colour = (SELECT COUNT(ColourID) AS Number_Colour
+						FROM Colour_Detail
+						GROUP BY ShoesID
+						HAVING ShoesID = @shoesID);
+	RETURN @Number_colour
+END
+GO
+--
+CREATE FUNCTION GetFavorite(@UserID VARCHAR(10))
+RETURNS TABLE
+AS
+RETURN
+	( SELECT S.ShoesID,SD.TypeShoesID,SD.Name as 'ShoeName',S.StyleType,TS.Name as'TypeName',dbo.COUNT_Colour(s.ShoesID) as 'Number_Colour',S.Price,Im.Url,c.Name
+	FROM Favorite_Detaill FD, Favorites F,Shoes S,Shoes_Details SD,Type_Shoes TS,Images Im,Colours c
+	WHERE F.FavoriteID = FD.FavoriteID AND FD.ShoesID = S.ShoesID AND S.ShoesID = SD.ShoesID AND SD.TypeShoesID = TS.TypeShoesID AND Im.ShoesID = FD.ShoesID AND FD.ColourID = Im.ColourID AND c.ColourID = FD.ColourID AND F.UserID = @UserID
+)
+GO
+--SELECT * FROM dbo.GetFavorite('US3')
+CREATE FUNCTION ShowDetailShoes(@ShoesID VARCHAR(10),@ColourName NVARCHAR(100))
+RETURNS @new_table TABLE (IconID VARCHAR(10),ShoesID VARCHAR(10),TypeShoesID INT,NameShoes NVARCHAR(255),StyleType NVARCHAR(255),NameTypeShoes NVARCHAR(20),NameColour NVARCHAR(255),NumberColour INT,Price DECIMAL(10, 2),Discount DECIMAL(5, 2),Url NVARCHAR(100))
+AS
+BEGIN
+		INSERT INTO @new_table
+		SELECT S.IconID, S.ShoesID,SD.TypeShoesID,SD.Name,S.StyleType,TS.Name,C.Name,dbo.COUNT_Colour(s.ShoesID) as 'Number_Colour',S.Price,S.Discount,Im.Url
+		FROM Shoes S,Shoes_Details SD,Type_Shoes TS,Colour_Detail CD,Images Im,Colours C
+		WHERE S.ShoesID = SD.ShoesID AND SD.TypeShoesID = TS.TypeShoesID AND S.ShoesID = CD.ShoesID AND Im.ShoesID = S.ShoesID AND C.ColourID = CD.ColourID AND Im.ColourID = C.ColourID
+		GROUP BY S.IconID, S.ShoesID,SD.TypeShoesID,SD.Name,S.StyleType,TS.Name,S.Price,S.Discount,Im.Url,C.Name
+		HAVING S.ShoesID = @ShoesID AND C.Name = @ColourName 
+    RETURN
+END
+GO
+--SELECT * FROM dbo.ShowDetailShoes('SP1','Black')
+GO
+CREATE FUNCTION ShowDetailShoesWithShoesID(@ShoesID VARCHAR(10))
+RETURNS @new_table TABLE (IconID VARCHAR(10),ShoesID VARCHAR(10),TypeShoesID INT,NameShoes NVARCHAR(255),StyleType NVARCHAR(255),NameTypeShoes NVARCHAR(20),NameColour NVARCHAR(255),NumberColour INT,Price DECIMAL(10, 2),Discount DECIMAL(5, 2),Url NVARCHAR(100))
+AS
+BEGIN
+		INSERT INTO @new_table
+		SELECT S.IconID, S.ShoesID,SD.TypeShoesID,SD.Name,S.StyleType,TS.Name,C.Name,dbo.COUNT_Colour(s.ShoesID) as 'Number_Colour',S.Price,S.Discount,Im.Url
+		FROM Shoes S,Shoes_Details SD,Type_Shoes TS,Colour_Detail CD,Images Im,Colours C
+		WHERE S.ShoesID = SD.ShoesID AND SD.TypeShoesID = TS.TypeShoesID AND S.ShoesID = CD.ShoesID AND Im.ShoesID = S.ShoesID AND C.ColourID = CD.ColourID AND Im.ColourID = C.ColourID
+		GROUP BY S.IconID, S.ShoesID,SD.TypeShoesID,SD.Name,S.StyleType,TS.Name,S.Price,S.Discount,Im.Url,C.Name
+		HAVING S.ShoesID = @ShoesID
+    RETURN
+END
+GO
+--SELECT * FROM dbo.ShowDetailShoesWithShoesID('SP1')
+
+-- Tạo hàm truy vấn láy đôi giày đại diện cho mỗi shoesid
+-- Tạo hàm truy vấn
+GO
+CREATE FUNCTION GetFirstShoeInfo(@StyleType NVARCHAR(50))
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT
+        IconID,
+        ShoesID,
+        TypeShoesID,
+        ShoesName,
+        StyleType,
+        TypeShoesName,
+        ColorName,
+        Number_Colour,
+        Price,
+        Discount,
+        Url
+    FROM
+    (
+        SELECT
+            S.IconID,
+            S.ShoesID,
+            SD.TypeShoesID,
+            SD.Name AS ShoesName,
+            S.StyleType,
+            TS.Name AS TypeShoesName,
+            C.Name AS ColorName,
+            dbo.COUNT_Colour(S.ShoesID) AS 'Number_Colour',
+            S.Price,
+            S.Discount,
+            Im.Url,
+            ROW_NUMBER() OVER (PARTITION BY S.ShoesID ORDER BY S.ShoesID) AS RowNum
+        FROM
+            Shoes S
+            INNER JOIN Shoes_Details SD ON S.ShoesID = SD.ShoesID
+            INNER JOIN Type_Shoes TS ON SD.TypeShoesID = TS.TypeShoesID
+            INNER JOIN Colour_Detail CD ON S.ShoesID = CD.ShoesID
+            INNER JOIN Images Im ON Im.ShoesID = S.ShoesID
+            INNER JOIN Colours C ON CD.ColourID = C.ColourID
+        WHERE
+            CD.ColourID = Im.ColourID AND S.StyleType = @StyleType
+        GROUP BY
+            S.IconID,
+            S.ShoesID,
+            SD.TypeShoesID,
+            SD.Name,
+            S.StyleType,
+            TS.Name,
+            C.Name,
+            S.Price,
+            S.Discount,
+            Im.Url
+    ) RankedShoes
+    WHERE RowNum = 1
+);
+GO
+--SELECT * FROM dbo.GetFirstShoeInfo('Men')
+GO
+---
+CREATE FUNCTION GetShoesByTypeShoes(@StyleType NVARCHAR(50),@TypeShoes INT)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT
+        IconID,
+        ShoesID,
+        TypeShoesID,
+        ShoesName,
+        StyleType,
+        TypeShoesName,
+        ColorName,
+        Number_Colour,
+        Price,
+        Discount,
+        Url
+    FROM
+    (
+        SELECT
+            S.IconID,
+            S.ShoesID,
+            SD.TypeShoesID,
+            SD.Name AS ShoesName,
+            S.StyleType,
+            TS.Name AS TypeShoesName,
+            C.Name AS ColorName,
+            dbo.COUNT_Colour(S.ShoesID) AS 'Number_Colour',
+            S.Price,
+            S.Discount,
+            Im.Url,
+            ROW_NUMBER() OVER (PARTITION BY S.ShoesID ORDER BY S.ShoesID) AS RowNum
+        FROM
+            Shoes S
+            INNER JOIN Shoes_Details SD ON S.ShoesID = SD.ShoesID
+            INNER JOIN Type_Shoes TS ON SD.TypeShoesID = TS.TypeShoesID
+            INNER JOIN Colour_Detail CD ON S.ShoesID = CD.ShoesID
+            INNER JOIN Images Im ON Im.ShoesID = S.ShoesID
+            INNER JOIN Colours C ON CD.ColourID = C.ColourID
+        WHERE
+            CD.ColourID = Im.ColourID AND S.StyleType = @StyleType AND SD.TypeShoesID = @TypeShoes
+        GROUP BY
+            S.IconID,
+            S.ShoesID,
+            SD.TypeShoesID,
+            SD.Name,
+            S.StyleType,
+            TS.Name,
+            C.Name,
+            S.Price,
+            S.Discount,
+            Im.Url
+    ) RankedShoes
+    WHERE RowNum = 1
+);
+GO
+
+
+--SELECT * FROM dbo.GetShoesByTypeShoes('men',6);
+GO
+CREATE FUNCTION GetFavorite(@UserID VARCHAR(10))
+RETURNS TABLE
+AS
+RETURN
+	( SELECT S.ShoesID,SD.TypeShoesID,SD.Name as 'ShoeName',S.StyleType,TS.Name as'TypeName',dbo.COUNT_Colour(s.ShoesID) as 'Number_Colour',S.Price,Im.Url,c.Name,F.FavoriteID
+	FROM Favorite_Detaill FD, Favorites F,Shoes S,Shoes_Details SD,Type_Shoes TS,Images Im,Colours c
+	WHERE F.FavoriteID = FD.FavoriteID AND FD.ShoesID = S.ShoesID AND S.ShoesID = SD.ShoesID AND SD.TypeShoesID = TS.TypeShoesID AND Im.ShoesID = FD.ShoesID AND FD.ColourID = Im.ColourID AND c.ColourID = FD.ColourID AND F.UserID = @UserID
+)
+GO
+--SELECT * FROM dbo.GetFavorite('US3')
+GO
+--
+CREATE FUNCTION GetBag(@UserID VARCHAR(10))
+RETURNS TABLE
+AS
+RETURN
+	(Select  cd.ShoesID,shd.Name as 'ShoesName',s.StyleType,ts.Name as 'TypeName',c.Name as 'ColorName',cd.Size,cd.Quantity,cd.Price,cd.BuyingSelection_Status,im.Url
+	from Cart_Detail cd, Shopping_Cart sc, Shoes_Details shd,Type_Shoes TS,Colours C,Shoes s,Images Im
+	Where cd.CartID = sc.CartID AND shd.ShoesID = cd.ShoesID AND TS.TypeShoesID = shd.TypeShoesID AND C.ColourID = CD.ColourID AND s.ShoesID = cd.ShoesID AND Im.ShoesID = s.ShoesID AND Im.ColourID = c.ColourID
+	AND sc.UserID = @UserID
+)
+GO
+--SELECT *FROM dbo.GetBag('US3')

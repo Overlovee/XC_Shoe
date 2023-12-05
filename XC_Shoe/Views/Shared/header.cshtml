@@ -1,4 +1,20 @@
-﻿<header>
+﻿@using System.Text
+@{
+    string userID = "";
+    string userName = "";
+    string Email = "";
+    string Account_Img = "";
+    var myCookie = HttpContext.Current.Request.Cookies["UserLogin"];
+
+    if (myCookie != null)
+    {
+        userID = myCookie["UserID"].ToString();
+        userName = HttpUtility.UrlDecode(myCookie["UserName"], Encoding.UTF8);
+        Email = myCookie["Email"].ToString();
+        Account_Img = myCookie["Account_Img"].ToString();
+    }
+}
+<header>
     <div class="top-header">
         <div id="right-top-header">
             <ul>
@@ -9,14 +25,14 @@
                     </a>
                 </li>
                 @{
-                    if (Session["Account"] != null)
+                    if (userName != "")
                     {
-                        <li> | &nbsp; Welcome, @Session["Account"] | &nbsp; </li>
+                        <li> | &nbsp; Welcome, @userName | &nbsp; </li>
                         <li>
                             <div id="header-avt-img">
                                 <a href="#" data-bs-toggle="offcanvas" data-bs-target="#account-display" aria-controls="account-display">
-                                    <img src="@Session["Account_Img"]"
-                                         alt="@Session["Account"]">
+                                    <img src="@Account_Img"
+                                         alt="@userName">
                                 </a>
                             </div>
                         </li>
@@ -31,16 +47,16 @@
             <div class="offcanvas offcanvas-end" tabindex="-1" id="account-display" aria-labelledby="offcanvasRightLabel">
                 <div class="offcanvas-header">
                     <button type="button" class="btn-inform text-reset"><i class="fa-regular fa-bell"></i></button>
-                    <h5 id="offcanvasRightLabel">@Session["Email"]</h5>
+                    <h5 id="offcanvasRightLabel">@Email</h5>
                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
                     <div class="modal-avt-img">
                         <a href="@Url.Action("MyAccount", "Admin")">
-                            <img src="@Session["Account_Img"]"
-                                 alt="@Session["Account"]">
+                            <img src="@Account_Img"
+                                 alt="@userName">
                         </a>
-                        <h3>@Session["Account"]</h3>
+                        <h3>@userName</h3>
                     </div>
                     <div class="modal-body-content d-flex flex-column">
                         <a href="@Url.Action("MyAccount", "Admin")">My Account</a>
@@ -219,16 +235,10 @@
             </div>
 
             <div id="action-btn" class="header-item" style="font-size: 2.2rem;">
-                <a href="@Url.Action("ShowFavoritePage", "Favorite")" id="favorite" style="float: left;">
+                <a href="@Url.Action("ShowFavoritePage", "Favorite", new {userID = userID })" id="favorite" style="float: left;">
                     <i class="fa-sharp fa-regular fa-heart"></i>
                 </a>
-                @{ 
-                    string user_id = "";
-                    if(Session["UserID"] != null) {
-                        user_id = Session["UserID"].ToString();
-                    }
-                }
-                <a href="@Url.Action("ShowBagPage", "Bag", new {userID = user_id })" id="bag-shopping" style="float: right;">
+                <a href="@Url.Action("ShowBagPage", "Bag", new {userID = userID })" id="bag-shopping" style="float: right;">
                     <i class="fa-sharp fa-solid fa-cart-shopping"></i>
                 </a>
             </div>

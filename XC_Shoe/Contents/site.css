@@ -66,7 +66,9 @@ body {
     margin: 0 48px;
     min-height: 40rem;
 }
-
+a:hover {
+    color: #ff006e;
+}
 /* Header */
 header {
     background-color: #ffffff;
@@ -433,7 +435,7 @@ figcaption h3 {
     margin-bottom: 2rem;
 }
 .product-list-box{
-    padding-left: 6rem;
+    padding-left: 2rem;
 }
 .shoes-price{
     text-align: left;
@@ -1715,6 +1717,22 @@ footer a:hover {
     #delivery-info {
         padding: 0;
     }
+}
+
+.add-bag-btn, .favorite-btn {
+    height: 100% !important;
+    padding: 0.4rem !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+}
+.add-bag-btn:hover i, .favorite-btn:hover i {
+    color: #ff006e;
+    cursor: pointer;
+}
+.add-bag-btn i, .favorite-btn i {
+    font-size: 2.6rem !important;
 }
 
 #header-avt-img {

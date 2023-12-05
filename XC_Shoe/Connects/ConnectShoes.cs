@@ -125,7 +125,7 @@ namespace XC_Shoe.Connects
             rdr.Close();
             return (list);
         }
-        public Shoe getShoesDetailData(String ShoesID,String ColourName)
+        public Shoe getShoesDetailData(string ShoesID, string ColourName)
         {
             string sql = "SELECT * FROM dbo.ShowDetailShoes('" + ShoesID +"',N'" + ColourName + "')";
             Shoe shoes = new Shoe();

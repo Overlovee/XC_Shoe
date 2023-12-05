@@ -11,6 +11,11 @@ namespace XC_Shoe.Controllers
     public class BagController : Controller
     {
         // GET: Bag
+        public string userID { get; set; }
+        public BagController()
+        {
+            userID = "";
+        }
         public ActionResult ShowBagPage(string userID = "")
         {
 
@@ -25,6 +30,17 @@ namespace XC_Shoe.Controllers
 
             }
             return View(List);
+        }
+
+        [HttpPost]
+        public ActionResult AddToBag(string shoesId = "", string colour = "")
+        {
+            if(userID != "")
+            {
+
+            }
+            // Trả về một JSON object để xử lý ở phía client
+            return Json(new { success = true, message = "Added " + shoesId + " Colour: " + colour +" to cart successfully" + " for "});
         }
     }
 }

@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using XC_Shoe.Models;
 using XC_Shoe.Connects;
+using System.Text;
 
 namespace XC_Shoe.Controllers
 {
@@ -43,28 +44,36 @@ namespace XC_Shoe.Controllers
                 var userProfile = await GoogleAuth.GetProfileResponseAsync(token.AccessToken.ToString());
                 var googleUser = JsonConvert.DeserializeObject<GoogleProfile>(userProfile);
 
-                Session["Account"] = googleUser.Name;
-                Session["Email"] = googleUser.Email;
-                Session["Account_Img"] = googleUser.Picture;
+                //Session["Account"] = googleUser.Name;
+                //Session["Email"] = googleUser.Email;
+                //Session["Account_Img"] = googleUser.Picture;
 
 
                 //Kiểm tra nếu Email dưới db
-                if(googleUser.Email != "")
+                if (googleUser.Email != "")
                 {
+                    HttpCookie cookie = new HttpCookie("UserLogin");
+                    string encodedName = HttpUtility.UrlEncode(googleUser.Name, Encoding.UTF8);
+                    cookie["UserName"] = encodedName;
+                    cookie["Email"] = googleUser.Email;
+                    cookie["Account_Img"] = googleUser.Picture;
+
                     //Session["UserID"] = id;
                     ConnectUsers connectUsers = new ConnectUsers();
                     User user = new User();
                     user = connectUsers.getUserData(googleUser.Email);
                     if (user != null)
                     {
-                        Session["UserID"] = user.UserID;
+                        cookie["UserID"] = user.UserID;
                     }
                     else
                     {
                         // Đệ gọi hàm đăng kí cho email này 
+                        cookie["UserID"] = "";
 
                     }
-
+                    cookie.Expires = DateTime.Now.AddDays(7);
+                    Response.Cookies.Add(cookie);
                     return RedirectToAction("ShowHomePage", "User");
                 }
 
@@ -101,7 +110,12 @@ namespace XC_Shoe.Controllers
 
         public ActionResult LogOut()
         {
+            HttpCookie cookie = new HttpCookie("UserLogin");
+            cookie.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Add(cookie);
+
             Session.Clear();
+            Session.Abandon();
 
             return RedirectToAction("ShowHomePage", "User");
         }
