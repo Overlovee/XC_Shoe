@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using GoogleAuthentication.Services;
+using Newtonsoft.Json;
 using XC_Shoe.Connects;
 using XC_Shoe.Models;
 
@@ -17,12 +20,15 @@ namespace XC_Shoe.Controllers
         //    return View();
         //}
         public User user { get; set; }
+        public UserController() {
+            
+        }
         public ActionResult ShowHomePage()
         {
             return View();
         }
 
-        public ActionResult ShoesPage(string gender)
+        public ActionResult ShoesPage(string gender = "Men", string search = "")
         {
             ConnectShoes connectShoes = new ConnectShoes();
             List<Shoe> ListShoes = connectShoes.GetRepresentData(gender);
@@ -40,20 +46,7 @@ namespace XC_Shoe.Controllers
             ViewBag.size = SizeList;
             return View(shoes);
         }
-        public ActionResult SignUp()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public ActionResult SignIn()
-        {
-            return View();
-        }
-        public ActionResult SignIn(string email, string password)
-        {
-            return View();
-        }
+        
         public ActionResult UserProfile(String Email = "hoang2011@gmail.com")
         {
             ConnectUsers connectUser = new ConnectUsers();

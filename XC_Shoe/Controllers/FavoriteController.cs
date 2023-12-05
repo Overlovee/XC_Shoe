@@ -11,10 +11,19 @@ namespace XC_Shoe.Controllers
     public class FavoriteController : Controller
     {
         // GET: Favorite
-        public ActionResult ShowFavoritePage(string userID = "US3")
+        public ActionResult ShowFavoritePage(string userID = "")
         {
-            ConnectFavorite conF = new ConnectFavorite();
-            List<Favorite> list = conF.getFavoriteData(userID);
+            List<Favorite> list = new List<Favorite>();
+            if (userID != "")
+            {
+                ConnectFavorite conF = new ConnectFavorite();
+                list = conF.getFavoriteData(userID);
+            }
+            else
+            {
+                //Tim kiem session => list
+            }
+            
             return View(list);
         }
         public ActionResult AddToFavorite(string userID, string Shoesid, string colourName, string styletype)

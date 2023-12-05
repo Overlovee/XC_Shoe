@@ -11,11 +11,20 @@ namespace XC_Shoe.Controllers
     public class BagController : Controller
     {
         // GET: Bag
-        public ActionResult ShowBagPage(string userID = "US3")
+        public ActionResult ShowBagPage(string userID = "")
         {
-            ConnectBag connectBag = new ConnectBag();
-            List<Bag> bagList = connectBag.getBagData(userID);
-            return View(bagList);
+
+            List<Bag> List = new List<Bag>();
+            if (userID != "")
+            {
+                ConnectBag connectBag = new ConnectBag();
+                List = connectBag.getBagData(userID);
+            }
+            else
+            {
+
+            }
+            return View(List);
         }
     }
 }

@@ -143,7 +143,6 @@ namespace XC_Shoe.Connects
                 shoes.Price = float.Parse(rdr.GetValue(8).ToString());
                 shoes.Discount = float.Parse(rdr.GetValue(9).ToString());
                 shoes.Url = rdr.GetValue(10).ToString();
-
             }
             rdr.Close();
             return (shoes);
