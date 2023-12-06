@@ -34,5 +34,21 @@ namespace XC_Shoe.Connects
             rdr.Close();
             return (listEmployee);
         }
+
+        public int AddtoBag(string userID, string ShoesID, string colourName, string Styletype, int size, int quantity)
+        {
+            int rs = 0;
+            string sql = "EXEC dbo.AddToBag'" + userID + "','" + ShoesID + "','" + colourName + "','" + Styletype + "'," + size + "," + quantity;
+            rs = db.ExcuteNonQuery(sql); ;
+
+            return (rs);
+        }
+        public int DeleteShoesInBag(string userID, string ShoesID, string colourName, string Styletype, int size)
+        {
+            int rs = 0;
+            string sql = "EXEC dbo.DeletoShoesInBag '" + userID + "','" + ShoesID + "','" + colourName + "','" + Styletype + "'," + size;
+            rs = db.ExcuteNonQuery(sql); ;
+            return (rs);
+        }
     }
 }

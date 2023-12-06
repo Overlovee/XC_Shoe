@@ -1,9 +1,28 @@
 ﻿@model XC_Shoe.Models.Shoe
 @using System.Web.Script.Serialization
+@using XC_Shoe.Connects;
+@using XC_Shoe.Models;
 @{
     ViewBag.Title = "Show Shoes Detail";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
     string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+
+    string userID = "";
+    var myCookie = HttpContext.Current.Request.Cookies["UserLogin"];
+    List<Favorite> favorites = new List<Favorite>();
+    if (myCookie != null)
+    {
+        userID = myCookie["UserID"].ToString();
+        ConnectFavorite connectFavorite = new ConnectFavorite();
+        favorites = connectFavorite.getFavoriteData(userID);
+    }
+    else
+    {
+        if (Session["FavoriteList"] != null)
+        {
+            favorites = (List<Favorite>)Session["FavoriteList"];
+        }
+    }
 }
 
 <style>
@@ -97,7 +116,11 @@
                             <div class="select-group grid-layout-3col">
                                 <div class="radio-shoes-box selected">
                                     <div class="css-b8rwz8 tooltip-component-container">
-                                        <a class="radio-shoes" data-radio-shoe-url="@Html.DisplayFor(model => model.Url).ToString()">
+                                        <a class="radio-shoes"
+                                           data-radio-shoe-url="@Html.DisplayFor(model => model.Url).ToString()"
+                                           data-radio-shoe-colourname="@Model.NameColor"
+                                           data-radio-shoe-id="@Model.ShoesID"
+                                           data-radio-shoe-styletype="@Model.StyleType">
                                             <img class="card-img-top img-fluid w-60" alt="Men" src="@Url.Content(avt_img)">
                                         </a>
                                     </div>
@@ -119,7 +142,11 @@
                                     {
                                         <div class="radio-shoes-box">
                                             <div class="css-b8rwz8 tooltip-component-container">
-                                                <div class="radio-shoes" data-radio-shoe-url="@item.Url">
+                                                <div class="radio-shoes"
+                                                     data-radio-shoe-url="@item.Url"
+                                                     data-radio-shoe-colourname="@item.NameColor"
+                                                     data-radio-shoe-id="@item.ShoesID"
+                                                     data-radio-shoe-styletype="@item.StyleType">
                                                     <img class="card-img-top img-fluid w-60" alt="Men" src="@Url.Content(resourcesPath1)">
                                                 </div>
                                             </div>
@@ -147,8 +174,18 @@
                         <a class="btn" id="add-bag-btn">
                             Add to cart <i class="fa-solid fa-cart-shopping"></i>
                         </a>
-                        <a class="btn" id="unfavorite-btn" href="@Url.Action("AddToFavorite", "Favorite", new { userID = ViewBag.UserID, Shoesid = @Html.DisplayFor(model => model.ShoesID), colourName = @Html.DisplayFor(model => model.NameColor), styletype = @Html.DisplayFor(model => model.StyleType) })">
-                            Favourite <i class="fa-regular fa-heart"></i>
+                        <a class="favorite-btn btn" id="unfavorite-btn" href="#">
+                            Favourite &nbsp;@{
+                                Favorite existingFavorite = favorites.FirstOrDefault(fav => fav.ShoesID == Model.ShoesID && fav.ColorName == Model.NameColor && fav.StyleType == Model.StyleType);
+                                if (existingFavorite == null)
+                                {
+                                    <i class="fa-regular fa-heart"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-heart"></i>
+                                }
+                            }
                         </a>
                     </div>
                     <div class="review-box">
@@ -257,7 +294,9 @@
             </div>
         </div>
     </div>
+    
 </div>
+
 
 <script>
     function HoverAction() {
@@ -270,7 +309,6 @@
                 const selectGroup = radio.parentElement.parentElement;
                 selectGroup.style.color = "black";
                 selectGroup.querySelector('.select-group').classList.remove('unselected');
-                selectGroup.querySelector('.form-message').textContent = "";
                 // console.log(radio);
             });
         });
@@ -294,13 +332,18 @@
             $(this).closest(".radio-shoes-box").addClass("selected");
 
             var folderName = $(this).data("radio-shoe-url");
+            var colourname = $(this).data("radio-shoe-colourname");
+            var shoesID = $(this).data("radio-shoe-id");
+            console.log(colourname);
+            console.log(shoesID);
             $.ajax({
                 url: "/User/GetImages",
                 method: 'POST',
-                data: { url: folderName },
+                data: { url: folderName, colourName: colourname, shoesID: shoesID },
                 success: function (result) {
                     var avtImg = result.avtImg;
                     var imagesFile = result.imagesFile;
+                    var listSize = result.sizes;
 
                     const mainContentImgItemSelector = document.querySelector('.main-img-detail');
                     mainContentImgItemSelector.querySelector('img').src = avtImg;
@@ -335,9 +378,26 @@
                         }
                     }
 
-                    console.log(avtImg);
-                    console.log(imagesFile);
-                    HoverAction()
+                    const radioSizeSelectBox = document.getElementById('radio-size-select-box');
+                    while (radioSizeSelectBox.firstChild) {
+                        radioSizeSelectBox.removeChild(radioSizeSelectBox.firstChild);
+                    }
+                    for (var size of listSize) {
+
+                        const inputElement = document.createElement('input');
+                        inputElement.classList.add('radio-size');
+                        inputElement.type = 'button';
+                        inputElement.id = 'size-' + size.toString();
+                        inputElement.value = size.toString();
+
+                        radioSizeSelectBox.appendChild(inputElement);
+                    }
+
+
+                    //console.log(avtImg);
+                    //console.log(imagesFile);
+                    //console.log(listSize);
+                    HoverAction();
                 },
                 error: function (error) {
                     console.log("Error:", error);
@@ -363,4 +423,87 @@
     window.addEventListener('load', updateCSSInThisPage);
     window.addEventListener('resize', updateCSSInThisPage);
     HoverAction();
+</script>
+
+<script>
+    function showAndAutoHideToast() {
+        $('#liveToast').removeClass('hide').addClass('show');
+
+        setTimeout(function () {
+            $('#liveToast').toast('hide');
+        }, 3000); 
+    }
+
+    $('#liveToast').on('hidden.bs.toast', function () {
+        $('#liveToast').removeClass('show').addClass('hide');
+    });
+
+    $('#liveToast .btn-close').click(function () {
+        $('#liveToast').toast('hide');
+    });
+
+    $(document).ready(function () {
+        var userID = "@userID";
+        $(".favorite-btn").click(function () {
+            var selectedRadioShoes = $(".radio-shoes-box.selected .radio-shoes");
+
+            if (selectedRadioShoes.length > 0) {
+                var colourName = selectedRadioShoes.first().data("radio-shoe-colourname");
+                var shoesId = selectedRadioShoes.first().data("radio-shoe-id");
+                var styleType = selectedRadioShoes.first().data("radio-shoe-styletype");
+                var iconElement = $(this).find("i");
+                $.ajax({
+                    type: "POST",
+                    url: "/Favorite/AddToFavorite",
+                    data: { userID: userID, shoesId: shoesId, colour: colourName, styleType: styleType },
+                    success: function (result) {
+                        if (result.success) {
+                            iconElement.removeClass("fa-regular").addClass("fa-solid");
+
+                        } else {
+                            iconElement.removeClass("fa-solid").addClass("fa-regular");
+                        }
+
+                    },
+                    error: function (error) {
+                        console.log("Error:", error);
+                    }
+                });
+            }
+        });
+
+        $("#add-bag-btn").click(function () {
+            var selectedRadioShoes = $(".radio-shoes-box.selected .radio-shoes");
+            var selectedSize = $(".radio-size.btn-checked");
+
+            if (selectedRadioShoes.length > 0) {
+                var colourName = selectedRadioShoes.first().data("radio-shoe-colourname");
+                var shoesId = selectedRadioShoes.first().data("radio-shoe-id");
+                var styleType = selectedRadioShoes.first().data("radio-shoe-styletype");
+
+                if (selectedSize.length != 0) {
+                    var shoeSize = parseInt(selectedSize.first().val(), 10);
+                    if (!isNaN(shoeSize)) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Bag/AddToBag",
+                            data: { userID: userID, shoesId: shoesId, colour: colourName, styleType: styleType, size: shoeSize},
+                            success: function (result) {
+                                if (result.success) {
+                                    showAndAutoHideToast();
+                                }
+                            },
+                            error: function (error) {
+                                console.log("Error:", error);
+                            }
+                        });
+                    }
+                } else {
+                    alert("Please choose size to add to cart!");
+                }
+                
+            }
+        });
+
+    });
 </script>

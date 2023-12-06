@@ -11,10 +11,10 @@ namespace XC_Shoe.Connects
     public class ConnectSize
     {
         DbContext db = new DbContext();
-        public List<Size> getSizeShoesData()
+        public List<Size> getSizeShoesData(string colourName, string shoesID)
         {
             List<Size> listEmployee = new List<Size>();
-            string sql = "SELECT * FROM Size";
+            string sql = "SELECT sizeID FROM size_Detail SD,Colours C WHERE C.ColourID = SD.ColourID AND  SD.shoesID = '" + shoesID + "' AND C.Name = '" + colourName + "'";
             SqlDataReader rdr = db.ExcuteQuery(sql);
             while (rdr.Read())
             {
@@ -22,6 +22,7 @@ namespace XC_Shoe.Connects
                 emp.SizeName = Convert.ToInt32(rdr.GetValue(0).ToString());
                 listEmployee.Add(emp);
             }
+            rdr.Close();
             return (listEmployee);
         }
     }

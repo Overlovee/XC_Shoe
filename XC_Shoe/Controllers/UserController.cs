@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using GoogleAuthentication.Services;
 using Newtonsoft.Json;
@@ -40,11 +41,49 @@ namespace XC_Shoe.Controllers
             ConnectShoes connectShoes = new ConnectShoes();
             ConnectSize connectSize = new ConnectSize();
             Shoe shoes = connectShoes.getShoesDetailData(shoesID, colourName);
-            List<Size> SizeList = connectSize.getSizeShoesData();
+            List<Size> SizeList = connectSize.getSizeShoesData(colourName, shoesID);
             List<Shoe> shoesList = connectShoes.getShoesByShoesIDData(shoesID);
             ViewBag.ShoesColor = shoesList;
             ViewBag.size = SizeList;
             return View(shoes);
+        }
+
+        public ActionResult GetInforToCheckOut(string userID = "")
+        {
+            if(userID != "")
+            {
+                ConnectUsers connectUser = new ConnectUsers();
+                List<UserShipment> userShipmentList = connectUser.getUserShipmentDetails(userID);
+                if (userShipmentList.Count > 0)
+                {
+                    return RedirectToAction("CheckOut", "User", new {userID = userID});
+                }
+                else
+                {
+                    return View();
+                }
+                
+            }
+            else
+            {
+                return View();
+            }
+        }
+        public ActionResult CheckOut(string userID = "")
+        {
+            if (userID != "")
+            {
+
+            }
+            else
+            {
+
+            }
+            ConnectUsers connectUser = new ConnectUsers();
+            User User = connectUser.getUserData(userID);
+            List<UserShipment> List = connectUser.getUserShipmentDetails(User.UserID);
+            ViewBag.UserShipment = List;
+            return View(User);
         }
         public ActionResult UserProfile(string Email = "hoang2011@gmail.com")
         {
@@ -55,7 +94,7 @@ namespace XC_Shoe.Controllers
             return View(User);
         }
         [HttpPost]
-        public ActionResult GetImages(string url)
+        public ActionResult GetImages(string url, string colourName, string shoesID)
         {
             string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~"); ;
             string resourcesPath = "/Resources/Shoes/";
@@ -72,14 +111,21 @@ namespace XC_Shoe.Controllers
             string avt_img = Path.Combine(resourcesPath, fileNameOnly);
 
             List<string> updatedImagePaths = new List<string>();
+            ConnectSize connectSize = new ConnectSize();
+            List<Size> SizeList = connectSize.getSizeShoesData(colourName, shoesID);
 
+            List<int> listSize = new List<int>();
+            foreach (Size size in SizeList)
+            {
+                listSize.Add(size.SizeName);
+            }
             foreach (string img in images)
             {
                 fileNameOnly = Path.GetFileName(img);
                 string updatedImagePath = Path.Combine(resourcesPath, fileNameOnly);
                 updatedImagePaths.Add(updatedImagePath);
             }
-            return Json(new { avtImg = avt_img, imagesFile = updatedImagePaths});
+            return Json(new { avtImg = avt_img, imagesFile = updatedImagePaths, sizes = listSize});
         }
     }
 }

@@ -47,20 +47,23 @@ namespace XC_Shoe.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddToFavorite(string userID, string shoesId = "", string colour = "", string styleType = "")
+        public ActionResult AddToFavorite(string userID = "", string shoesId = "", string colour = "", string styleType = "")
         {
             if (userID != "")
             {
                 ConnectFavorite connectFavorite = new ConnectFavorite();
-                int kt = connectFavorite.AddtoFavorite(userID, shoesId, colour, styleType);
-                if (kt != 0)
+                List<Favorite> favorites = connectFavorite.getFavoriteData(userID);
+                int kt = 0;
+                foreach (Favorite favorite in favorites)
                 {
-                    return Json(new { success = true, message = "Added to favorites successfully" });
+                    if (favorite.ShoesID == shoesId && favorite.ColorName == colour && favorite.StyleType == styleType)
+                    {
+                        kt = connectFavorite.DeleteShoesInFavorite(favorite.favoriteID, shoesId, colour, styleType);
+                        return Json(new { success = false, message = "Removed from favorites successfully" });
+                    }
                 }
-                else
-                {
-                    return Json(new { success = false, message = "Removed from favorites successfully" });
-                }
+                kt = connectFavorite.AddtoFavorite(userID, shoesId, colour, styleType);
+                return Json(new { success = true, message = "Added to favorites successfully" });
             }
             else
             {

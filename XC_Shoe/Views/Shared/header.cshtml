@@ -244,5 +244,45 @@
             </div>
         </div>
     </nav>
-
 </header>
+
+<style>
+    #liveToast h2, #liveToast a {
+        font-size: 1.6rem !important;
+        color: #111;
+    }
+
+    #liveToast a {
+        display: block;
+        font-size: 1.6rem !important;
+        text-decoration: underline!important;
+    }
+    #liveToast a:hover {
+        color: #ff006e;
+    }
+
+    #liveToast div {
+        text-align: left;
+    }
+    #liveToast{
+        padding-left: 2rem;
+    }
+    #liveToast .btn-close{
+        font-size: 1.6rem;
+    }
+    #liveToast .toast-header {
+        border-bottom: none;
+    }
+</style>
+<!-- Toast container -->
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 999; right: 0">
+    <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header justify-content-between">
+            <h2>Hello, Add to Bag succesfully!</h2>
+            <button type="button" class="btn-close float-end" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            <a href="@Url.Action("ShowBagPage", "Bag", new {userID = userID })">View Bag</a>
+        </div>
+    </div>
+</div>

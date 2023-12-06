@@ -391,3 +391,61 @@ RETURN
 )
 GO
 --SELECT *FROM dbo.GetBag('US3')
+
+--Add
+CREATE PROCEDURE AddToBag
+	@UserID VARCHAR(10),
+	@ShoesID VARCHAR(10),
+	@ColourName NVARCHAR(255),
+	@StyleType NVARCHAR(20),	
+	@size INT,
+	@Quantity INT
+AS
+BEGIN
+    DECLARE @CartID INT,@ColourID INT;
+    SET @CartID =(SELECT f.FavoriteID FROM Favorites F WHERE f.UserID = @UserID )
+	SET @ColourID =(SELECT c.ColourID FROM Colours c WHERE c.Name = @ColourName )
+	INSERT INTO Cart_Detail(CartID, ShoesID, StyleType, ColourID,Size,Quantity)
+	VALUES 
+		(@CartID,@ShoesID,@StyleType,@ColourID,@size,@Quantity);
+END
+GO
+--Update
+CREATE PROCEDURE UpdateBag
+	@UserID VARCHAR(10),
+	@ShoesID VARCHAR(10),
+	@StyleType NVARCHAR(20),
+	@ColourName NVARCHAR(255),
+	@size INT,
+	@Quantity INT
+AS
+BEGIN
+    DECLARE @CartID INT,@ColourID INT;
+    SET @CartID =(SELECT f.FavoriteID FROM Favorites F WHERE f.UserID = @UserID )
+	SET @ColourID =(SELECT c.ColourID FROM Colours c WHERE c.Name = @ColourName )
+	UPDATE Cart_Detail
+	SET 
+        ShoesID = ISNULL(@ShoesID,ShoesID),
+		StyleType = ISNULL(@StyleType,StyleType),
+		ColourID = ISNULL(@ColourID,ColourID),
+		Size = ISNULL(@size,Size),
+		Quantity = ISNULL(@Quantity,Quantity)
+	WHERE CartID = @CartID;
+END
+GO
+-- Delete
+CREATE PROCEDURE DeletoShoesInBag
+	@UserID VARCHAR(10),
+	@ShoesID VARCHAR(10),
+	@ColourName NVARCHAR(255),
+	@StyleType NVARCHAR(20),
+	@size INT 	
+AS
+BEGIN
+	DECLARE @CartID INT,@ColourID INT;
+    SET @CartID =(SELECT f.FavoriteID FROM Favorites F WHERE f.UserID = @UserID )
+	SET @ColourID =(SELECT c.ColourID FROM Colours c WHERE c.Name = @ColourName )
+	DELETE FROM Cart_Detail
+	WHERE CartID = @CartID  AND ShoesID = @ShoesID AND ColourID = @ColourID AND StyleType = @StyleType AND size = @size;
+END
+GO
