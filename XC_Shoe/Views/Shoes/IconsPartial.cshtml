@@ -2,10 +2,30 @@
 <ul class="list-group list-group-flush text-left">
     @foreach (var item in Model)
     {
-        <li class="list-group-item">
-            <input type="checkbox" value="@item.NameIcon" />
-            <label>@item.NameIcon</label>
-        </li>
+        if (ViewBag.icon != null)
+        {
+            if (ViewBag.icon.Contains(item.IconID))
+            {
+                <li class="list-group-item">
+                    <input type="checkbox" value="@item.IconID" name="icon-option" checked />
+                    <label>@item.NameIcon</label>
+                </li>
+            }
+            else
+            {
+                <li class="list-group-item">
+                    <input type="checkbox" value="@item.IconID" name="icon-option" />
+                    <label>@item.NameIcon</label>
+                </li>
+            }
+        }
+        else
+        {
+            <li class="list-group-item">
+                <input type="checkbox" value="@item.IconID" name="icon-option" />
+                <label>@item.NameIcon</label>
+            </li>
+        }
     }
     <li class="list-group-item">
         <a href="#" style="text-transform:uppercase; text-decoration:none;"> </a>
@@ -13,5 +33,36 @@
 
 </ul>
 
+<script>
+    $(document).ready(function () {
+        // Lắng nghe sự kiện khi người dùng click vào checkbox
+        $('input[type="checkbox"][name="icon-option"]').on('change', function () {
+            // Lấy giá trị của checkbox đã chọn
+            var selectedValues = $('input[type="checkbox"][name="icon-option"]:checked').map(function () {
+                return this.value;
+            }).get();
 
+            reloadShoesPage(selectedValues.join(','));
+        });
 
+        function reloadShoesPage(selectedValues) {
+            // Sử dụng AJAX để gửi yêu cầu đến server
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ShoesPage", "User")',
+                data: {
+                    gender: '@ViewBag.gender',
+                    icon: selectedValues,
+                    type: '@ViewBag.type',
+                    search: '@ViewBag.search'
+                },
+                success: function (result) {
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+            });
+        }
+    });
+</script>

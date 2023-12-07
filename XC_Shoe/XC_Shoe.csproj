@@ -313,6 +313,9 @@
     <Content Include="Views\Admin\MyAccount.cshtml" />
     <Content Include="Views\Login\SignUp.cshtml" />
     <Content Include="Views\Login\SignIn.cshtml" />
+    <Content Include="Views\User\CheckOut.cshtml" />
+    <Content Include="Views\User\CompleteOrder.cshtml" />
+    <Content Include="Views\Admin\ShowStartAdminPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

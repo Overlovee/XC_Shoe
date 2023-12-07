@@ -138,5 +138,39 @@ namespace XC_Shoe.Connects
             return (list);
         }
 
+        public int AddToOrder(string UserID, string RecipientName, string RecipPhone, string RecipientAddress, float HandingFee, float Total, DateTime OrderDate)
+        {
+            int rs = 0;
+            string sql = "EXEC dbo.AddToOrder '" + UserID + "'," + HandingFee + "," + Total + ",'" + RecipientAddress + "','" + RecipientName + "','" + RecipPhone + "','" + OrderDate + "'";
+            rs = db.ExcuteNonQuery(sql);
+            db.close();
+            return (rs);
+        }
+
+        public string getOrderID(string UserID, string RecipientName, string RecipPhone, string RecipientAddress, float HandingFee, float total)
+        {
+            string id = "";
+            string sql = "SELECT dbo.Get_OrderID('"+ UserID + "', '"+ HandingFee + "', '"+ total + "', " +
+                "N'"+ RecipientAddress + "', N'"+ RecipientName + "', '"+ RecipPhone + "') AS ResultOrderID;";
+
+            SqlDataReader rdr = db.ExcuteQuery(sql);
+
+            if (rdr.Read())
+            {
+                id = rdr.GetValue(0).ToString();
+            }
+            rdr.Close();
+            return (id);
+        }
+        
+        public int AddToOrderDetail(string OrderID, string shoesId, int quantity, int size, string styleType, string colourName, float price)
+        {
+            int rs = 0;
+            string sql = "EXEC dbo.AddOrderDetail '" + OrderID + "', '" + shoesId + "', '" + quantity + "', '" + size + "', '" + styleType + "', '" + colourName + "', '" + price + "'";
+            rs = db.ExcuteNonQuery(sql);
+            db.close();
+            return (rs);
+        }
+
     }
 }

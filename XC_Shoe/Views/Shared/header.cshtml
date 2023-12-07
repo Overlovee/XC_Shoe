@@ -5,6 +5,7 @@
     string Email = "";
     string Account_Img = "";
     var myCookie = HttpContext.Current.Request.Cookies["UserLogin"];
+    string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
 
     if (myCookie != null)
     {
@@ -12,6 +13,18 @@
         userName = HttpUtility.UrlDecode(myCookie["UserName"], Encoding.UTF8);
         Email = myCookie["Email"].ToString();
         Account_Img = myCookie["Account_Img"].ToString();
+    }
+
+    if (Uri.IsWellFormedUriString(Account_Img, UriKind.Absolute))
+    {
+
+    }
+    else
+    {
+        string resourcesPath = "~/Resources/Account/";
+        string directoryPath = Path.Combine(projectDirectory, "Resources", "Account", Account_Img);
+        resourcesPath = Path.Combine(resourcesPath, Account_Img);
+        Account_Img = resourcesPath;
     }
 }
 <header>
@@ -31,7 +44,7 @@
                         <li>
                             <div id="header-avt-img">
                                 <a href="#" data-bs-toggle="offcanvas" data-bs-target="#account-display" aria-controls="account-display">
-                                    <img src="@Account_Img"
+                                    <img src="@Url.Content(Account_Img)"
                                          alt="@userName">
                                 </a>
                             </div>
@@ -52,14 +65,14 @@
                 </div>
                 <div class="offcanvas-body">
                     <div class="modal-avt-img">
-                        <a href="@Url.Action("MyAccount", "Admin")">
-                            <img src="@Account_Img"
+                        <a href="@Url.Action("UserProfile", "User")">
+                            <img src="@Url.Content(Account_Img)"
                                  alt="@userName">
                         </a>
                         <h3>@userName</h3>
                     </div>
                     <div class="modal-body-content d-flex flex-column">
-                        <a href="@Url.Action("MyAccount", "Admin")">My Account</a>
+                        <a href="@Url.Action("UserProfile", "User", new {Email = Email})">My Account</a>
                         <a href="@Url.Action("LogOut", "Login")">Log out</a>
                     </div>
                 </div>
@@ -94,118 +107,110 @@
                                 <li class="sub-nav-item">
                                     <ul>
                                         <a class="sub-nav-title" href="./index.html">New & Featured</a>
-                                        <li><a href="./product-pages/kid-shoes.html">Latest Shoes</a></li>
+                                        <li><a href="#">Latest Shoes</a></li>
                                         <li>
-                                            <a href="./product-pages/women-clothing.html">Latest Clothing</a>
+                                            <a href="#">Latest Clothing</a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="./product-pages/men-clothing.html">
+                                        <a class="sub-nav-title" href="#">
                                             New
                                             For
                                             Men
                                         </a>
-                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Men" })">Shoes</a></li>
-                                        <li><a href="./product-pages/men-clothing.html">Clothing</a></li>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "" , type = "", search = "" })">Shoes</a></li>
+                                        <li><a href="#">Clothing</a></li>
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="./product-pages/women-clothing.html">
+                                        <a class="sub-nav-title" href="#">
                                             New
                                             For
                                             Women
                                         </a>
-                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Women" })">Shoes</a></li>
-                                        <li><a href="./product-pages/women-clothing.html">Clothing</a></li>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Women", icon = "" , type = "", search = "" })">Shoes</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item-title" href="./product-pages/men-clothing.html" target="_blank" rel="noopener noreferrer">Men</a>
+                        <a class="nav-item-title" href="#" target="_blank" rel="noopener noreferrer">Men</a>
                         <div class="sub-nav-box">
                             <ul class="sub-nav">
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Men" })">Shoes</a>
-                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Men" })">All Shoes</a></li>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "" , type = "", search = "" })">Shoes</a>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "" , type = "", search = "" })">All Shoes</a></li>
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="./product-pages/men-clothing.html">Clothing</a>
-                                        <li><a href="./product-pages/men-clothing.html">All Clothing</a></li>
+                                        <a class="sub-nav-title" href="#">Clothing</a>
+                                        <li><a href="#">All Clothing</a></li>
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="./product-pages/men-clothing.html">Sale</a>
-                                        <li><a href="./product-pages/men-shoes.html">Shoes</a></li>
-                                        <li><a href="./product-pages/men-clothing.html">Clothing</a></li>
+                                        <a class="sub-nav-title" href="#">Sale</a>
+                                        <li><a href="#">Shoes</a></li>
+                                        <li><a href="#">Clothing</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item-title" href="./product-pages/women-clothing.html" target="_blank" rel="noopener noreferrer">Women</a>
+                        <a class="nav-item-title" href="#" target="_blank" rel="noopener noreferrer">Women</a>
                         <div class="sub-nav-box">
                             <ul class="sub-nav">
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Women" })">Shoes</a>
-                                        <li>@Html.ActionLink("Show ALL", "ShoesPage", new { gender = "Women" })</li>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "" , type = "", search = "" })">Shoes</a>
+                                        <li>@Html.ActionLink("Show ALL", "ShoesPage", new { gender = "Women", icon = "", type = "", search = "" })</li>
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="./product-pages/women-clothing.html">Clothing</a>
-                                        <li><a href="./product-pages/women-clothing.html">All Clothing</a></li>
+                                        <a class="sub-nav-title" href="#">Clothing</a>
+                                        <li><a href="#">All Clothing</a></li>
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="./product-pages/women-clothing.html">Sale</a>
-                                        <li><a href="./product-pages/women-shoes.html">Shoes</a></li>
-                                        <li><a href="./product-pages/women-clothing.html">Clothing</a></li>
+                                        <a class="sub-nav-title" href="#">Sale</a>
+                                        <li><a href="#">Shoes</a></li>
+                                        <li><a href="#">Clothing</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item-title" href="./product-pages/kid-clothing.html" target="_blank" rel="noopener noreferrer">Sale</a>
+                        <a class="nav-item-title" href="#" target="_blank" rel="noopener noreferrer">Sale</a>
                         <div class="sub-nav-box">
                             <ul class="sub-nav">
                                 <li class="sub-nav-item">
                                     <ul>
                                         <a class="sub-nav-title" href="./index.html">Featured</a>
-                                        <li><a href="./product-pages/kid-clothing.html">Shop All Sale</a></li>
+                                        <li><a href="#">Shop All Sale</a></li>
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="./product-pages/men-shoes.html">Men's sale</a>
-                                        <li><a href="./product-pages/men-shoes.html">Shoes</a></li>
-                                        <li><a href="./product-pages/men-shoes.html">Clothing</a></li>
+                                        <a class="sub-nav-title" href="#">Men's sale</a>
+                                        <li><a href="#">Shoes</a></li>
+                                        <li><a href="#">Clothing</a></li>
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="./product-pages/women-shoes.html">Women's sale</a>
-                                        <li><a href="./product-pages/women-shoes.html">Shoes</a></li>
-                                        <li><a href="./product-pages/women-shoes.html">Clothing</a></li>
-                                    </ul>
-                                </li>
-                                <li class="sub-nav-item">
-                                    <ul>
-                                        <a class="sub-nav-title" href="./product-pages/kid-shoes.html">Kid's sale</a>
-                                        <li><a href="./product-pages/kid-shoes.html">Shoes</a></li>
-                                        <li><a href="./product-pages/kid-shoes.html">Clothing</a></li>
+                                        <a class="sub-nav-title" href="#">Women's sale</a>
+                                        <li><a href="#">Shoes</a></li>
+                                        <li><a href="#">Clothing</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -255,24 +260,28 @@
     #liveToast a {
         display: block;
         font-size: 1.6rem !important;
-        text-decoration: underline!important;
+        text-decoration: underline !important;
     }
-    #liveToast a:hover {
-        color: #ff006e;
-    }
+
+        #liveToast a:hover {
+            color: #ff006e;
+        }
 
     #liveToast div {
         text-align: left;
     }
-    #liveToast{
+
+    #liveToast {
         padding-left: 2rem;
     }
-    #liveToast .btn-close{
-        font-size: 1.6rem;
-    }
-    #liveToast .toast-header {
-        border-bottom: none;
-    }
+
+        #liveToast .btn-close {
+            font-size: 1.6rem;
+        }
+
+        #liveToast .toast-header {
+            border-bottom: none;
+        }
 </style>
 <!-- Toast container -->
 <div class="position-fixed top-0 end-0 p-3" style="z-index: 999; right: 0">

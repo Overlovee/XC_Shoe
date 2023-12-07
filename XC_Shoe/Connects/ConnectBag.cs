@@ -34,12 +34,51 @@ namespace XC_Shoe.Connects
             rdr.Close();
             return (listEmployee);
         }
-
+        public List<Bag> getSelectedItemBags(string userID)
+        {
+            List<Bag> listEmployee = new List<Bag>();
+            string sql = "SELECT * FROM dbo.GetSelectedItemBags('" + userID + "')";
+            SqlDataReader rdr = db.ExcuteQuery(sql);
+            while (rdr.Read())
+            {
+                Bag emp = new Bag();
+                emp.ShoesID = rdr.GetValue(0).ToString();
+                emp.ShoesName = rdr.GetValue(1).ToString();
+                emp.StyleType = rdr.GetValue(2).ToString();
+                emp.TypeName = rdr.GetValue(3).ToString();
+                emp.ColorName = rdr.GetValue(4).ToString();
+                emp.Size = int.Parse(rdr.GetValue(5).ToString());
+                emp.Quantity = int.Parse(rdr.GetValue(6).ToString());
+                emp.Price = float.Parse(rdr.GetValue(7).ToString());
+                emp.BuyingSelectionStatus = bool.Parse(rdr.GetValue(8).ToString());
+                emp.Url = rdr.GetValue(9).ToString();
+                listEmployee.Add(emp);
+            }
+            rdr.Close();
+            return (listEmployee);
+        }
         public int AddtoBag(string userID, string ShoesID, string colourName, string Styletype, int size, int quantity)
         {
             int rs = 0;
             string sql = "EXEC dbo.AddToBag'" + userID + "','" + ShoesID + "','" + colourName + "','" + Styletype + "'," + size + "," + quantity;
-            rs = db.ExcuteNonQuery(sql); ;
+            rs = db.ExcuteNonQuery(sql);
+            db.close();
+            return (rs);
+        }
+        public int UpdateBag(string userID, string ShoesID, string colourName, string Styletype, int size, int quantity, bool selected)
+        {
+            int rs = 0;
+            string sql = "EXEC dbo.UpdateBag'" + userID + "','" + ShoesID + "','" + Styletype + "','" + colourName + "'," + size + "," + quantity;
+            if (selected)
+            {
+                sql += ", 1";
+            }
+            else
+            {
+                sql += ", 0";
+            }
+            rs = db.ExcuteNonQuery(sql);
+            db.close();
 
             return (rs);
         }
@@ -47,7 +86,10 @@ namespace XC_Shoe.Connects
         {
             int rs = 0;
             string sql = "EXEC dbo.DeletoShoesInBag '" + userID + "','" + ShoesID + "','" + colourName + "','" + Styletype + "'," + size;
-            rs = db.ExcuteNonQuery(sql); ;
+
+            rs = db.ExcuteNonQuery(sql);
+            db.close();
+
             return (rs);
         }
     }

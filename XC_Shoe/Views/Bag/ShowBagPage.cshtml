@@ -1,6 +1,4 @@
 ﻿@model IEnumerable<XC_Shoe.Models.Bag>
-@using XC_Shoe.Connects;
-@using XC_Shoe.Models;
 
 @{
     ViewBag.Title = "Show Bag Page";
@@ -9,19 +7,9 @@
 
     string userID = "";
     var myCookie = HttpContext.Current.Request.Cookies["UserLogin"];
-    List<Bag> bags = new List<Bag>();
     if (myCookie != null)
     {
         userID = myCookie["UserID"].ToString();
-        ConnectBag connectBag = new ConnectBag();
-        bags = connectBag.getBagData(userID);
-    }
-    else
-    {
-        if (Session["BagList"] != null)
-        {
-            bags = (List<Bag>)Session["BagList"];
-        }
     }
 }
 <style>
@@ -82,8 +70,8 @@
                                         </div>
                                         <div class="select-line col-sm-4">
                                             <span>Quantity: </span>
-                                            <input type="number" name="details-options-quantity"
-                                                   class="details-options-quantity" value="@item.Quantity">
+                                            <input type="number"
+                                                   class="details-options-quantity" value="@item.Quantity" min="1">
                                         </div>
                                     </div>
                                 </div>
@@ -236,7 +224,7 @@
                 return;
             }
 
-            var bagItemsElement = elementSelectGroup.closest('.bag-items');
+            var bagItemsElement = inputElement.closest('.bag-items');
 
             var isSelected = false;
             if (bagItemsElement.hasClass('selected')) {
@@ -262,7 +250,7 @@
                     selection: isSelected
                 },
                 success: function (result) {
-                    //console.log(result);
+                    Summary();
                 },
                 error: function (error) {
                     console.log("Error:", error);
@@ -281,6 +269,7 @@
 
             const iconSelectionItem = elementSelectGroup.find(".fa-regular");
             var isSelected = false;
+
             if (bagItemsElement.hasClass('selected')) {
 
                 iconSelectionItem.removeClass('fa-square-check').addClass('fa-square');
@@ -444,3 +433,13 @@
     });
 </script>
 
+<script>
+    $(document).ready(function () {
+        $("#checkout-btn").on("click", function () {
+            if (!$(this).prop("disabled")) {
+                var userID = "@userID";
+                window.location.href = "/User/CheckOut?userID=" + userID;
+            }
+        });
+    });
+</script>

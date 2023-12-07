@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Show Start Admin Page";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<style>
+    .go-to-admin-btn {
+        text-decoration: none;
+        display: block;
+        padding: 1rem 2rem;
+        font-size: 1.8rem;
+        color: #111;
+        background: white;
+        width: fit-content;
+        cursor: pointer;
+        border: 1px solid black;
+    }
+    .go-to-main-btn {
+        text-decoration: none;
+        display: block;
+        padding: 1rem 2rem;
+        font-size: 1.8rem;
+        color: white;
+        background: black;
+        width: fit-content;
+        cursor: pointer;
+        border: 1px solid black;
+    }
+    .content-box{
+        padding-top: 16rem;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row content-box">
+        <div class="col-md admin-side d-flex justify-content-center">
+            <a class="go-to-admin-btn" href="@Url.Action("Home", "Admin")">Go to Admin</a>
+        </div>
+        <div class="col-md main-side d-flex justify-content-center" >
+            <a class="go-to-main-btn" href="@Url.Action("ShowHomePage", "User")">Go to Main</a>
+        </div>
+    </div>
+</div>

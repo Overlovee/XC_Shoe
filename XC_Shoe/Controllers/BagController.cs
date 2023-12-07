@@ -52,7 +52,19 @@ namespace XC_Shoe.Controllers
             if (userID != "")
             {
                 ConnectBag connectBag = new ConnectBag();
+                List<Bag> list = connectBag.getBagData(userID);
                 int kt = 0;
+                foreach (Bag item in list)
+                {
+                    if (item.ShoesID == shoesId && item.ColorName == colour && item.StyleType == styleType && item.Size == size)
+                    {
+                        kt = connectBag.UpdateBag(userID, shoesId, colour, styleType, size, item.Quantity + 1, item.BuyingSelectionStatus);
+
+                        return Json(new { success = true, message = "Added to cart successfully" });
+                    }
+                }
+                kt = connectBag.AddtoBag(userID, shoesId, colour, styleType, size, 1);
+
                 return Json(new { success = true, message = "Added to cart successfully" });
             }
             else
@@ -111,7 +123,18 @@ namespace XC_Shoe.Controllers
         {
             if (userID != "")
             {
+                ConnectBag connectBag = new ConnectBag();
+                List<Bag> list = connectBag.getBagData(userID);
+                int kt = 0;
+                foreach (Bag item in list)
+                {
+                    if (item.ShoesID == shoesId && item.ColorName == colour && item.StyleType == styleType && item.Size == size)
+                    {
+                        kt = connectBag.UpdateBag(userID, shoesId, colour, styleType, size, quantity, selection);
 
+                        return Json(new { success = true, message = "Added to cart successfully" });
+                    }
+                }
             }
             else
             {
@@ -167,8 +190,17 @@ namespace XC_Shoe.Controllers
             if (userID != "")
             {
                 ConnectBag connectBag = new ConnectBag();
+                List<Bag> list = connectBag.getBagData(userID);
                 int kt = 0;
-                return Json(new { success = true, message = "Delete from cart successfully" });
+                foreach (Bag item in list)
+                {
+                    if (item.ShoesID == shoesId && item.ColorName == colour && item.StyleType == styleType && item.Size == size)
+                    {
+                        kt = connectBag.DeleteShoesInBag(userID, shoesId, colour, styleType, size);
+
+                        return Json(new { success = true, message = "Delete from cart successfully" });
+                    }
+                }
             }
             else
             {

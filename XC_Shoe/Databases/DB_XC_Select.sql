@@ -209,4 +209,4 @@ drop table Colours
 drop table Shoes
 
 
-SELECT * FROM size_Detail SD, Colours C WHERE C.ColourID = SD.ColourID AND  SD.shoesID = 'AF1' AND C.Name = 'White'
+SELECT sizeID FROM size_Detail SD, Colours C WHERE C.ColourID = SD.ColourID AND  SD.shoesID = 'AF1' AND C.Name = 'White'

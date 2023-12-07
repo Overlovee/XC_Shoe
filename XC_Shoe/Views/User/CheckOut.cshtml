@@ -1,0 +1,495 @@
+﻿
+@model IEnumerable<XC_Shoe.Models.Bag>
+@using XC_Shoe.Models;
+@{
+    ViewBag.Title = "CheckOut";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+    string userID = "";
+    var myCookie = HttpContext.Current.Request.Cookies["UserLogin"];
+    if (myCookie != null)
+    {
+        userID = myCookie["UserID"].ToString();
+    }
+    float subtotal = 0;
+    float shipFee = 250000;
+    float total = shipFee;
+}
+<style>
+    .infor-check-out-con {
+        padding: 1rem 4rem;
+    }
+
+    .invalid-feedback {
+        display: none;
+    }
+
+    .was-validated input {
+        padding: 0;
+        padding-left: 1rem;
+        line-height: 5rem;
+        font-size: 1.6rem;
+        border: 1px solid #808080;
+        width: 100%;
+    }
+
+    .form-title {
+        margin-bottom: 2rem;
+    }
+
+    .form-control::placeholder {
+        font-size: 1.6rem;
+    }
+
+    .was-validated .mb-3 {
+        margin-bottom: 2.5rem !important;
+    }
+
+    .was-validated {
+        width: 60%;
+        display: block;
+    }
+
+    .checkout-btn {
+        background-color: black;
+        color: white;
+        width: 100%;
+        padding: 1.5rem 0 1.5rem 0;
+        border-radius: 3px;
+        font-weight: bold;
+    }
+
+    .delivery-item-heading, .delivery-item-address {
+        height: fit-content;
+    }
+
+    .deliver-info-item {
+        width: 100%;
+    }
+
+    .payment-box input {
+        width: 100%;
+        text-align: center;
+        border-radius: 3px;
+        border: 1px solid #808080;
+        line-height: 5rem;
+        color: #808080;
+        cursor: default !important;
+        margin-bottom: 2rem;
+    }
+    .add-new-infor-btn{
+        width: fit-content;
+        padding: 1rem 2rem;
+        border: 1px solid #808080;
+        margin-bottom: 2rem;
+    }
+    .back-to-select-deliver-info-btn{
+        cursor: pointer;
+        text-decoration: underline;
+    }
+</style>
+
+
+<div class="row infor-check-out-con">
+    <div class="col-lg-8 d-flex justify-content-center">
+        @{
+            if (ViewBag.userShipmentList != null)
+            {
+                if (ViewBag.userShipmentList.Count > 0)
+                {
+                <form class="was-validated d-none">
+                    <div class="mb-3">
+                        <a class="back-to-select-deliver-info-btn">Back</a>
+                    </div>
+                    <h3 class="form-title">Enter your delivery information: </h3>
+                    <div class="mb-3">
+                        <input class="form-name" type="text" class="form-control" placeholder="Name" required>
+                        <div class="invalid-feedback">
+                            Please enter your name
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-phonenumber" type="tel" class="form-control" placeholder="Phone Number" required>
+                        <div class="invalid-feedback">
+                            Please enter your phone number
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-speccific" type="text" class="form-control" placeholder="Speccific Address" required>
+                        <div class="invalid-feedback">
+                            Please enter your speccific address
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-administrative" type="text" class="form-control" placeholder="Administrative Boundaries" required>
+                        <div class="invalid-feedback">
+                            Please enter your administrative address
+                        </div>
+                    </div>
+                </form>
+                <div class="deliver-info-item">
+                    <div class="row text-center justify-content-center">
+                        <button class="add-new-infor-btn">Use other infor</button>
+                    </div>
+                    @foreach (UserShipment shipment in ViewBag.userShipmentList)
+                    {
+                        if (shipment.IsDefault)
+                        {
+                            <div class="row user-shipment-item selected"
+                                 data-shipment-username="@shipment.UserName"
+                                 data-shipment-phonenumber="@shipment.PhoneNumber"
+                                 data-shipment-specific-address="@shipment.SpecificAddress"
+                                 data-shipment-administrative-boundaries="@shipment.AdministrativeBoundaries">
+                                <div class="delivery-item-heading col-sm-8">
+                                    <div>
+                                        <h2 class="recipient-name">@shipment.UserName</h2>
+                                        <p class="recipient-phone-number">@shipment.PhoneNumber</p>
+
+                                    </div>
+                                    <div>
+                                        <p class="specific-address">@shipment.SpecificAddress</p>
+                                        <p class="administrative-boundaries">@shipment.AdministrativeBoundaries</p>
+                                    </div>
+                                </div>
+                                <div class="delivery-item-address col-sm-4 flex-end">
+                                    <div>
+                                        @{
+                                            if (shipment.IsDefault)
+                                            {
+                                                <button class="set-default-delivery float-end recipient-info-action-btn text-end">
+                                                    <i class="fa-regular fa-square-check"></i>
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="set-default-delivery float-end recipient-info-action-btn text-end">
+                                                    <i class="fa-regular fa-square"></i>
+                                                </button>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <div class="line-seperate mt-3"></div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row user-shipment-item"
+                                 data-shipment-username="@shipment.UserName"
+                                 data-shipment-phonenumber="@shipment.PhoneNumber"
+                                 data-shipment-specific-address="@shipment.SpecificAddress"
+                                 data-shipment-administrative-boundaries="@shipment.AdministrativeBoundaries">
+                                <div class="delivery-item-heading col-sm-8">
+                                    <div>
+                                        <h2 class="recipient-name">@shipment.UserName</h2>
+                                        <p class="recipient-phone-number">@shipment.PhoneNumber</p>
+
+                                    </div>
+                                    <div>
+                                        <p class="specific-address">@shipment.SpecificAddress</p>
+                                        <p class="administrative-boundaries">@shipment.AdministrativeBoundaries</p>
+                                    </div>
+                                </div>
+                                <div class="delivery-item-address col-sm-4 flex-end">
+                                    <div>
+                                        @{
+                                            if (shipment.IsDefault)
+                                            {
+                                                <button class="set-default-delivery float-end recipient-info-action-btn text-end">
+                                                    <i class="fa-regular fa-square-check"></i>
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="set-default-delivery float-end recipient-info-action-btn text-end">
+                                                    <i class="fa-regular fa-square"></i>
+                                                </button>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <div class="line-seperate mt-3"></div>
+                            </div>
+                        }
+                    }
+                </div>
+                }
+                else
+                {
+                    <form class="was-validated">
+                        <h3 class="form-title">Enter your delivery information: </h3>
+                        <div class="mb-3">
+                            <input class="form-name" type="text" class="form-control" placeholder="Name" required>
+                            <div class="invalid-feedback">
+                                Please enter your name
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-phonenumber" type="tel" class="form-control" placeholder="Phone Number" required>
+                            <div class="invalid-feedback">
+                                Please enter your phone number
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-speccific" type="text" class="form-control" placeholder="Speccific Address" required>
+                            <div class="invalid-feedback">
+                                Please enter your speccific address
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-administrative" type="text" class="form-control" placeholder="Administrative Boundaries" required>
+                            <div class="invalid-feedback">
+                                Please enter your administrative address
+                            </div>
+                        </div>
+                    </form>
+                }
+            }
+            else
+            {
+                <form class="was-validated">
+                    <h3 class="form-title">Enter your delivery information: </h3>
+                    <div class="mb-3">
+                        <input class="form-name" type="text" class="form-control" placeholder="Name" required>
+                        <div class="invalid-feedback">
+                            Please enter your name
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-phonenumber" type="tel" class="form-control" placeholder="Phone Number" required>
+                        <div class="invalid-feedback">
+                            Please enter your phone number
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-speccific" type="text" class="form-control" placeholder="Speccific Address" required>
+                        <div class="invalid-feedback">
+                            Please enter your speccific address
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-administrative" type="text" class="form-control" placeholder="Administrative Boundaries" required>
+                        <div class="invalid-feedback">
+                            Please enter your administrative address
+                        </div>
+                    </div>
+                </form>
+            }
+        }
+    </div>
+    <div class="col-lg-4">
+        <div id="summary-box" style=" margin-bottom: 2rem;">
+            <section class="title">
+                Summary
+            </section>
+
+            <div class="sub-total-line">
+                <div class="summary-box-line">
+                    <label for="">Subtotal</label>
+                    <div class="summary-box-money-items">
+                        <span class="money" id="sub-total">0</span>
+                        <span class="unit-money">đ</span>
+                    </div>
+                </div>
+                <div class="summary-box-line">
+                    <label for="">Delivery/Shipping</label>
+                    <div class="summary-box-money-items">
+                        <span class="money" id="delivery-fee">@shipFee</span>
+                        <span class="unit-money">đ</span>
+                    </div>
+                </div>
+                <div class="line-seperate"></div>
+            </div>
+            <div id="total-line">
+                <div class="summary-box-line">
+                    <label for="">Total</label>
+                    <div class="summary-box-money-items">
+                        <span class="money" id="total">0</span>
+                        <span class="unit-money">đ</span>
+                    </div>
+                </div>
+                <div class="line-seperate"></div>
+            </div>
+            <div class="payment-box">
+                <input type="button" name="payment-option" value="Cash payment"/>
+
+                <button class="checkout-btn" type="submit">Confirm</button>
+            </div>
+        </div>
+
+        @foreach (var item in Model)
+        {
+            subtotal += item.Price * item.Quantity;
+            <div class="bag-items row gx-5" style="padding: 0 2rem;">
+                <div class="bag-items-img col-4 position-relative">
+                    @{
+                        string resourcesPath = "~/Resources/Shoes/";
+                        string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", @item.Url);
+                        resourcesPath = Path.Combine(resourcesPath, @item.Url);
+
+                        string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
+
+                        string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                        string fileNameOnly = Path.GetFileName(imagePath);
+                        resourcesPath = Path.Combine(resourcesPath, fileNameOnly);
+                    }
+                    <img class="card-img-top img-fluid" alt="Men" src="@Url.Content(resourcesPath)">
+                </div>
+                <div class="bag-item-details col-8 position-relative" style="padding: 0"
+                     data-radio-shoe-colourname="@item.ColorName"
+                     data-radio-shoe-size="@item.Size"
+                     data-radio-shoe-id="@item.ShoesID"
+                     data-radio-shoe-styletype="@item.StyleType">
+                    <div class="row">
+                        <div class="bag-items-infomation position-relative">
+                            <div class="bag-items-infomation-details">
+                                <a class="details-title" href="#">@item.ShoesName</a>
+                                <p class="details-describe">
+                                    @item.StyleType's @item.TypeName Shoes <br>
+                                    @item.ColorName
+                                </p>
+                                <div class="details-options">
+                                    <div class="select-line">
+                                        <span>Size: @item.Size</span>
+                                    </div>
+                                    <div class="select-line">
+                                        <span>Quantity: @item.Quantity</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="line-seperate mt-4"></div>
+            </div>
+        }
+    </div>
+    @{ 
+        total += subtotal;
+    }
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        const subTotalElement = $("#sub-total");
+        const deliveryFeeElement = $("#delivery-fee");
+        const totalElement = $("#total");
+
+        var subtotal = @subtotal;
+        var deliveryFee = @shipFee;
+        var total = subtotal + deliveryFee;
+
+        subTotalElement.text(subtotal.toLocaleString());
+        deliveryFeeElement.text(deliveryFee.toLocaleString());
+        totalElement.text(total.toLocaleString());
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".add-new-infor-btn").on("click", function () {
+            $(".deliver-info-item").hide();
+
+            $(".was-validated").removeClass("d-none");
+        });
+        $(".back-to-select-deliver-info-btn").on("click", function () {
+            $(".deliver-info-item").show();
+
+            $(".was-validated").addClass("d-none");
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".set-default-delivery").on("click", function () {
+            var isItemSelected = $(this).closest(".user-shipment-item").hasClass("selected");
+
+            if (!isItemSelected) {
+                // Loại bỏ class "selected" khỏi tất cả các phần tử có class "user-shipment-item"
+                $(".user-shipment-item.selected").find("button.set-default-delivery").find("i.fa-regular").removeClass("fa-square-check").addClass("fa-square");
+                $(".user-shipment-item").removeClass("selected");
+
+                // Thêm class "selected" vào phần tử gần nhất có class "user-shipment-item"
+                $(this).closest(".user-shipment-item").addClass("selected");
+
+                // Đổi icon trong button
+                $(this).closest(".user-shipment-item").find("button.set-default-delivery").find("i.fa-regular").removeClass("fa-square").addClass("fa-square-check");
+            }
+        });
+    });
+</script>
+
+<script>
+    $(".checkout-btn").on("click", function () {
+        var isWasValidatedHidden = $(".was-validated").hasClass("d-none");
+
+        var inforArray = [];
+        if (!isWasValidatedHidden) {
+            var specificAddress = $(".form-speccific").val();
+            var administrativeBoundaries = $(".form-administrative").val();
+            var name = $(".form-name").val();
+            var phoneNumber = $(".form-phonenumber").val();
+            console.log(name);
+            console.log(phoneNumber);
+            console.log(specificAddress);
+            console.log(administrativeBoundaries);
+
+            if (specificAddress == "" || administrativeBoundaries == "" || name == "" || phoneNumber == "") {
+                alert("Please type all fields");
+            }
+            else {
+                inforArray.push({
+                    shipmentUsername: name,
+                    shipmentPhoneNumber: phoneNumber,
+                    shipmentSpecificAddress: specificAddress,
+                    shipmentAdministrativeBoundaries: administrativeBoundaries
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "/User/MakeOrder",
+                    data: { userID: "@userID", infor: inforArray, total: @total},
+                    success: function (result) {
+                        if (result.success) {
+                            window.location.href = "/User/CompleteOrder?orderID=" + result.orderID;
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:", error);
+                    }
+                });
+            }
+        }
+        else {
+            var shipmentItem = $(".user-shipment-item.selected");
+            var shipmentUsername = $(shipmentItem).data("shipment-username");
+            var shipmentPhoneNumber = $(shipmentItem).data("shipment-phonenumber");
+            var shipmentSpecificAddress = $(shipmentItem).data("shipment-specific-address");
+            var shipmentAdministrativeBoundaries = $(shipmentItem).data("shipment-administrative-boundaries");
+
+            if (shipmentUsername && shipmentPhoneNumber && shipmentSpecificAddress && shipmentAdministrativeBoundaries) {
+                inforArray.push({
+                    shipmentUsername: shipmentUsername,
+                    shipmentPhoneNumber: shipmentPhoneNumber,
+                    shipmentSpecificAddress: shipmentSpecificAddress,
+                    shipmentAdministrativeBoundaries: shipmentAdministrativeBoundaries
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "/User/MakeOrder",
+                    data: { userID: "@userID", infor: inforArray, total: @total },
+                    success: function (result) {
+                        if (result.success) {
+                            window.location.href = "/User/CheckOut?orderID=" + result.orderID;
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:", error);
+                    }
+                });
+            }
+        }
+    });
+</script>
+

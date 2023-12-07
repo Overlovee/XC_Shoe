@@ -29,11 +29,15 @@ namespace XC_Shoe.Controllers
         {
             return View();
         }
-
-        public ActionResult ShoesPage(string gender = "Men", string search = "")
+        [HttpGet]
+        public ActionResult ShoesPage(string gender = "", string icon = "", string type = "", string search = "")
         {
             ConnectShoes connectShoes = new ConnectShoes();
-            List<Shoe> ListShoes = connectShoes.GetRepresentData(gender);
+            List<Shoe> ListShoes = connectShoes.GetRepresentData(gender, icon, type, search);
+            ViewBag.gender = gender;
+            ViewBag.icon = icon;
+            ViewBag.type = type;
+            ViewBag.search = search;
             return View(ListShoes);
         }
         public ActionResult ShowShoesDetail(string shoesID, string colourName)
@@ -47,45 +51,129 @@ namespace XC_Shoe.Controllers
             ViewBag.size = SizeList;
             return View(shoes);
         }
-
-        public ActionResult GetInforToCheckOut(string userID = "")
+        public ActionResult CompleteOrder(string orderID = "")
         {
-            if(userID != "")
-            {
-                ConnectUsers connectUser = new ConnectUsers();
-                List<UserShipment> userShipmentList = connectUser.getUserShipmentDetails(userID);
-                if (userShipmentList.Count > 0)
-                {
-                    return RedirectToAction("CheckOut", "User", new {userID = userID});
-                }
-                else
-                {
-                    return View();
-                }
-                
-            }
-            else
-            {
-                return View();
-            }
+            
+            ViewBag.orderID = orderID;
+            return View();
         }
         public ActionResult CheckOut(string userID = "")
         {
+            List<Bag> list = new List<Bag>();
+            List<UserShipment> userShipmentList = new List<UserShipment>();
             if (userID != "")
             {
+                ConnectUsers connectUser = new ConnectUsers();
 
+                userShipmentList = connectUser.getUserShipmentDetails(userID);
+
+                ConnectBag connectBag = new ConnectBag();
+                list = connectBag.getSelectedItemBags(userID);
+
+                ViewBag.userShipmentList = userShipmentList;
+                return View(list);
             }
             else
             {
-
+                if (Session["BagList"] != null)
+                {
+                    List<Bag> bags = (List<Bag>)Session["BagList"];
+                    ConnectShoes connectShoes = new ConnectShoes();
+                    List<Bag> checkoutList = new List<Bag>();
+                    foreach (Bag bag in bags)
+                    {
+                        Shoe shoe = connectShoes.getShoesDetailData(bag.ShoesID, bag.ColorName);
+                        bag.Url = shoe.Url;
+                        bag.Price = shoe.Price;
+                        bag.ShoesName = shoe.NameShoes;
+                        if (bag.BuyingSelectionStatus)
+                        {
+                            checkoutList.Add(bag);
+                        }
+                    }
+                    ViewBag.userShipmentList = userShipmentList;
+                    return View(checkoutList);
+                }
             }
-            ConnectUsers connectUser = new ConnectUsers();
-            User User = connectUser.getUserData(userID);
-            List<UserShipment> List = connectUser.getUserShipmentDetails(User.UserID);
-            ViewBag.UserShipment = List;
-            return View(User);
+            ViewBag.userShipmentList = userShipmentList;
+            return View(list);
         }
-        public ActionResult UserProfile(string Email = "hoang2011@gmail.com")
+        [HttpPost]
+        public ActionResult MakeOrder(string userID = "", List<Dictionary<string, string>> infor = null, float total = 0)
+        {
+            string Username = "";
+            string PhoneNumber = "";
+            string SpecificAddress = "";
+            string AdministrativeBoundaries = "";
+            string orderID = "0";
+            foreach (var shipmentInfo in infor)
+            {
+                if (shipmentInfo.ContainsKey("shipmentUsername"))
+                {
+                    Username = shipmentInfo["shipmentUsername"];
+                }
+                if (shipmentInfo.ContainsKey("shipmentPhoneNumber"))
+                {
+                    PhoneNumber = shipmentInfo["shipmentPhoneNumber"];
+                }
+                if (shipmentInfo.ContainsKey("shipmentSpecificAddress"))
+                {
+                    SpecificAddress = shipmentInfo["shipmentSpecificAddress"];
+                }
+                if (shipmentInfo.ContainsKey("shipmentAdministrativeBoundaries"))
+                {
+                    AdministrativeBoundaries = shipmentInfo["shipmentAdministrativeBoundaries"];
+                }
+            }
+
+            if (userID != "")
+            {
+                ConnectOrders connectOrders = new ConnectOrders();
+                int kt = connectOrders.AddToOrder(userID, Username, PhoneNumber, SpecificAddress + "," + AdministrativeBoundaries, 250000, total, DateTime.Now);
+                if(kt != 0)
+                {
+                    orderID = connectOrders.getOrderID(userID, Username, PhoneNumber, SpecificAddress + "," + AdministrativeBoundaries, 250000, total);
+                }
+            }
+            else
+            {
+                if (Session["BagList"] != null)
+                {
+                    List<Bag> bags = (List<Bag>)Session["BagList"];
+                    ConnectShoes connectShoes = new ConnectShoes();
+                    ConnectOrders connectOrders = new ConnectOrders();
+                    int kt = connectOrders.AddToOrder(userID, Username, PhoneNumber, SpecificAddress + "," + AdministrativeBoundaries, 250000, total, DateTime.Now);
+                    
+                    if (kt != 0)
+                    {
+                        orderID = connectOrders.getOrderID(userID, Username, PhoneNumber, SpecificAddress + "," + AdministrativeBoundaries, 250000, total);
+                        
+                        for (int i = bags.Count - 1; i >= 0; i--)
+                        {
+                            Bag bag = bags[i];
+                            Shoe shoe = connectShoes.getShoesDetailData(bag.ShoesID, bag.ColorName);
+                            bag.Url = shoe.Url;
+                            bag.Price = shoe.Price;
+                            bag.ShoesName = shoe.NameShoes;
+                            
+                            if (bag.BuyingSelectionStatus)
+                            {
+                                int rs = connectOrders.AddToOrderDetail(orderID, bag.ShoesID, bag.Quantity, bag.Size, bag.StyleType, bag.ColorName, bag.Price);
+                                if(rs != 0)
+                                {
+                                    bags.RemoveAt(i);
+                                }
+                            }
+                        }
+                        Session["BagList"] = bags;
+                    }
+                    return Json(new { success = true, message = "Order successfully", orderID = orderID});
+                }
+            }
+
+            return Json(new { success = true, message = "Order successfully" , orderID = orderID });
+        }
+        public ActionResult UserProfile(string Email = "")
         {
             ConnectUsers connectUser = new ConnectUsers();
             User User = connectUser.getUserData(Email);

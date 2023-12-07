@@ -4,29 +4,21 @@
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 
+
 <div class="container-fluid">
     <div class="sign-form">
         <div class="form-header">
             <svg id="logo-nike" viewBox="0 0 24 24" width="60px" height="60px">
-                <path d="M 7 6 L 9 6 L 11 9 L 11 11 L 9 14 L 7 14 L 10 10 L 10
-                      10 L 7 6 m 11 1 L 20 7 L 20 6 L 18 6 C 13 6 13 14 18 14
-                      L 20 14 L 20 13 L 18 13 C 15 12 15 8 18 7 M 21 13 C 21
-                      13 21 12 22 13 C 19 10 19 15 23 14 C 24 13 22 12 22 11 C
-                      22 11 24 12 23 12 C 24 12 23 11 21 10 C 24 14 21 14 21 13
-                      M 11 9 L 13 6 L 15 6 L 12 10 L 12 10 L 15 14 L 13 14 L 11 11">
+                <path d="M21 8.719L7.836 14.303C6.74 14.768 5.818 15 5.075 15c-.836 0-1.445-.295-1.819-.884-.485-.76-.273-1.982.559-3.272.494-.754 1.122-1.446 1.734-2.108-.144.234-1.415 2.349-.025 3.345.275.2.666.298 1.147.298.386 0 .829-.063 1.316-.19L21 8.719z">
                 </path>
             </svg>
-            @*<svg id="logo-nike" viewBox="0 0 24 24" width="60px" height="60px">
-            <path d="M21 8.719L7.836 14.303C6.74 14.768 5.818 15 5.075 15c-.836 0-1.445-.295-1.819-.884-.485-.76-.273-1.982.559-3.272.494-.754 1.122-1.446 1.734-2.108-.144.234-1.415 2.349-.025 3.345.275.2.666.298 1.147.298.386 0 .829-.063 1.316-.19L21 8.719z">
-            </path>
-        </svg>*@
-            <h3 class="form-header-tile">BECOME A 1990's MEMBER</h3>
+            <h3 class="form-header-tile">BECOME A XC MEMBER</h3>
             <p>
-                Create your 1990's Member profile and get first access to the very best of Nike products,
+                Create your XC Member profile and get first access to the very best of XC products,
                 inspiration and community.
             </p>
         </div>
-        <form id="form-sign-up" action="/action_page.php" method="get">
+        <form id="form-sign-up" action="@Url.Action("SignUp","Login")" method="post">
             <div class="form-group">
                 <input id="email-signup" name="emailSignup" type="text" placeholder="Email address">
                 <span class="form-message"></span>
@@ -43,44 +35,11 @@
                 <input id="last-name" name="lastName" type="text" placeholder="Last name">
                 <span class="form-message"></span>
             </div>
-            <div class="form-group">
-                <input id="date-of-birth" name="date-of-birth" type="date" placeholder="Date of birth">
-                <span class="form-message"></span>
-                <label for="" style="display: block; font-size: 1.2rem;
-                        color: #8d8d8d; text-align: center;">Get a Nike Member Reward every year on your Birthday.</label>
-            </div>
-            <div class="form-group select-line">
-                <select name="nation">
-                    <option value="vietnam">Vietnam</option>
-                    <option value="china">China</option>
-                    <option value="united-states">United States</option>
-                    <option value="india">India</option>
-                    <option value="indonesia">Indonesia</option>
-                    <option value="pakistan">Pakistan</option>
-                    <option value="brazil">Brazil</option>
-                    <option value="nigeria">Nigeria</option>
-                    <option value="bangladesh">Bangladesh</option>
-                    <option value="russia">Russia</option>
-                    <option value="japan">Japan</option>
-                    <option value="mexico">Mexico</option>
-                    <option value="philippines">Philippines</option>
-                    <option value="ethiopia">Ethiopia</option>
-                    <option value="egypt">Egypt</option>
-                    <option value="germany">Germany</option>
-                </select>
-                <i class="fa-solid fa-chevron-down"></i>
-            </div>
-
-            <div class="form-group">
-                <input class="radio btn-checked" type="button" id="male" value="Male" style="float:left;">
-                <input class="radio" type="button" id="female" value="Female" style="float: right;">
-                <span class="form-message" style="clear: both;"></span>
-            </div>
             <div class="form-about-sign-up">
                 <div class="check-box">
                     <input type="checkbox" checked id="keep-sign-in" value="keep-sign-in">
                     <label for="">
-                        Sign up for emails to get updates from 1990's on products, offers and your
+                        Sign up for emails to get updates from XC on products, offers and your
                         Member benefits
                     </label>
                 </div>
@@ -89,17 +48,18 @@
             <div class="form-about-legacy">
                 <p>
                     By creating an account, you agree to
-                    1990's <a href="/policy.html">Privacy Policy</a>
+                    XC's <a href="/policy.html">Privacy Policy</a>
                     and <a href="/term-of-uses.html">Terms of Use</a>.
                 </p>
             </div>
             <div class="submit">
-                <button id="join-btn" class="btn">Join us</button>
+                <button id="join-btn" class="btn" href="@Url.Action("SignIn","Home")">Sign Up</button>
+                <p class="text-danger fw-bold">@ViewBag.ThongBao</p>
             </div>
             <div class="not-a-member">
-                <p>Already a Member?? <a href="@Url.Action("SignIn", "User")">Sign In.</a></p>
+                <p>Already a Member?? <a href="@Url.Action("SignIn","Login")">Sign In.</a></p>
             </div>
+
         </form>
     </div>
 </div>
-

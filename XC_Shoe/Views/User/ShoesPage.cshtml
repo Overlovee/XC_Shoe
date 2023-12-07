@@ -35,40 +35,68 @@
                 @Html.Action("TypeShoesPartial", "Shoes")
                 @*<h3 class="title-content">Colour</h3>
 
-                    @Html.Action("ColoursPartial", "TypeShoes")*@
+        @Html.Action("ColoursPartial", "TypeShoes")*@
+               
+                    @*<h3 class="title-content"><b>Gender</b></h3>
+                    <ul class="list-group list-group-flush text-left">
+                        @{
+                            if (ViewBag.gender == "Men")
+                            {
+                                <li class="list-group-item">
+                                    <input type="checkbox" value="Men" name="Gender" checked />
+                                    <label>Men</label>
+                                </li>
+                                <li class="list-group-item">
+                                    <input type="checkbox" value="Women" name="Gender" />
+                                    <label>Women</label>
+                                </li>
+                            }
+                            else if (ViewBag.gender == "Women")
+                            {
+                                <li class="list-group-item">
+                                    <input type="checkbox" value="Men" name="Gender" />
+                                    <label>Men</label>
+                                </li>
+                                <li class="list-group-item">
+                                    <input type="checkbox" value="Women" name="Gender" checked />
+                                    <label>Women</label>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item">
+                                    <input type="checkbox" value="Men" name="Gender" checked/>
+                                    <label>Men</label>
+                                </li>
+                                <li class="list-group-item">
+                                    <input type="checkbox" value="Women" name="Gender" checked/>
+                                    <label>Women</label>
+                                </li>
+                            }
+                        }
+                    </ul>*@
 
-                <h3 class="title-content"><b>Gender</b></h3>
-                <ul class="list-group list-group-flush text-left">
-                    <li class="list-group-item">
-                        <input type="checkbox" value="Men" />
-                        <label>Men</label>
-                    </li>
-                    <li class="list-group-item">
-                        <input type="checkbox" value="Women" />
-                        <label>Women</label>
-                    </li>
-                </ul>
-                <h3 class="title-content"><b>Icon</b></h3>
+                @*<h3 class="title-content"><b>Icon</b></h3>
 
-                @Html.Action("IconsPartial", "Shoes")
+                @Html.Action("IconsPartial", "Shoes")*@
                 @*<ul id="menu-content-list">
-                        <a href="#">
-                        <li>Lifestyle</li>
-                        </a>
-                        <a href="#">
-                        <li>Running</li>
-                        </a>
-                        <a href="#">
-                        <li>Basketball</li>
-                        </a>
-                        <a href="#">
-                        <li>Football</li>
-                        </a>
-                        <a href="#">
-                        <li>Training & Gym</li>
-                        </a>
-                    </ul>
-                    <div class="line-seperate"></div>*@
+            <a href="#">
+            <li>Lifestyle</li>
+            </a>
+            <a href="#">
+            <li>Running</li>
+            </a>
+            <a href="#">
+            <li>Basketball</li>
+            </a>
+            <a href="#">
+            <li>Football</li>
+            </a>
+            <a href="#">
+            <li>Training & Gym</li>
+            </a>
+        </ul>
+        <div class="line-seperate"></div>*@
             </div>
         </div>
         <div class="col-sm-10">
@@ -185,3 +213,38 @@
         });
     });
 </script>
+
+@*<script>
+    $(document).ready(function () {
+        // Lắng nghe sự kiện khi người dùng click vào checkbox gender
+        $('input[type="checkbox"][name="Gender"]').on('change', function () {
+            // Lấy giá trị của các checkbox gender đã chọn
+            var selectedGenders = $('input[type="checkbox"][name="Gender"]:checked').map(function () {
+                return this.value;
+            }).get();
+
+            // Gọi hàm AJAX để load lại trang với các tham số
+            reloadShoesPageByGender(selectedGenders);
+        });
+
+        function reloadShoesPageByGender(selectedValues) {
+            // Sử dụng AJAX để gửi yêu cầu đến server
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ShoesPage", "User")',
+                data: {
+                    gender: '@ViewBag.gender',
+                    icon: '@ViewBag.icon',
+                    type: selectedValues.join(','),
+                    search: '@ViewBag.search'
+                },
+                success: function (result) {
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+            });
+        }
+    });
+</script>*@

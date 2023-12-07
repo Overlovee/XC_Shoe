@@ -21,7 +21,7 @@
             </svg>*@
         <h3 class="form-header-tile">YOUR ACCOUNT FOR EVERYTHING NIKE</h3>
     </div>
-    <form action="#" id="form-sign-in" method="get">
+    <form action="@Url.Action("SignIn", "Login")" id="form-sign-in" method="post">
         <div class="form-group">
             <input id="email-signin" type="text" placeholder="Email address" name="emailSignin">
             <span class="form-message"></span>
@@ -46,7 +46,7 @@
             </p>
         </div>
         <div class="submit">
-            <a href="@Url.Action("SignInWithAccount", "Login")"><button id="signin-btn">Sign in</button></a>
+            <button id="signin-btn">Sign in</button>
             <a id="signin-with-google-btn" target="_blank"
                href="@ViewBag.response">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" role="img" class="icon ">

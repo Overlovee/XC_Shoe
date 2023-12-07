@@ -66,7 +66,7 @@ namespace XC_Shoe.Connects
         public List<UserShipment> getUserShipmentDetails(string id)
         {
             List<UserShipment> list = new List<UserShipment>();
-            string sql = "SELECT * FROM Users_ShipmentDetails WHERE UserID = '" + id + "'";
+            string sql = "SELECT * FROM Users_ShipmentDetails WHERE UserID = '" + id + "' order by IsDefault DESC";
             SqlDataReader rdr = db.ExcuteQuery(sql);
             while (rdr.Read())
             {
@@ -95,7 +95,8 @@ namespace XC_Shoe.Connects
                 emp.Email = rdr.GetValue(3).ToString();
                 emp.Password = rdr.GetValue(4).ToString();
                 emp.PhoneNumber = rdr.GetValue(5).ToString();
-                //emp.Role = int.Parse(rdr.GetValue(6).ToString());
+                emp.Image = rdr.GetValue(6).ToString();
+                emp.Role = int.Parse(rdr.GetValue(7).ToString());
 
             }
             rdr.Close();
