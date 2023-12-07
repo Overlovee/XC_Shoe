@@ -247,6 +247,13 @@ namespace XC_Shoe.Connects
             return (list);
         }
 
-
+        public int AddNewShoes(string iconID, int TypeShoesID, string NameShoes, float Price, string StyleType, string ColourName)
+        {
+            int rs = 0;
+            string sql = "EXEC dbo.AddNewShoes " + iconID + "," + TypeShoesID + ",'" + NameShoes + "'," + Price + ",'" + StyleType + "','" + ColourName + "'";
+            rs = db.ExcuteNonQuery(sql);
+            db.close();
+            return (rs);
+        }
     }
 }
