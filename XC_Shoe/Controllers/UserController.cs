@@ -33,11 +33,13 @@ namespace XC_Shoe.Controllers
         public ActionResult ShoesPage(string gender = "", string icon = "", string type = "", string search = "")
         {
             ConnectShoes connectShoes = new ConnectShoes();
+            search = HttpUtility.UrlDecode(search);
             List<Shoe> ListShoes = connectShoes.GetRepresentData(gender, icon, type, search);
             ViewBag.gender = gender;
             ViewBag.icon = icon;
             ViewBag.type = type;
             ViewBag.search = search;
+
             return View(ListShoes);
         }
         public ActionResult ShowShoesDetail(string shoesID, string colourName)

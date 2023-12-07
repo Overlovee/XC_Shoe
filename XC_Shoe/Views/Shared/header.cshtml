@@ -235,7 +235,7 @@
                     </button>
                 </div>
                 <div class="search-frame">
-                    <p>yameta</p>
+
                 </div>
             </div>
 
@@ -295,3 +295,21 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Lắng nghe sự kiện keyup trên thẻ input
+    $('#search-input').keyup(function (e) {
+        // Kiểm tra nếu phím Enter được nhấn
+        if (e.keyCode === 13) {
+            // Gọi hàm để thực hiện công việc cần thiết (truyền giá trị search)
+            performSearch();
+        }
+    });
+
+    // Hàm thực hiện công việc gọi tới action ShoesPage
+    function performSearch() {
+        // Lấy giá trị từ thẻ input
+        var searchValue = $('#search-input').val();
+        window.location.href = '/User/ShoesPage?Gender=@ViewBag.gender&icon=@ViewBag.icon&type=@ViewBag.type&search=' + encodeURIComponent(searchValue);
+    }
+</script>

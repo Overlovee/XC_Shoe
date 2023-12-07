@@ -510,14 +510,19 @@ AS
 BEGIN 
 	DECLARE @OrderID VARCHAR(10);
 	SET @OrderID= (SELECT TOP(1) OrderID FROM Orders 
-	WHERE UserID = 'US1' AND Total = @Total AND RecipientAddress = @RecipientAddress 
+	WHERE Total = @Total AND RecipientAddress = @RecipientAddress 
 	AND RecipientName= @RecipientName AND RecipientPhoneNumber = @RecipPhone ORDER BY ID DESC);
 	RETURN @OrderID
 END
 GO
 -- Call the function and output the result
-SELECT dbo.Get_OrderID('US1', 25000.00, 2730000.00, N'140 Lê Trong Tấn TP Hồ Chí Minh', N'Huy Trương', N'03157839578') AS ResultOrderID;
+SELECT dbo.Get_OrderID('', 25000.00, 2730000.00, N'140 Lê Trong Tấn TP Hồ Chí Minh', N'Huy Trương', N'03157839578') AS ResultOrderID;
+SELECT dbo.Get_OrderID('', 250000.00, 5250000.00, N'Tân Phú,Hcm', N'Minh Thu', N'019231212') AS ResultOrderID;
 
+SELECT TOP(1) OrderID FROM Orders 
+	WHERE UserID = 'US1' AND Total = 5250000.00 AND RecipientAddress = N'Tân Phú,Hcm'
+	AND RecipientName= N'Minh Thu' AND RecipientPhoneNumber = N'019231212' 
+	ORDER BY ID DESC;
 ALTER FUNCTION GetFirstShoeInfo(@StyleType NVARCHAR(50),@Icon NVARCHAR(150),@typeShoes NVARCHAR(50),@Search NVARCHAR(255))
 RETURNS TABLE
 AS
@@ -591,5 +596,56 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE DeleteShoesSelect @UserID VARCHAR(10),@OrderID VARCHAR(10)
+AS
+BEGIN
+	DECLARE @CardID INT
+	SET @CardID = (Select CartID From Shopping_Cart Where UserID = @UserID)
+	INSERT INTO Order_Detail
+	SELECT @OrderID,ShoesID,Quantity,Size,StyleType,ColourID,Price FROM Cart_Detail CD WHERE CartID = @CardID AND BuyingSelection_Status = 1
+	DELETE FROM Cart_Detail
+	WHERE BuyingSelection_Status = 1 AND CartID = @CardID
 
-SELECT IconID, ShoesID, TypeShoesID, ShoesName, StyleType, TypeShoesName, ColorName,Number_Colour, Price,Discount, Url FROM (SELECT S.IconID, S.ShoesID, SD.TypeShoesID, SD.Name AS ShoesName, S.StyleType,TS.Name AS TypeShoesName, C.Name AS ColorName, dbo.COUNT_Colour(S.ShoesID) AS 'Number_Colour', S.Price, S.Discount, Im.Url, ROW_NUMBER() OVER (PARTITION BY S.ShoesID ORDER BY S.ShoesID) AS RowNum FROM Shoes S INNER JOIN Shoes_Details SD ON S.ShoesID = SD.ShoesID INNER JOIN Type_Shoes TS ON SD.TypeShoesID = TS.TypeShoesID INNER JOIN Colour_Detail CD ON S.ShoesID = CD.ShoesID INNER JOIN Images Im ON Im.ShoesID = S.ShoesID INNER JOIN Colours C ON CD.ColourID = C.ColourID WHERE CD.ColourID = Im.ColourID S.StyleType = 'Men' )GROUP BY S.IconID,S.ShoesID,SD.TypeShoesID,SD.Name,S.StyleType,TS.Name,C.Name,S.Price, S.Discount,Im.Url) RankedShoes WHERE RowNum = 1;
+END
+GO
+
+CREATE PROCEDURE AddToOrder
+	@UserID VARCHAR(10),
+	@HandingFee Decimal(10,2),
+	@Total Decimal(10,2),
+	@RecipientAddress NVARCHAR(255),
+	@RecipientName NVARCHAR(50),
+	@RecipPhone VARCHAR(12),
+	@OrderDate DATE
+AS
+BEGIN
+	IF @UserID = ''
+	BEGIN 
+		INSERT Orders(EstimatedDeliveryHandlingFee,Total,RecipientAddress,RecipientName,RecipientPhoneNumber,OrderDate)
+		VALUES 
+		(@HandingFee,@Total,@RecipientAddress,@RecipientName,@RecipPhone,@OrderDate);
+	END
+	ELSE
+	BEGIN
+			DECLARE @InsertedOrderID VARCHAR(10);
+			INSERT Orders(UserID,EstimatedDeliveryHandlingFee,Total,RecipientAddress,RecipientName,RecipientPhoneNumber,OrderDate)
+			VALUES 
+				(@UserID,@HandingFee,@Total,@RecipientAddress,@RecipientName,@RecipPhone,@OrderDate);
+			SET @InsertedOrderID = (SELECT TOP(1) OrderID FROM Orders WHERE UserID = @UserID ORDER BY ID DESC)
+			EXEC dbo.DeleteShoesSelect @UserID,@InsertedOrderID
+	END	
+END
+GO
+
+SELECT IconID, ShoesID, TypeShoesID, ShoesName, StyleType, TypeShoesName, ColorName,Number_Colour, Price,Discount, Url 
+FROM (SELECT S.IconID, S.ShoesID, SD.TypeShoesID, SD.Name AS ShoesName, S.StyleType,TS.Name AS TypeShoesName, C.Name 
+AS ColorName, dbo.COUNT_Colour(S.ShoesID) AS 'Number_Colour', S.Price, S.Discount, Im.Url, 
+ROW_NUMBER() OVER (PARTITION BY S.ShoesID ORDER BY S.ShoesID) AS RowNum FROM Shoes S 
+INNER JOIN Shoes_Details SD ON S.ShoesID = SD.ShoesID 
+INNER JOIN Type_Shoes TS ON SD.TypeShoesID = TS.TypeShoesID 
+INNER JOIN Colour_Detail CD 
+ON S.ShoesID = CD.ShoesID 
+INNER JOIN Images Im ON Im.ShoesID = S.ShoesID 
+INNER JOIN Colours C ON CD.ColourID = C.ColourID 
+WHERE CD.ColourID = Im.ColourID S.StyleType = 'Men' )
+GROUP BY S.IconID,S.ShoesID,SD.TypeShoesID,SD.Name,S.StyleType,TS.Name,C.Name,S.Price, S.Discount,Im.Url) RankedShoes WHERE RowNum = 1;

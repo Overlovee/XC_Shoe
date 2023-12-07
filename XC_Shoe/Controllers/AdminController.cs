@@ -93,7 +93,7 @@ namespace XC_Shoe.Controllers
         }
         public ActionResult ManageAdmin(string role = "1", string sort = "ASC", string search = "")
         {
-            List<ShopBrand> list1 = connectShopBrand.getShopBrandsData();   
+            List<ShopBrand> list1 = connectShopBrand.getShopBrandsData();
             List<User> list = connectUsers.getData(role, sort, search);
             ViewBag.ShopBranches = new SelectList(list1, "ShopID", "ShopBranchAddress");
             ViewBag.Title = "Manage Admins";
@@ -130,7 +130,7 @@ namespace XC_Shoe.Controllers
         [HttpPost]
         public ActionResult AdminProcessSignUp(FormCollection form)
         {
-            
+
             // Retrieve form data from the collection
             var name = form["name"];
             var email = form["Email"];
@@ -139,7 +139,7 @@ namespace XC_Shoe.Controllers
             var address = form["Address"];
             var shopBranch = form["ShopBranch"];
             int rs = connectUsers.AddAdmin(name, email, password, phone, address, shopBranch);
-           
+
             // Process the data as needed, for example, save it to a database
 
             // Redirect or return a different view as needed
@@ -156,7 +156,7 @@ namespace XC_Shoe.Controllers
             //var newcolour = form["NewColour"];
             var Price = float.Parse(form["Price"]);
             var Discount = float.Parse(form["Discount"]);
-            int rs = ConnectColour.EditShoes(OldShoesID, NewShoesID, TypeShoesID,styleType, Price, Discount);
+            int rs = ConnectColour.EditShoes(OldShoesID, NewShoesID, TypeShoesID, styleType, Price, Discount);
             return RedirectToAction("ManageProduct");
 
         }
@@ -166,7 +166,7 @@ namespace XC_Shoe.Controllers
             var IconID = form["IconID"];
             var IconName = form["IconName"];
 
-            int rs = ConnectIcons.AddIcon(IconID,IconName);
+            int rs = ConnectIcons.AddIcon(IconID, IconName);
             return RedirectToAction("ManageProduct");
 
         }
@@ -180,9 +180,14 @@ namespace XC_Shoe.Controllers
             var StyleType = form["Styletype"];
             var Colour = form["Colours"];
             int rs = 0;
-            rs = connectShoes.AddNewShoes(IconID,TypeShoesID,NameShoes, Price, StyleType, Colour);
+            rs = connectShoes.AddNewShoes(IconID, TypeShoesID, NameShoes, Price, StyleType, Colour);
             return RedirectToAction("ManageProduct");
 
+        }
+
+        public ActionResult ShowStartAdminPage()
+        {
+            return View();
         }
     }
 }
