@@ -22,12 +22,12 @@ namespace XC_Shoe.Controllers
             return View();
         }
 
-        public ActionResult ShoesPage(string gender)
-        {
-            ConnectShoes connectShoes = new ConnectShoes();
-            List<Shoe> ListShoes = connectShoes.GetRepresentData(gender);
-            return View(ListShoes);
-        }
+        //public ActionResult ShoesPage(string gender)
+        //{
+        //    ConnectShoes connectShoes = new ConnectShoes();
+        //    List<Shoe> ListShoes = connectShoes.GetRepresentData(gender);
+        //    return View(ListShoes);
+        //}
         public ActionResult ShowShoesDetail(string shoesID, String colourName)
         {
             ConnectShoes connectShoes = new ConnectShoes();
@@ -35,7 +35,7 @@ namespace XC_Shoe.Controllers
             Shoe shoes = connectShoes.getShoesDetailData(shoesID, colourName);
             List<Size> SizeList = connectSize.getSizeShoesData();
             List<Shoe> shoesList = connectShoes.getShoesByShoesIDData(shoesID);
-            ViewBag.UserID = "US3";
+            ViewBag.UserID = "US1";
             ViewBag.ShoesColor = shoesList;
             ViewBag.size = SizeList;
             return View(shoes);

@@ -11,7 +11,7 @@ namespace XC_Shoe.Controllers
     public class BagController : Controller
     {
         // GET: Bag
-        public ActionResult ShowBagPage(string userID = "US3")
+        public ActionResult ShowBagPage(string userID = "US1")
         {
             ConnectBag connectBag = new ConnectBag();
             List<Bag> bagList = connectBag.getBagData(userID);

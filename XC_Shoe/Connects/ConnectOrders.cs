@@ -137,6 +137,14 @@ namespace XC_Shoe.Connects
             }
             return (list);
         }
+        public int AddToOrder(string UserID,float HandingFee,float Total,string RecipientAddress,string RecipientName,string RecipPhone,DateTime OrderDate)
+        {
+            int rs = 0;
+            string sql = "EXEC dbo.AddToOrder '" +UserID+"',"+HandingFee+","+Total+",'"+RecipientAddress+"','"+RecipientName+"','"+RecipPhone+"','"+OrderDate+"'";
+            rs = db.ExcuteNonQuery(sql);
+            db.close();
+            return (rs);
+        }
 
     }
 }

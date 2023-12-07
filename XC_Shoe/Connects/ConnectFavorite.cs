@@ -39,14 +39,15 @@ namespace XC_Shoe.Connects
             int rs = 0;
             string sql = "EXEC dbo.AddFavorite'" + userID + "','" + ShoesID + "','"+ colourName + "','" + Styletype +"'";
             rs = db.ExcuteNonQuery(sql); ;
-            
+            db.close();
             return (rs);
         }
         public int DeleteShoesInFavorite(int favoriteID,string ShoesID, string colourName, string Styletype)
         {
             int rs = 0;
             string sql = "EXEC dbo.DeletoShoesInFavorite "+ favoriteID + ",'" + ShoesID + "','" + colourName + "','" +Styletype +"'";
-            rs = db.ExcuteNonQuery(sql); ;
+            rs = db.ExcuteNonQuery(sql);
+            db.close();
             return (rs);
         }      
     }

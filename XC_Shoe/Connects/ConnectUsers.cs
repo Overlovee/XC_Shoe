@@ -95,11 +95,20 @@ namespace XC_Shoe.Connects
                 emp.Email = rdr.GetValue(3).ToString();
                 emp.Password = rdr.GetValue(4).ToString();
                 emp.PhoneNumber = rdr.GetValue(5).ToString();
-                //emp.Role = int.Parse(rdr.GetValue(6).ToString());
+                emp.Image = rdr.GetValue(6).ToString();
+                emp.Role = int.Parse(rdr.GetValue(7).ToString());
 
             }
             rdr.Close();
             return (emp);
+        }
+        public int AddAdmin(string name, string email, string password, string phone, string address,string shopBranch = "Shop1")
+        {
+            int role = 1;
+            int rs = 0;
+            string sql = "EXEC dbo.InsertAdmin N'" + name + "','" + email + "','" + password + "','"+ phone + "',"+role + ",'"+ shopBranch + "',N'" + address + "'";
+            rs = db.ExcuteNonQuery(sql); ;
+            return (rs);
         }
     }
 }

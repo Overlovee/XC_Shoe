@@ -14,10 +14,56 @@ namespace XC_Shoe.Connects
         DbContext db = new DbContext();
         //string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
             
-        public List<Models.Shoe> GetRepresentData(string Gender)
+        public List<Models.Shoe> GetRepresentData(string Gender,string Icon,string typeShoes,string search)
         {
             List<Shoe> list = new List<Shoe>();
-            string sql = "SELECT * FROM dbo.GetFirstShoeInfo('" + Gender + "')";
+            string sql = "SELECT IconID," +
+                "ShoesID," +
+                "TypeShoesID," +
+                "ShoesName, " +
+                "StyleType, " +
+                "TypeShoesName, " +
+                "ColorName," +
+                "Number_Colour," +
+                "Price," +
+                "Discount, " +
+                "Url" +
+                "FROM (SELECT S.IconID,S.ShoesID,SD.TypeShoesID,SD.Name AS ShoesName,S.StyleType,TS.Name AS TypeShoesName," +
+                "C.Name AS ColorName,dbo.COUNT_Colour(S.ShoesID) AS 'Number_Colour',S.Price,S.Discount,Im.Url," +
+                "ROW_NUMBER() OVER (PARTITION BY S.ShoesID ORDER BY S.ShoesID) AS RowNum " +
+                "FROM Shoes S INNER JOIN Shoes_Details SD ON S.ShoesID = SD.ShoesID" +
+                "INNER JOIN Type_Shoes TS ON SD.TypeShoesID = TS.TypeShoesID" +
+                "INNER JOIN Colour_Detail CD ON S.ShoesID = CD.ShoesID" +
+                "INNER JOIN Images Im ON Im.ShoesID = S.ShoesID" +
+                "INNER JOIN Colours C ON CD.ColourID = C.ColourID" +
+                "WHERE CD.ColourID = Im.ColourID AND S.StyleType = " + Gender +
+                "GROUP BY S.IconID,S.ShoesID,SD.TypeShoesID,SD.Name,S.StyleType,TS.Name,C.Name,S.Price, S.Discount,Im.Url)" +
+                "RankedShoes WHERE RowNum = 1 );";
+            if(search != "")
+            {
+                sql = "SELECT IconID," +
+                "ShoesID," +
+                "TypeShoesID," +
+                "ShoesName, " +
+                "StyleType, " +
+                "TypeShoesName, " +
+                "ColorName," +
+                "Number_Colour," +
+                "Price," +
+                "Discount, " +
+                "Url" +
+                "FROM (SELECT S.IconID,S.ShoesID,SD.TypeShoesID,SD.Name AS ShoesName,S.StyleType,TS.Name AS TypeShoesName," +
+                "C.Name AS ColorName,dbo.COUNT_Colour(S.ShoesID) AS 'Number_Colour',S.Price,S.Discount,Im.Url," +
+                "ROW_NUMBER() OVER (PARTITION BY S.ShoesID ORDER BY S.ShoesID) AS RowNum " +
+                "FROM Shoes S INNER JOIN Shoes_Details SD ON S.ShoesID = SD.ShoesID" +
+                "INNER JOIN Type_Shoes TS ON SD.TypeShoesID = TS.TypeShoesID" +
+                "INNER JOIN Colour_Detail CD ON S.ShoesID = CD.ShoesID" +
+                "INNER JOIN Images Im ON Im.ShoesID = S.ShoesID" +
+                "INNER JOIN Colours C ON CD.ColourID = C.ColourID" +
+                "WHERE CD.ColourID = Im.ColourID AND S.StyleType = " + Gender + "AND SD.Name like  '%'"+ search +"'%'" +
+                "GROUP BY S.IconID,S.ShoesID,SD.TypeShoesID,SD.Name,S.StyleType,TS.Name,C.Name,S.Price, S.Discount,Im.Url)" +
+                "RankedShoes WHERE RowNum = 1 );";
+            }
             SqlDataReader rdr = db.ExcuteQuery(sql);
             while (rdr.Read())
             {
@@ -171,6 +217,14 @@ namespace XC_Shoe.Connects
             }
             rdr.Close();
             return (list);
+        }
+        public int AddNewShoes(string iconID,int TypeShoesID, string NameShoes,float Price ,string StyleType, string ColourName)
+        {
+            int rs = 0;
+            string sql = "EXEC dbo.AddNewShoes " + iconID + "," + TypeShoesID + ",'" + NameShoes + "',"+ Price +",'"+ StyleType + "','"+ ColourName +"'";
+            rs = db.ExcuteNonQuery(sql);
+            db.close();
+            return (rs);
         }
     }
 }

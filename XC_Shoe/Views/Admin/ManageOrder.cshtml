@@ -150,13 +150,13 @@
                 <div class="collapse" id="@item.OrderID">
                     <div class="detail-order">
                         <div class="infor-customer row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <span class="card-text">@item.RecipientName</span>
                             </div>
                             <div class="col-md-2">
                                 <span class="card-text">@item.RecipientPhoneNumber</span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <span class="card-text">@item.Email</span>
                             </div>
                             <div class="col-md-4">
@@ -192,13 +192,28 @@
                                     </div>
                                     <div class="quantity-box col-md-3">
                                         <span class="card-text quantity">@detail.Quantity</span> x
-                                        <span class="shoes-price">@detail.Price <span class"unit">VND</span></span>
+                                        <span id="formattedPrice" class="detail-price">@detail.Price</span>
+
+                                        <script>
+                                        // JavaScript function to format number with commas
+                                        function formatNumberWithCommas(number) {
+                                            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                        }
+
+                                        // Example usage with the provided model property
+                                        var originalPrice = @Html.Raw(Json.Encode(@detail.Price));
+                                        var formattedPrice = formatNumberWithCommas(originalPrice);
+
+                                        // Insert the formatted price into the designated span element
+                                        document.getElementById('formattedPrice').innerText = formattedPrice;
+                                        </script>
+                                        <span class="unit-money">VND</span>
                                     </div>
                                     <div class="summary-box col-md-2">
-                                        @{ 
+                                        @{
                                             decimal totalOfOrder = @detail.Quantity * @detail.Price;
                                         }
-                                        <p class="card-text total-of-product-item">@totalOfOrder <span class"unit">VND</span></p>
+                                        <p class="card-text total-of-product-item">@totalOfOrder <span class"unit">VND</span>
                                     </div>
                                 </div>
                             }

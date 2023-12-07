@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,9 +14,13 @@ namespace XC_Shoe.Controllers
     {
         // GET: Admin
         ConnectShoes connectShoes = new ConnectShoes();
+        ConnectShopBrand connectShopBrand = new ConnectShopBrand();
         ConnectUsers connectUsers = new ConnectUsers();
         ConnectOrders connectOrders = new ConnectOrders();
+        ConnectTypeShoes connectTypeShoes = new ConnectTypeShoes();
         ConnectPurchased connectPurchased = new ConnectPurchased();
+        ConnectColour ConnectColour = new ConnectColour();
+        ConnectIcons ConnectIcons = new ConnectIcons();
         User user = new User();
         public AdminController()
         {
@@ -47,16 +52,33 @@ namespace XC_Shoe.Controllers
             ViewBag.TotalIncome = connectPurchased.getTotalIncome();
             return View(list);
         }
-        public ActionResult ManageProduct(string styleStyle = "Men", string sort = "ASC", string search = "")
+        public ActionResult ManageProduct(string styleStyle = "Men", string sort = "ASC", string search = "", int? page = null)
         {
+            List<Icons> icons = ConnectIcons.getIconShoesData();
+            List<TypeShoes> list1 = connectTypeShoes.getTypeShoesData();
+            List<Colours> list2 = ConnectColour.getColourShoesData();
             List<Shoe> list = connectShoes.getShoesDataByStyleType(styleStyle, sort, search);
+            //List<Shoe> list3 = connectShoes.GetRepresentData(styleStyle);
+            ViewBag.Icons = new SelectList(icons, "IconID", "NameIcon");
+            ViewBag.lstTypeShoes = new SelectList(list1, "TypeShoesID", "NameTS");
+            ViewBag.lstColor = new SelectList(list2, "ColourID", "ColourName");
+            ViewBag.ShoesName = new SelectList(list, "ShoesID", "NameShoes");
             ViewBag.Title = "Manage Products";
             ViewBag.MainTitle = "Manage Products";
             ViewBag.Style = styleStyle;
             ViewBag.Sort = sort;
             ViewBag.Total = list.Count;
             ViewBag.SearchValue = search;
-            return View(list);
+            //
+            if (page == null)
+            {
+                page = 1;
+            }
+            var pageNumber = page ?? 1;
+            var pageSize = 8;
+
+            //
+            return View(list.ToPagedList(pageNumber, pageSize));
         }
         public ActionResult ManageUser(string role = "0", string sort = "ASC", string search = "")
         {
@@ -71,7 +93,9 @@ namespace XC_Shoe.Controllers
         }
         public ActionResult ManageAdmin(string role = "1", string sort = "ASC", string search = "")
         {
+            List<ShopBrand> list1 = connectShopBrand.getShopBrandsData();   
             List<User> list = connectUsers.getData(role, sort, search);
+            ViewBag.ShopBranches = new SelectList(list1, "ShopID", "ShopBranchAddress");
             ViewBag.Title = "Manage Admins";
             ViewBag.MainTitle = "Manage Admins";
             ViewBag.Role = role;
@@ -102,6 +126,63 @@ namespace XC_Shoe.Controllers
         public ActionResult ConfirmOrder(string id, string status = "Wait for confirmation", string sort = "ASC", string search = "")
         {
             return RedirectToAction("ManageOrder");
+        }
+        [HttpPost]
+        public ActionResult AdminProcessSignUp(FormCollection form)
+        {
+            
+            // Retrieve form data from the collection
+            var name = form["name"];
+            var email = form["Email"];
+            var password = form["Password"];
+            var phone = form["Phone"];
+            var address = form["Address"];
+            var shopBranch = form["ShopBranch"];
+            int rs = connectUsers.AddAdmin(name, email, password, phone, address, shopBranch);
+           
+            // Process the data as needed, for example, save it to a database
+
+            // Redirect or return a different view as needed
+            return RedirectToAction("ManageAdmin"); // Redirect to the Index action, replace with your actual action
+        }
+        [HttpPost]
+        public ActionResult EditShoes(FormCollection form)
+        {
+            var OldShoesID = form["OldShoesID"];
+            var NewShoesID = form["NewShoesID"];
+            var TypeShoesID = int.Parse(form["TypeShoes"]);
+            var styleType = form["styleType"];
+            //var OldColour = form["OldColour"];
+            //var newcolour = form["NewColour"];
+            var Price = float.Parse(form["Price"]);
+            var Discount = float.Parse(form["Discount"]);
+            int rs = ConnectColour.EditShoes(OldShoesID, NewShoesID, TypeShoesID,styleType, Price, Discount);
+            return RedirectToAction("ManageProduct");
+
+        }
+        [HttpPost]
+        public ActionResult AddIcon(FormCollection form)
+        {
+            var IconID = form["IconID"];
+            var IconName = form["IconName"];
+
+            int rs = ConnectIcons.AddIcon(IconID,IconName);
+            return RedirectToAction("ManageProduct");
+
+        }
+        [HttpPost]
+        public ActionResult AddNewshoes(FormCollection form)
+        {
+            var IconID = form["Icon"];
+            var TypeShoesID = int.Parse(form["NewTypeShoes"]);
+            var NameShoes = form["nameNS"];
+            var Price = float.Parse(form["price"]);
+            var StyleType = form["Styletype"];
+            var Colour = form["Colours"];
+            int rs = 0;
+            rs = connectShoes.AddNewShoes(IconID,TypeShoesID,NameShoes, Price, StyleType, Colour);
+            return RedirectToAction("ManageProduct");
+
         }
     }
 }

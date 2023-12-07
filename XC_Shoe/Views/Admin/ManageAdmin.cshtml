@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Manage Admins";
     Layout = "~/Views/Shared/AdminLayoutPage.cshtml";
+    var shopBranches = ViewBag.ShopBranches as SelectList;
+
 }
 
 <nav class="navbar navbar-expand-md box">
@@ -15,7 +17,70 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <button class="add-new-btn" aria-current="page" href="#">Add new</button>
+                    <button class="add-new-btn" aria-current="page" href="#"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Add new
+                    </button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content" style="height:50%">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add New Admin Account</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <hr class="my-4">
+                                    <form id="adminForm" action="@Url.Action("AdminProcessSignUp", "Admin")" method="post" style="height:50%; width:100%">
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label fs-6">UserName</label>
+                                            <input type="text" class="form-control text-center" id="name" name="name" placeholder="Enter Name" style="height:17%;font-size:12px;width:100%; background-color:azure" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Email" class="form-label fs-6">Email</label>
+                                            <input type="text" class="form-control text-center" id="Email" name="Email" placeholder="Enter Email" style="height:17%;font-size:12px;width:100%; background-color:azure" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Password" class="form-label fs-6">Password</label>
+                                            <input type="password" class="form-control text-center" id="Password" name="Password" placeholder="Enter Password" style="height:17%;font-size:12px;width:100%; background-color:azure" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Phone" class="form-label fs-6">Phone</label>
+                                            <input type="text" class="form-control text-center" id="Phone" name="Phone" placeholder="Enter Phone" style="height:17%;font-size:12px;width:100%; background-color:azure" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Address" class="form-label fs-6">Address</label>
+                                            <input type="text" class="form-control text-center" id="Address" name="Address" placeholder="Enter Address" style="height:17%;font-size:12px;width:100%; background-color:azure" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Address" class="form-label fs-6">Shopbranch</label>
+                                            <select class="form-select sm-6" id="ShopBranch" name="ShopBranch" aria-label="Select ShopBranch">
+                                                <option value="">Select an item</option>
+                                                @foreach (var item in shopBranches)
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                            </select>
+                                        </div>
+
+
+                                        <!-- Add more fields as needed -->
+
+                                        <hr class="my-4">
+
+                                        <!-- Additional form fields can be added here -->
+
+                                    </form>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" onclick="saveChanges()" class="btn btn-primary">Save changes</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                 </li>
             </ul>
             @using (Html.BeginForm("ManageAdmin", "Admin", new { role = ViewBag.Role, sort = ViewBag.Sort }, FormMethod.Get, new { @class = "d-flex search-box justify-content-end" }))
@@ -95,7 +160,7 @@
                         </div>
                         <div class="card-footer d-flex">
                             <button class="detail-btn col" data-bs-toggle="modal" data-bs-target="#@item.UserID">Detail</button>
-                            <button class="delete-btn col">@Html.ActionLink("Delete", "Delete", new { id = item.UserID })</button>
+                            <button class="delete-btn col">@Html.ActionLink("Disable", "Disable", new { id = item.UserID })</button>
                         </div>
                     </div>
                     <div class="modal fade" id="@item.UserID" data-bs-backdrop="static"
@@ -107,7 +172,24 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    ...
+                                    <div class="mb-3">
+                                        <label for="userId">UserID:</label>
+                                        <input type="text" id="userId" name="userId" class="form-control" value="@item.UserID" style="background-color: aliceblue; text-align: center">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="userName">UserName:</label>
+                                        <input type="text" id="userName" name="userName" class="form-control" value="@item.UserName"style="background-color: aliceblue; text-align: center">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="email">Email:</label>
+                                        <input type="text" id="email" name="email" class="form-control" value="@item.Email"style="background-color: aliceblue; text-align: center">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="phoneNumber">PhoneNumber:</label>
+                                        <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" value="@item.PhoneNumber"style="background-color: aliceblue; text-align: center">
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -142,3 +224,12 @@
         </nav>
     </div>
 </div>
+<script>
+    function saveChanges() {
+        // Get a reference to the form
+        var form = document.getElementById("adminForm");
+
+        // Submit the form
+        form.submit();
+    }
+</script>

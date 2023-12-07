@@ -11,7 +11,7 @@ namespace XC_Shoe.Controllers
     public class FavoriteController : Controller
     {
         // GET: Favorite
-        public ActionResult ShowFavoritePage(string userID = "US3")
+        public ActionResult ShowFavoritePage(string userID = "US1")
         {
             ConnectFavorite conF = new ConnectFavorite();
             List<Favorite> list = conF.getFavoriteData(userID);

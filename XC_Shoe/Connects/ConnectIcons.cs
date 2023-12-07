@@ -27,5 +27,12 @@ namespace XC_Shoe.Connects
             }
             return (listEmployee);
         }
+        public int AddIcon(string IconID, string IconName)
+        {
+            int rs = 0;
+            string sql = "INSERT INTO Icons (IconID, Name) VALUES('"+ IconID+"', '"+ IconName +"')";
+            rs = db.ExcuteNonQuery(sql); ;
+            return (rs);
+        }
     }
 }

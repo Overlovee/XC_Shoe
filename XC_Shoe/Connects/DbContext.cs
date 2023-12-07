@@ -10,7 +10,7 @@ namespace XC_Shoe.Connects
 {
     class DbContext
     {
-        string constr = "Data Source=.\\SQLEXPRESS;Initial Catalog=DB_XC_Shoes_Store;Integrated Security=True";
+        string constr = "Data Source=.\\SQLEXPRESS;Initial Catalog=DB_XC_Shoes_Stores;Integrated Security=True";
         SqlConnection con = new SqlConnection();
         SqlCommand cmd;
         SqlDataReader reader;

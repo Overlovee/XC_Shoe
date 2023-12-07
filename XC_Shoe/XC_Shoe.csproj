@@ -44,6 +44,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -92,6 +98,7 @@
     <Content Include="Contents\admin_site.css" />
     <Content Include="Contents\API_GoogleDrive.js" />
     <Content Include="Contents\site.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Databases\DB_XC_Insert.sql" />
     <Content Include="Databases\DB_XC_Select.sql" />
     <Content Include="Databases\DB_XC_Shoes_Store.sql" />
@@ -171,6 +178,34 @@
     <Content Include="Resources\Shoes\AM3-Women-6\z4937397608188_db9734037a73dac072c2d429f3c5c597.jpg" />
     <Content Include="Resources\Shoes\AM3-Women-6\z4937397610215_d5b6c9d8a4edd8638f62fad18fd83997.jpg" />
     <Content Include="Resources\Shoes\AM3-Women-6\z4937397613992_c47c8ea7b5fe92f916c5c90542057092.jpg" />
+    <Content Include="Resources\Shoes\CT1-Men-9\air-jordan-1-mid-older-shoes-wqHdzW  -AVT.jpg" />
+    <Content Include="Resources\Shoes\CT1-Men-9\air-jordan-1-mid-older-shoes-wqHdzW .jpg" />
+    <Content Include="Resources\Shoes\CT1-Men-9\air-jordan-1-mid-older-shoes-wqHdzW.jpg" />
+    <Content Include="Resources\Shoes\CT1-Men-9\air-jordan-1-mid-older-shoes-wqHdzWz.jpg" />
+    <Content Include="Resources\Shoes\CT1-Men-9\JD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzW  -AVT.jpg" />
+    <Content Include="Resources\Shoes\CT1-Men-9\JD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzW .jpg" />
+    <Content Include="Resources\Shoes\CT1-Men-9\JD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzW.jpg" />
+    <Content Include="Resources\Shoes\CT1-Men-9\JD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzWz.jpg" />
+    <Content Include="Resources\Shoes\DK1-Men-3\air-jordan-1-mid-older-shoes-wqHdzW  -AVT.jpg" />
+    <Content Include="Resources\Shoes\DK1-Men-3\air-jordan-1-mid-older-shoes-wqHdzW .jpg" />
+    <Content Include="Resources\Shoes\DK1-Men-3\air-jordan-1-mid-older-shoes-wqHdzW.jpg" />
+    <Content Include="Resources\Shoes\DK1-Men-3\air-jordan-1-mid-older-shoes-wqHdzWz.jpg" />
+    <Content Include="Resources\Shoes\DK1-Men-3\JD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzW  -AVT.jpg" />
+    <Content Include="Resources\Shoes\DK1-Men-3\JD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzW .jpg" />
+    <Content Include="Resources\Shoes\DK1-Men-3\JD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzW.jpg" />
+    <Content Include="Resources\Shoes\DK1-Men-3\JD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzWz.jpg" />
+    <Content Include="Resources\Shoes\HD1-Men-6\air-jordan-1-mid-older-shoes-wqHdzW  -AVT.jpg" />
+    <Content Include="Resources\Shoes\HD1-Men-6\air-jordan-1-mid-older-shoes-wqHdzW .jpg" />
+    <Content Include="Resources\Shoes\HD1-Men-6\air-jordan-1-mid-older-shoes-wqHdzW.jpg" />
+    <Content Include="Resources\Shoes\HD1-Men-6\air-jordan-1-mid-older-shoes-wqHdzWz.jpg" />
+    <Content Include="Resources\Shoes\HD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzW  -AVT.jpg" />
+    <Content Include="Resources\Shoes\HD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzW .jpg" />
+    <Content Include="Resources\Shoes\HD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzW.jpg" />
+    <Content Include="Resources\Shoes\HD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzWz.jpg" />
+    <Content Include="Resources\Shoes\HD2-Men-6\JD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzW  -AVT.jpg" />
+    <Content Include="Resources\Shoes\HD2-Men-6\JD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzW .jpg" />
+    <Content Include="Resources\Shoes\HD2-Men-6\JD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzW.jpg" />
+    <Content Include="Resources\Shoes\HD2-Men-6\JD2-Men-6\air-jordan-1-mid-older-shoes-wqHdzWz.jpg" />
     <Content Include="Resources\Shoes\JD1-Men-2\z4937397873838_199e48196d757085d38967cea07dd8c9.jpg" />
     <Content Include="Resources\Shoes\JD1-Men-2\z4937397880758_e61a359b2979c95813f5eee33fe1e12a.jpg" />
     <Content Include="Resources\Shoes\JD1-Men-2\z4937397882746_7901f7bd91c8250a119e9873357d553a-AVT.jpg" />
@@ -244,11 +279,13 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Connects\ConnectBag.cs" />
+    <Compile Include="Connects\ConnectColour.cs" />
     <Compile Include="Connects\ConnectFavorite.cs" />
     <Compile Include="Connects\ConnectIcons.cs" />
     <Compile Include="Connects\ConnectOrders.cs" />
     <Compile Include="Connects\ConnectPurchased.cs" />
     <Compile Include="Connects\ConnectShoes.cs" />
+    <Compile Include="Connects\ConnectShopBrand.cs" />
     <Compile Include="Connects\ConnectSize.cs" />
     <Compile Include="Connects\ConnectTypeShoes.cs" />
     <Compile Include="Connects\ConnectUsers.cs" />
@@ -262,6 +299,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Bag.cs" />
+    <Compile Include="Models\Colours.cs" />
     <Compile Include="Models\Favorite.cs" />
     <Compile Include="Models\Icons.cs" />
     <Compile Include="Models\Order.cs" />
@@ -269,6 +307,7 @@
     <Compile Include="Models\OrderSystem.cs" />
     <Compile Include="Models\Purchased.cs" />
     <Compile Include="Models\Shoe.cs" />
+    <Compile Include="Models\ShopBrand.cs" />
     <Compile Include="Models\Size.cs" />
     <Compile Include="Models\TypeShoes.cs" />
     <Compile Include="Models\User.cs" />

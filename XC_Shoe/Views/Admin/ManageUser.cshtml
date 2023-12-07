@@ -95,7 +95,7 @@
                         </div>
                         <div class="card-footer d-flex">
                             <button class="detail-btn col" data-bs-toggle="modal" data-bs-target="#@item.UserID">Detail</button>
-                            <button class="delete-btn col">@Html.ActionLink("Delete", "Delete", new { id = item.UserID })</button>
+                            <button class="delete-btn col">@Html.ActionLink("Disable", "Disable", new { id = item.UserID })</button>
                         </div>
                     </div>
                     <div class="modal fade" id="@item.UserID" data-bs-backdrop="static"
@@ -107,7 +107,24 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    ...
+                                    <div class="mb-3">
+                                        <label for="userId">UserID:</label>
+                                        <input type="text" id="userId" name="userId" class="form-control" value="@item.UserID" style="background-color: aliceblue; text-align: center">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="userName">UserName:</label>
+                                        <input type="text" id="userName" name="userName" class="form-control" value="@item.UserName" style="background-color: aliceblue; text-align: center">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="email">Email:</label>
+                                        <input type="text" id="email" name="email" class="form-control" value="@item.Email" style="background-color: aliceblue; text-align: center">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="phoneNumber">PhoneNumber:</label>
+                                        <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" value="@item.PhoneNumber" style="background-color: aliceblue; text-align: center">
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

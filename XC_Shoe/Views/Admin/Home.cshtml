@@ -39,7 +39,20 @@
                 <a href="#">
                     <h2 class="card-title">Monthly Sales</h2>
                 </a>
-                <p class="card-text main-card-text">@ViewBag.ThisMonthIncome <span class="unit">VND</span></p>
+                <p class="card-text main-card-text"><span id="formattedPrice">@ViewBag.ThisMonthIncome</span> <span class="unit"> VND</span></p>
+                <script>
+                            // JavaScript function to format number with commas
+                            function formatNumberWithCommas(number) {
+                                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            }
+
+                            // Example usage with the provided model property
+                            var originalPrice = @Html.Raw(Json.Encode(@ViewBag.ThisMonthIncome));
+                            var formattedPrice = formatNumberWithCommas(originalPrice);
+
+                            // Insert the formatted price into the designated span element
+                            document.getElementById('formattedPrice').innerText = formattedPrice;
+                </script>
                 @{
                     if (ViewBag.OrderGrowthPercent > 0)
                     {
@@ -50,6 +63,8 @@
                         <p class="card-text sub-card-text" style="color: #FF395A">-@ViewBag.OrderGrowthPercent%</p>
                     }
                 }
+
+
             </div>
             <div class="card-icon">
                 <i class="fa-solid fa-chart-line"></i>
@@ -62,7 +77,20 @@
                 <a href="#">
                     <h2 class="card-title">Total Income</h2>
                 </a>
-                <p class="card-text main-card-text">@ViewBag.TotalIncome <span class="unit">VND</span></p>
+                <p class="card-text main-card-text"><span id="formattedIncome">@ViewBag.TotalIncome</span> <span class="unit">VND</span></p>
+                <script>
+                            // JavaScript function to format number with commas
+                            function formatNumberWithCommas(number) {
+                                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            }
+
+                            // Example usage with the provided model propertyIncome
+                            var originalIncome = @Html.Raw(Json.Encode(@ViewBag.TotalIncome));
+                            var formattedIncome = formatNumberWithCommas(originalIncome);
+
+                            // Insert the formatted price into the designated span element
+                            document.getElementById('formattedIncome').innerText = formattedIncome;
+                </script>
                 @{
                     if (ViewBag.OrderGrowthPercent > 0)
                     {
@@ -140,7 +168,20 @@
                             </a>
                             <p class="card-text colour">@item.StyleType</p>
                             <p class="card-text colour">@item.ColorName</p>
-                            <p class="card-text quantity-sold">@item.Price <span class="unit">VND</span> | Sold: @item.PurchasedQuantity</p>
+                            <p class="card-text quantity-sold"><span id="Price_@item.ShoesID">@item.Price</span>  <span class="unit">VND</span> | Sold: @item.PurchasedQuantity</p>
+                            <script defer>
+                                            // JavaScript function to format number with commas
+                                            function formatNumberWithCommas(number) {
+                                                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                            }
+
+                                            // Example usage with the provided model property
+                                            var originalPrice_@item.ShoesID = @item.Price;
+                                            var formattedPrice_@item.ShoesID = formatNumberWithCommas(originalPrice_@item.ShoesID);
+
+                                            // Insert the formatted price into the designated anchor element
+                                            document.getElementById('Price_@item.ShoesID').innerText = formattedPrice_@item.ShoesID + " VND";
+                            </script>
                         </div>
                         <div class="card-statistic">
                             <p class="statistic-amount">@item.Total <span>VND</span></p>
