@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Sign Up";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+
+<div class="container-fluid">
+    <div class="sign-form">
+        <div class="form-header">
+            <svg id="logo-nike" viewBox="0 0 24 24" width="60px" height="60px">
+                <path d="M21 8.719L7.836 14.303C6.74 14.768 5.818 15 5.075 15c-.836 0-1.445-.295-1.819-.884-.485-.76-.273-1.982.559-3.272.494-.754 1.122-1.446 1.734-2.108-.144.234-1.415 2.349-.025 3.345.275.2.666.298 1.147.298.386 0 .829-.063 1.316-.19L21 8.719z">
+                </path>
+            </svg>
+            <h3 class="form-header-tile">BECOME A XC MEMBER</h3>
+            <p>
+                Create your XC Member profile and get first access to the very best of XC products,
+                inspiration and community.
+            </p>
+        </div>
+        <form id="form-sign-up" action="@Url.Action("SignUp","Login")" method="post">
+            <div class="form-group">
+                <input id="email-signup" name="emailSignup" type="text" placeholder="Email address">
+                <span class="form-message"></span>
+            </div>
+            <div class="form-group">
+                <input id="password-signup" name="passwordSignup" type="password" placeholder="Password">
+                <span class="form-message"></span>
+            </div>
+            <div class="form-group">
+                <input id="first-name" name="firstName" type="text" placeholder="First name">
+                <span class="form-message"></span>
+            </div>
+            <div class="form-group">
+                <input id="last-name" name="lastName" type="text" placeholder="Last name">
+                <span class="form-message"></span>
+            </div>
+            <div class="form-about-sign-up">
+                <div class="check-box">
+                    <input type="checkbox" checked id="keep-sign-in" value="keep-sign-in">
+                    <label for="">
+                        Sign up for emails to get updates from XC on products, offers and your
+                        Member benefits
+                    </label>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="form-about-legacy">
+                <p>
+                    By creating an account, you agree to
+                    XC's <a href="/policy.html">Privacy Policy</a>
+                    and <a href="/term-of-uses.html">Terms of Use</a>.
+                </p>
+            </div>
+            <div class="submit">
+                <button id="join-btn" class="btn" href="@Url.Action("SignIn","Home")">Sign Up</button>
+                <p class="text-danger fw-bold">@ViewBag.ThongBao</p>
+            </div>
+            <div class="not-a-member">
+                <p>Already a Member?? <a href="@Url.Action("SignIn","Login")">Sign In.</a></p>
+            </div>
+
+        </form>
+    </div>
+</div>

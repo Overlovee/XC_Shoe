@@ -1,8 +1,30 @@
 ﻿@model IEnumerable<XC_Shoe.Models.Shoe>
+
+@using XC_Shoe.Connects;
+@using XC_Shoe.Models;
+
 @{
     ViewBag.Title = "Show Shoes Page";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
     string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+
+    string userID = "";
+    var myCookie = HttpContext.Current.Request.Cookies["UserLogin"];
+    List<Favorite> favorites = new List<Favorite>();
+    if (myCookie != null)
+    {
+        userID = myCookie["UserID"].ToString();
+        ConnectFavorite connectFavorite = new ConnectFavorite();
+        favorites = connectFavorite.getFavoriteData(userID);
+    }
+    else
+    {
+        if (Session["FavoriteList"] != null)
+        {
+            favorites = (List<Favorite>)Session["FavoriteList"];
+        }
+    }
+
 }
 
 <div class="container-fluid">
@@ -13,40 +35,68 @@
                 @Html.Action("TypeShoesPartial", "Shoes")
                 @*<h3 class="title-content">Colour</h3>
 
-                    @Html.Action("ColoursPartial", "TypeShoes")*@
+        @Html.Action("ColoursPartial", "TypeShoes")*@
+               
+                    @*<h3 class="title-content"><b>Gender</b></h3>
+                    <ul class="list-group list-group-flush text-left">
+                        @{
+                            if (ViewBag.gender == "Men")
+                            {
+                                <li class="list-group-item">
+                                    <input type="checkbox" value="Men" name="Gender" checked />
+                                    <label>Men</label>
+                                </li>
+                                <li class="list-group-item">
+                                    <input type="checkbox" value="Women" name="Gender" />
+                                    <label>Women</label>
+                                </li>
+                            }
+                            else if (ViewBag.gender == "Women")
+                            {
+                                <li class="list-group-item">
+                                    <input type="checkbox" value="Men" name="Gender" />
+                                    <label>Men</label>
+                                </li>
+                                <li class="list-group-item">
+                                    <input type="checkbox" value="Women" name="Gender" checked />
+                                    <label>Women</label>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item">
+                                    <input type="checkbox" value="Men" name="Gender" checked/>
+                                    <label>Men</label>
+                                </li>
+                                <li class="list-group-item">
+                                    <input type="checkbox" value="Women" name="Gender" checked/>
+                                    <label>Women</label>
+                                </li>
+                            }
+                        }
+                    </ul>*@
 
-                <h3 class="title-content"><b>Gender</b></h3>
-                <ul class="list-group list-group-flush text-left">
-                    <li class="list-group-item">
-                        <input type="checkbox" value="Men" />
-                        <label>Men</label>
-                    </li>
-                    <li class="list-group-item">
-                        <input type="checkbox" value="Women" />
-                        <label>Women</label>
-                    </li>
-                </ul>
-                <h3 class="title-content"><b>Icon</b></h3>
+                @*<h3 class="title-content"><b>Icon</b></h3>
 
-                @Html.Action("IconsPartial", "Shoes")
+                @Html.Action("IconsPartial", "Shoes")*@
                 @*<ul id="menu-content-list">
-                        <a href="#">
-                        <li>Lifestyle</li>
-                        </a>
-                        <a href="#">
-                        <li>Running</li>
-                        </a>
-                        <a href="#">
-                        <li>Basketball</li>
-                        </a>
-                        <a href="#">
-                        <li>Football</li>
-                        </a>
-                        <a href="#">
-                        <li>Training & Gym</li>
-                        </a>
-                    </ul>
-                    <div class="line-seperate"></div>*@
+            <a href="#">
+            <li>Lifestyle</li>
+            </a>
+            <a href="#">
+            <li>Running</li>
+            </a>
+            <a href="#">
+            <li>Basketball</li>
+            </a>
+            <a href="#">
+            <li>Football</li>
+            </a>
+            <a href="#">
+            <li>Training & Gym</li>
+            </a>
+        </ul>
+        <div class="line-seperate"></div>*@
             </div>
         </div>
         <div class="col-sm-10">
@@ -55,11 +105,10 @@
                     <div class="row">
                         @foreach (var item in Model)
                         {
-                            <div class="col-sm-4">
+                            <div class="col-lg-4">
                                 <!-- col-sm-4 to make three columns in a row for small screens -->
                                 <div class="product-list-box mt-5">
                                     <div class="card">
-
                                         <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.NameColor})">
                                             @{
                                                 string resourcesPath = "~/Resources/Shoes/";
@@ -84,10 +133,28 @@
 
                                             <p class="card-text number-colour">@Html.DisplayFor(modelItem => item.NumberColor) Colours</p>
                                         </div>
-                                        <div class="card-footer">
+                                        <div class="card-footer d-flex flex-row justify-content-between">
                                             <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.NameColor})" class="btn categories-shoes-btn shoes-price" id="Moneycolor_@item.ShoesID" class="btn categories-shoes-btn shoes-price" id="Moneycolor_@item.ShoesID">
                                                 @Html.DisplayFor(modelItem => item.Price) VND
                                             </a>
+                                            <div class="cart-items-action text-right align-middled d-flex flex-row">
+                                                <a class="favorite-btn" data-shoes-id="@item.ShoesID" data-colour-name="@item.NameColor"
+                                                   data-style-type="@item.StyleType">
+
+                                                    @{
+                                                        Favorite existingFavorite = favorites.FirstOrDefault(fav => fav.ShoesID == item.ShoesID && fav.ColorName == item.NameColor && fav.StyleType == item.StyleType);
+                                                        if (existingFavorite == null)
+                                                        {
+                                                            <i class="fa-regular fa-heart"></i>
+                                                        }
+                                                        else
+                                                        {
+                                                            <i class="fa-solid fa-heart"></i>
+                                                        }
+                                                    }
+
+                                                </a>
+                                            </div>
                                         </div>
 
                                         <script defer>
@@ -115,4 +182,69 @@
 </div>
 
 
+<script>
+    $(document).ready(function () {
+        var userID = "@userID";
 
+        $(".favorite-btn").click(function () {
+            var shoesId = $(this).data("shoes-id");
+            var colourName = $(this).data("colour-name");
+            var stypeType = $(this).data("style-type");
+
+            var iconElement = $(this).find("i");
+            $.ajax({
+                type: "POST",
+                url: "/Favorite/AddToFavorite",
+                data: { userID: userID, shoesId: shoesId, colour: colourName, styleType: stypeType },
+                success: function (result) {
+                    console.log(result);
+                    if (result.success) {
+                        iconElement.removeClass("fa-regular").addClass("fa-solid");
+
+                    } else {
+                        iconElement.removeClass("fa-solid").addClass("fa-regular");
+                    }
+
+                },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+            });
+        });
+    });
+</script>
+
+@*<script>
+    $(document).ready(function () {
+        // Lắng nghe sự kiện khi người dùng click vào checkbox gender
+        $('input[type="checkbox"][name="Gender"]').on('change', function () {
+            // Lấy giá trị của các checkbox gender đã chọn
+            var selectedGenders = $('input[type="checkbox"][name="Gender"]:checked').map(function () {
+                return this.value;
+            }).get();
+
+            // Gọi hàm AJAX để load lại trang với các tham số
+            reloadShoesPageByGender(selectedGenders);
+        });
+
+        function reloadShoesPageByGender(selectedValues) {
+            // Sử dụng AJAX để gửi yêu cầu đến server
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ShoesPage", "User")',
+                data: {
+                    gender: '@ViewBag.gender',
+                    icon: '@ViewBag.icon',
+                    type: selectedValues.join(','),
+                    search: '@ViewBag.search'
+                },
+                success: function (result) {
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+            });
+        }
+    });
+</script>*@

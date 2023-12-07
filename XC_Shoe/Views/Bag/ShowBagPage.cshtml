@@ -5,7 +5,22 @@
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
     string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
 
+    string userID = "";
+    var myCookie = HttpContext.Current.Request.Cookies["UserLogin"];
+    if (myCookie != null)
+    {
+        userID = myCookie["UserID"].ToString();
+    }
 }
+<style>
+    .select-line input {
+        width: 100% !important;
+        border: 1px solid #cccc;
+        background-color: transparent;
+        position: relative;
+        padding-left: 0.5rem;
+    }
+</style>
 <div class="row justify-content-center">
     <div class="bag-content row justify-content-center">
         <div class="bag col-lg-8 position-relative mt-4">
@@ -14,11 +29,14 @@
             </div>
             @foreach (var item in Model)
             {
-
-
-                <div class="bag-items row gx-5 selected">
+                string selected = "";
+                if (item.BuyingSelectionStatus)
+                {
+                    selected = "selected";
+                }
+                <div class="bag-items row gx-5 @selected">
                     <div class="bag-items-img col-2 position-relative">
-                        <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName})">
+                        <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName })">
                             @{
                                 string resourcesPath = "~/Resources/Shoes/";
                                 string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", @item.Url);
@@ -33,7 +51,11 @@
                             <img class="card-img-top img-fluid" alt="Men" src="@Url.Content(resourcesPath)">
                         </a>
                     </div>
-                    <div class="bag-item-details col-10 position-relative" style="padding: 0">
+                    <div class="bag-item-details col-10 position-relative" style="padding: 0"
+                        data-radio-shoe-colourname="@item.ColorName"
+                        data-radio-shoe-size="@item.Size"
+                        data-radio-shoe-id="@item.ShoesID"
+                        data-radio-shoe-styletype="@item.StyleType">
                         <div class="row">
                             <div class="bag-items-infomation col-9 position-relative">
                                 <div class="bag-items-infomation-details">
@@ -44,34 +66,12 @@
                                     </p>
                                     <div class="details-options row justify-content-start">
                                         <div class="select-line col-sm-4">
-                                            <span>Size: </span>
-                                            <select name="details-options-size">
-                                                <option value="@item.Size">@item.Size</option>
-                                                <option value="38">38</option>
-                                                <option value="39">39</option>
-                                                <option value="40">40</option>
-                                                <option value="41">41</option>
-                                                <option value="42">42</option>
-                                            </select>
-                                            <i class="fa-solid fa-chevron-down"></i>
+                                            <span>Size: @item.Size</span>
                                         </div>
                                         <div class="select-line col-sm-4">
                                             <span>Quantity: </span>
-                                            <select name="details-options-quantity"
-                                                    class="details-options-quantity">
-                                                <option value="@item.Quantity">@item.Quantity</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="1">6</option>
-                                                <option value="2">7</option>
-                                                <option value="3">8</option>
-                                                <option value="4">9</option>
-                                                <option value="5">10</option>
-                                            </select>
-                                            <i class="fa-solid fa-chevron-down"></i>
+                                            <input type="number"
+                                                   class="details-options-quantity" value="@item.Quantity" min="1">
                                         </div>
                                     </div>
                                 </div>
@@ -84,7 +84,17 @@
                                 <div class="clear-bag-items col align-self-end">
                                     <div>
                                         <button class="btn select-group-btn">
-                                            <i class="fa-regular fa-square-check"></i>
+                                            @{
+                                                if (item.BuyingSelectionStatus)
+                                                {
+                                                    <i class="fa-regular fa-square-check"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa-regular fa-square"></i>
+                                                }
+                                            }
+
                                         </button>
                                         <button class="btn clear-item">
                                             <i class="fa-solid fa-x"></i>
@@ -96,7 +106,7 @@
                     </div>
                     <div class="line-seperate mt-4"></div>
                 </div>
-            }          
+                                                }
         </div>
         <div class="col-lg-4 position-relative mt-4">
             <div id="summary-box">
@@ -108,7 +118,7 @@
                     <div class="summary-box-line">
                         <span>Subtotal</span>
                         <div class="summary-box-money-items">
-                            <span class="money" id="sub-total">1</span>
+                            <span class="money" id="sub-total">0</span>
                             <span class="unit">đ</span>
                         </div>
                     </div>
@@ -200,94 +210,215 @@
 </div>
 
 <script>
-    function Summary() {
-        //Summary
-        const deliveryFeeElement = document.querySelector('#delivery-fee');
-        const subTotalElement = document.querySelector('#sub-total');
-        const totalElement = document.querySelector('#total');
-        const noItemsElement = document.querySelector('#no-items');
-        // Tinh tong tien
+    $(document).ready(function () {
+        var userID = "@userID";
 
+        $(".details-options-quantity").on("input", function () {
+            updateInputValue($(this));
+        });
 
-        const checkOutBtn = document.querySelector('#checkout-btn');
+        function updateInputValue(inputElement) {
+            var newQuantity = inputElement.val();
+            if (isNaN(newQuantity)) {
+                alert("Please type quantity!");
+                return;
+            }
 
-        var subTotal = 0;
-        const selectedItems = document.querySelectorAll('.selected');
+            var bagItemsElement = inputElement.closest('.bag-items');
 
-        if (!noItemsElement && selectedItems.length != 0) {
-            const items = document.querySelectorAll('.bag-items');
-            const quantitiesChange = document.querySelectorAll('.details-options-quantity');
+            var isSelected = false;
+            if (bagItemsElement.hasClass('selected')) {
+                isSelected = true;
+            }
+            var bagItemDetails = inputElement.closest('.bag-item-details');
 
+            var colourName = bagItemDetails.data("radio-shoe-colourname");
+            var size = bagItemDetails.data("radio-shoe-size");
+            var shoesId = bagItemDetails.data("radio-shoe-id");
+            var styleType = bagItemDetails.data("radio-shoe-styletype");
 
-            Array.from(items).forEach(item => {
-                if (item.classList.contains('selected')) {
-                    var quantity = parseFloat(item.querySelector('.details-options-quantity').value);
-                    var prices = parseFloat(item.querySelector('.prices').textContent.replace(/,/g, ''));
-
-                    subTotal += quantity * prices;
+            $.ajax({
+                type: "POST",
+                url: "/Bag/UpdateBag",
+                data: {
+                    userID: userID,
+                    shoesId: shoesId,
+                    colour: colourName,
+                    styleType: styleType,
+                    size: size,
+                    quantity: newQuantity,
+                    selection: isSelected
+                },
+                success: function (result) {
+                    Summary();
+                },
+                error: function (error) {
+                    console.log("Error:", error);
                 }
             });
+        }
+
+        
+        $(".select-group-btn").on("click", function () {
+            selectAction($(this));
+        });
+
+        function selectAction(elementSelectGroup) {
+
+            var bagItemsElement = elementSelectGroup.closest('.bag-items');
+
+            const iconSelectionItem = elementSelectGroup.find(".fa-regular");
+            var isSelected = false;
+
+            if (bagItemsElement.hasClass('selected')) {
+
+                iconSelectionItem.removeClass('fa-square-check').addClass('fa-square');
+            } else {
+
+                iconSelectionItem.removeClass('fa-square').addClass('fa-square-check');
+                isSelected = true;
+            }
+
+            bagItemsElement.toggleClass("selected");
+
+
+            var bagItemDetails = elementSelectGroup.closest('.bag-item-details');
+
+            var colourName = bagItemDetails.data("radio-shoe-colourname");
+            var size = bagItemDetails.data("radio-shoe-size");
+            var shoesId = bagItemDetails.data("radio-shoe-id");
+            var styleType = bagItemDetails.data("radio-shoe-styletype");
+            var newQuantity = bagItemDetails.find(".details-options-quantity").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Bag/UpdateBag",
+                data: {
+                    userID: userID,
+                    shoesId: shoesId,
+                    colour: colourName,
+                    styleType: styleType,
+                    size: size,
+                    quantity: newQuantity,
+                    selection: isSelected
+                },
+                success: function (result) {
+                    //console.log(result);
+                },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+            });
+
+
+            Summary();
+        }
+
+
+        $(".clear-item").on("click", function () {
+            clearAction($(this));
+        });
+
+        function clearAction(elementClear) {
+            var bagItemsElement = elementClear.closest('.bag-items');
+
+            var bagItemDetails = elementClear.closest('.bag-item-details');
+            var colourName = bagItemDetails.data("radio-shoe-colourname");
+            var size = bagItemDetails.data("radio-shoe-size");
+            var shoesId = bagItemDetails.data("radio-shoe-id");
+            var styleType = bagItemDetails.data("radio-shoe-styletype");
+
+            $.ajax({
+                type: "POST",
+                url: "/Bag/DeleteItemFromBag",
+                data: {
+                    userID: userID,
+                    shoesId: shoesId,
+                    colour: colourName,
+                    styleType: styleType,
+                    size: size
+                },
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+            });
+
+            bagItemsElement.remove();
+
+            Summary();            
+        }
+    });
+</script>
+
+<script>
+    function Summary() {
+        if ($('.bag-items').length == 0) {
+            const h3Element = $('<h3>').attr('id', 'no-items').text('There are no items in your bag.');
+
+            const bagElement = $('.bag');
+
+            bagElement.append(h3Element);
+        }
+        //Summary
+        const deliveryFeeElement = $('#delivery-fee');
+        const subTotalElement = $('#sub-total');
+        const totalElement = $('#total');
+        const noItemsElement = $('#no-items');
+        // Tinh tong tien
+
+        const checkOutBtn = $('#checkout-btn');
+
+        var subTotal = 0;
+        const items = $('.bag-items.selected');
+
+        if (!noItemsElement.length && items.length != 0) {
+            const quantitiesChange = $('.details-options-quantity');
+
+            items.each(function () {
+                var quantity = parseFloat($(this).find('.details-options-quantity').val());
+                var prices = parseFloat($(this).find('.prices').text().replace(/,/g, ''));
+
+                subTotal += quantity * prices;
+            });
+
             //Delivery-fee = 250,000đ
             var deliveryFee = 250000;
-            deliveryFeeElement.innerHTML = deliveryFee.toLocaleString();
-            //Đưa subTotal vao` element id= "sub-total"
+            deliveryFeeElement.text(deliveryFee.toLocaleString());
 
-            subTotalElement.innerHTML = subTotal.toLocaleString();
+            //Đưa subTotal vào element id= "sub-total"
+            subTotalElement.text(subTotal.toLocaleString());
 
             //Tính total = subtotal + delivery-fee
             var total = subTotal + deliveryFee;
-            //Đưa subTotal vao` element id= "sub-total"
 
-            totalElement.innerHTML = total.toLocaleString();
+            //Đưa subTotal vào element id= "sub-total"
+            totalElement.text(total.toLocaleString());
 
-            //Lắng nghe sự kiện thay đổi select của các phần tử quantity của các item
-            quantitiesChange.forEach(quantityElement => {
-                quantityElement.addEventListener("change", function () {
-                    subTotal = 0;
-                    Array.from(items).forEach(item => {
-                        if (item.classList.contains('selected')) {
-                            var quantity = parseFloat(item.querySelector('.details-options-quantity').value);
-                            var prices = parseFloat(item.querySelector('.prices').textContent.replace(/,/g, ''));
+            checkOutBtn.removeAttr('disabled');
+            checkOutBtn.css('cursor', 'pointer');
+            checkOutBtn.attr("style", "background-color: #black !important; color: white !important;");
 
-                            subTotal += quantity * prices;
-
-                            //Đưa subTotal vao` element id= "sub-total"
-
-                            subTotalElement.innerHTML = subTotal.toLocaleString();
-
-                            //Tính total = subtotal + delivery-fee
-                            total = subTotal + deliveryFee;
-                            //Đưa subTotal vao` element id= "sub-total"
-
-                            totalElement.innerHTML = total.toLocaleString();
-                        }
-                    });
-                });
-            });
-
-            checkOutBtn.removeAttribute('disabled');
-            checkOutBtn.style.cursor = "pointer";
-
-            checkOutBtn.onclick = function (e) {
-                e.preventDefault();//bỏ action mặc định
+            checkOutBtn.on('click', function (e) {
+                e.preventDefault();
 
                 sessionStorage.setItem('subTotal', subTotal.toString());
                 sessionStorage.setItem('total', total.toString());
                 sessionStorage.setItem('deliveryFee', deliveryFee.toString());
+            });
+        } else {
+            deliveryFeeElement.text('0');
+            subTotalElement.text('0');
+            totalElement.text('0');
 
-                window.location.href = 'checkout.html';
-            }
-        }
-        else {
-            deliveryFeeElement.innerHTML = "0";
-            subTotalElement.innerHTML = "0";
-            totalElement.innerHTML = "0";
-
-            checkOutBtn.setAttribute('disabled', 'disabled');
-            checkOutBtn.classList.add('disabled');
-            checkOutBtn.setAttribute("style", "background-color: #edededcc !important; color: #cccc !important;");
+            checkOutBtn.attr('disabled', 'disabled');
+            checkOutBtn.addClass('disabled');
+            checkOutBtn.attr("style", "background-color: #edededcc !important; color: #cccc !important;");
         }
     }
+
     //Xoá bag-item
     function getBagItemsElement(element, selector = '.bag-items') {
         while (element.parentElement) {
@@ -297,61 +428,18 @@
             element = element.parentElement;
         }
     }
-    function deleteBagItem() {
-
-        const clearItemElements = document.querySelectorAll('.clear-item');
-        //Lặp qua các nút clear và lắng nghe sự kiện click
-        var index = clearItemElements.length;
-        clearItemElements.forEach(function (clearElement) {
-            clearElement.onclick = function () {
-                const bagItemsElement = getBagItemsElement(clearElement);
-
-                bagItemsElement.remove();
-
-                index--;
-                if (index == 0) {
-                    // Tạo phần tử <h3> và thiết lập thuộc tính id và nội dung
-                    const h3Element = document.createElement('h3');
-                    h3Element.setAttribute('id', 'no-items');
-                    h3Element.textContent = 'There are no items in your bag.';
-
-                    // Chọn phần tử có class "bag"
-                    const bagElement = document.querySelector('.bag');
-
-                    // Thêm phần tử <h3> vào phần tử "bag"
-                    bagElement.appendChild(h3Element);
-                }
-                Summary();
-            }
-        });
-    }
-
-    const selectGroupItemElements = document.querySelectorAll('.select-group-btn');
-
-    selectGroupItemElements.forEach(function (elementSelectGroup) {
-        elementSelectGroup.onclick = function () {
-
-            const bagItemsElement = getBagItemsElement(elementSelectGroup);
-
-            const iconSelectionItem = elementSelectGroup.querySelector(".fa-regular");
-
-            if (bagItemsElement.classList.contains('selected')) {
-                iconSelectionItem.classList.remove('fa-square-check');
-                iconSelectionItem.classList.add('fa-square');
-
-            } else {
-                iconSelectionItem.classList.remove('fa-square');
-                iconSelectionItem.classList.add('fa-square-check');
-            }
-            console.log(bagItemsElement);
-            bagItemsElement.classList.toggle("selected");
-            Summary();
-        }
-    });
-
     document.addEventListener('DOMContentLoaded', function () {
-        deleteBagItem();
         Summary();
     });
 </script>
 
+<script>
+    $(document).ready(function () {
+        $("#checkout-btn").on("click", function () {
+            if (!$(this).prop("disabled")) {
+                var userID = "@userID";
+                window.location.href = "/User/CheckOut?userID=" + userID;
+            }
+        });
+    });
+</script>

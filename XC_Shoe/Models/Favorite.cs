@@ -12,7 +12,7 @@ namespace XC_Shoe.Models
         public int TypeShoesID { get; set; }
         public string NameShoes { get; set; }
         public string StyleType { get; set; }
-        public string TypeName { get; set; } // Assuming there's a property for the Type_Shoes name
+        public string TypeName { get; set; }
         public int Number_Colour { get; set; }
         public float Price { get; set; }
         public string ImageUrl { get; set; }

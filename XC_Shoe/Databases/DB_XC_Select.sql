@@ -207,3 +207,6 @@ Drop table Icons
 Drop table Users_ShipmentDetails
 drop table Colours
 drop table Shoes
+
+
+SELECT sizeID FROM size_Detail SD, Colours C WHERE C.ColourID = SD.ColourID AND  SD.shoesID = 'AF1' AND C.Name = 'White'

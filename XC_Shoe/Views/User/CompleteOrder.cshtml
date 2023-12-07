@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Completely Order";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<style>
+    .back-to-home-page {
+        text-decoration: none;
+        text-decoration: underline;
+        color: #808080;
+    }
+    .back-to-home-page:hover {
+        color: black;
+    }
+    .check-icon i{
+        font-size: 20rem;
+        color: #6bff58;
+    }
+    .check-icon {
+        margin-bottom: 2rem;
+    }
+</style>
+
+<div class="container-fluid text-center">
+    <h2 class="check-icon"><i class="fa-regular fa-circle-check"></i></h2>
+    <h2>Successfully order!</h2>
+    <h3>Order ID: @ViewBag.orderID</h3>
+
+    <a class="back-to-home-page" href="@Url.Action("ShowHomePage", "User")">Back to home page</a>
+</div>
+

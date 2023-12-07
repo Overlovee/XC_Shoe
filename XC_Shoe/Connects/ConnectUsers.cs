@@ -66,7 +66,7 @@ namespace XC_Shoe.Connects
         public List<UserShipment> getUserShipmentDetails(string id)
         {
             List<UserShipment> list = new List<UserShipment>();
-            string sql = "SELECT * FROM Users_ShipmentDetails WHERE UserID = '" + id + "'";
+            string sql = "SELECT * FROM Users_ShipmentDetails WHERE UserID = '" + id + "' order by IsDefault DESC";
             SqlDataReader rdr = db.ExcuteQuery(sql);
             while (rdr.Read())
             {

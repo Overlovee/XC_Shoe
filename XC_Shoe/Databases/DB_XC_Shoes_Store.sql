@@ -120,10 +120,9 @@ CREATE TABLE Comments (
 CREATE TABLE Orders (
     ID INT IDENTITY(1,1) NOT NULL,
 	OrderID AS CAST((LEFT('Order' + RIGHT(CAST(ID AS VARCHAR(5)), 3),15)) AS VARCHAR(10)) PERSISTED NOT NULL,
-	UserID VARCHAR(10) NOT NULL,
+	UserID VARCHAR(10) NULL,
     PaymentInfo NVARCHAR(255) DEFAULT N'Payment in cash',
     EstimatedDeliveryHandlingFee DECIMAL(10, 2),
-	Email NVARCHAR(100) NOT NULL,
     Total DECIMAL(10, 2),
     PaymentStatus NVARCHAR(50) DEFAULT N'Unpaid',
     RecipientAddress NVARCHAR(255),
@@ -133,6 +132,7 @@ CREATE TABLE Orders (
 	CONSTRAINT PK_Orders PRIMARY KEY (OrderID),
     CONSTRAINT FK_Orders_UserID FOREIGN KEY (UserID) REFERENCES Users(UserID),
 );
+
 CREATE TABLE OrderSystem (
 	OrderID VARCHAR(10) NOT NULL,
 	EmployeeID VARCHAR(10) DEFAULT 'None',
@@ -150,7 +150,7 @@ CREATE TABLE Order_Detail(
 	StyleType NVARCHAR(20),
 	ColourID INT,
 	Price DECIMAL(10, 2),
-	CONSTRAINT PK_Orders_Detail PRIMARY KEY (OrderID,ShoesID, ColourID, Size),
+	CONSTRAINT PK_Orders_Detail PRIMARY KEY (OrderID, ShoesID, ColourID, Size),
 	CONSTRAINT FK_Order_Detai_OrderID FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
 	CONSTRAINT FK_Order_Detai_ShoesID FOREIGN KEY (ShoesID) REFERENCES Shoes(ShoesID),
 );
@@ -172,7 +172,7 @@ CREATE TABLE Cart_Detail (
 	Price DECIMAL(10, 2),
 	Quantity INT,
     BuyingSelection_Status BIT DEFAULT 0,
-	CONSTRAINT PK_Cart_Detail PRIMARY KEY (CartID,ShoesID,ColourID,StyleType,Size),
+	CONSTRAINT PK_Cart_Detail PRIMARY KEY (CartID, ShoesID, ColourID, StyleType, Size),
 	CONSTRAINT FK_Cart_Detail_CartID FOREIGN KEY (CartID) REFERENCES Shopping_Cart(CartID),
 	CONSTRAINT FK_Cart_Detail_ShoesID FOREIGN KEY (ShoesID) REFERENCES Shoes(ShoesID),
 );

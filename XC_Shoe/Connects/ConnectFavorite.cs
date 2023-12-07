@@ -34,11 +34,11 @@ namespace XC_Shoe.Connects
             rdr.Close();
             return (listEmployee);
         }
-        public int AddtoFavorite(string userID,string ShoesID,string colourName,string Styletype)
+        public int AddtoFavorite(string userID,string ShoesID, string colourName,string Styletype)
         {
             int rs = 0;
             string sql = "EXEC dbo.AddFavorite'" + userID + "','" + ShoesID + "','"+ colourName + "','" + Styletype +"'";
-            rs = db.ExcuteNonQuery(sql); ;
+            rs = db.ExcuteNonQuery(sql);
             db.close();
             return (rs);
         }

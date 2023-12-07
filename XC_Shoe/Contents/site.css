@@ -66,7 +66,9 @@ body {
     margin: 0 48px;
     min-height: 40rem;
 }
-
+a:hover {
+    color: #ff006e;
+}
 /* Header */
 header {
     background-color: #ffffff;
@@ -86,6 +88,9 @@ header {
 #right-top-header, #right-top-header li {
     display: inline-block;
     line-height: 4rem;
+    height: 4rem;
+    align-items: center;
+    vertical-align: middle;
 }
 
 .logo a svg, #logo-nike {
@@ -430,7 +435,7 @@ figcaption h3 {
     margin-bottom: 2rem;
 }
 .product-list-box{
-    padding-left: 6rem;
+    padding-left: 2rem;
 }
 .shoes-price{
     text-align: left;
@@ -1714,3 +1719,69 @@ footer a:hover {
     }
 }
 
+.add-bag-btn, .favorite-btn {
+    height: 100% !important;
+    padding: 0.4rem !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+}
+.add-bag-btn:hover i, .favorite-btn:hover i {
+    color: #ff006e;
+    cursor: pointer;
+}
+.add-bag-btn i, .favorite-btn i {
+    font-size: 2.6rem !important;
+}
+
+#header-avt-img {
+    display: inline-block;
+    width: 3rem;
+    height: 100%;
+    overflow: hidden;
+}
+
+#header-avt-img img {
+    width: 3rem;
+    height: 3rem;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+#offcanvasRightLabel {
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+#account-display .offcanvas-body {
+    text-align: center;
+}
+
+#account-display .modal-avt-img h3{
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+#account-display .modal-avt-img img {
+    width: 40%;
+    border-radius: 50%;
+    height: fit-content;
+    margin-bottom: 2rem;
+}
+
+#account-display .btn-inform i {
+    font-size: 2rem;
+}
+
+#account-display .modal-body-content a {
+    display: block;
+    width: 100%;
+    color: black;
+    font-size: 1.6rem;
+}
+
+#account-display .modal-body-content a:hover {
+    background-color: rgba(0,0,0,.125);
+    color: black;
+}

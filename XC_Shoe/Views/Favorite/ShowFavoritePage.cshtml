@@ -1,8 +1,19 @@
 ﻿@model IEnumerable<XC_Shoe.Models.Favorite>
+
+@using XC_Shoe.Connects;
+@using XC_Shoe.Models;
 @{
     ViewBag.Title = "Show Favorite Page";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
     string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+
+    string userID = "";
+    var myCookie = HttpContext.Current.Request.Cookies["UserLogin"];
+
+    if (myCookie != null)
+    {
+        userID = myCookie["UserID"].ToString();
+    }
 }
 
 <div class="row justify-content-center">
@@ -37,7 +48,8 @@
                                     </a>
                                 </div>
                                 <div class="col">
-                                    <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName})" class="btn categories-shoes-btn shoes-price">@item.Price <span class="unit-money">VND</span></a>
+                                    <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName})"
+                                       class="btn categories-shoes-btn shoes-price">@item.Price <span class="unit-money">VND</span></a>
                                 </div>
                             </div>
                             <p class="card-text type-shoes">@item.StyleType's @item.TypeName Shoes</p>
@@ -45,10 +57,19 @@
                         </div>
                         <div class="card-footer">
                             <a class="btn details-btn" href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName})">Go to product details</a>
-                            <a class="btn unfavorite-action" href="@Url.Action("DeleteShoesInFavorite", "Favorite", new {favoriteID = item.favoriteID, shoesID = item.ShoesID, colourName = item.ColorName,Styletype = item.StyleType})"><i class="fa-solid fa-heart"></i></a>
+                            <a class="favorite-btn" data-shoes-id="@item.ShoesID" data-colour-name="@item.ColorName"
+                               data-style-type="@item.StyleType">
+                                <i class="fa-solid fa-heart"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
+            }
+            @{
+                if (Model.Count() == 0)
+                {
+                    <p class="text-center">No item.</p>
+                }
             }
         </div>
     </div>
@@ -116,3 +137,35 @@
     </div>
 </div>
 
+
+<script>
+    $(document).ready(function () {
+        var userID = "@userID";
+
+        $(".favorite-btn").click(function () {
+            var shoesId = $(this).data("shoes-id");
+            var colourName = $(this).data("colour-name");
+            var stypeType = $(this).data("style-type");
+
+            var iconElement = $(this).find("i");
+            $.ajax({
+                type: "POST",
+                url: "/Favorite/AddToFavorite",
+                data: { userID: userID, shoesId: shoesId, colour: colourName, styleType: stypeType },
+                success: function (result) {
+                    console.log(result);
+                    if (result.success) {
+                        iconElement.removeClass("fa-regular").addClass("fa-solid");
+
+                    } else {
+                        iconElement.removeClass("fa-solid").addClass("fa-regular");
+                    }
+
+                },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+            });
+        });
+    });
+</script>

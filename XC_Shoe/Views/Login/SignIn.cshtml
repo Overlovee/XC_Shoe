@@ -21,7 +21,7 @@
             </svg>*@
         <h3 class="form-header-tile">YOUR ACCOUNT FOR EVERYTHING NIKE</h3>
     </div>
-    <form action="#" id="form-sign-in" method="get">
+    <form action="@Url.Action("SignIn", "Login")" id="form-sign-in" method="post">
         <div class="form-group">
             <input id="email-signin" type="text" placeholder="Email address" name="emailSignin">
             <span class="form-message"></span>
@@ -59,7 +59,7 @@
             </a>
         </div>
         <div class="not-a-member">
-            <p>Not a Member? <a href="@Url.Action("SignUp", "User")">Join Us.</a></p>
+            <p>Not a Member? <a href="@Url.Action("SignUp", "Login")">Join Us.</a></p>
         </div>
     </form>
 </div>
