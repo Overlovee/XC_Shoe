@@ -519,10 +519,6 @@ GO
 SELECT dbo.Get_OrderID('', 25000.00, 2730000.00, N'140 Lê Trong Tấn TP Hồ Chí Minh', N'Huy Trương', N'03157839578') AS ResultOrderID;
 SELECT dbo.Get_OrderID('', 250000.00, 5250000.00, N'Tân Phú,Hcm', N'Minh Thu', N'019231212') AS ResultOrderID;
 
-SELECT TOP(1) OrderID FROM Orders 
-	WHERE UserID = 'US1' AND Total = 5250000.00 AND RecipientAddress = N'Tân Phú,Hcm'
-	AND RecipientName= N'Minh Thu' AND RecipientPhoneNumber = N'019231212' 
-	ORDER BY ID DESC;
 ALTER FUNCTION GetFirstShoeInfo(@StyleType NVARCHAR(50),@Icon NVARCHAR(150),@typeShoes NVARCHAR(50),@Search NVARCHAR(255))
 RETURNS TABLE
 AS
