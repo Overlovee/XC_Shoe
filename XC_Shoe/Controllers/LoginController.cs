@@ -120,6 +120,7 @@ namespace XC_Shoe.Controllers
                 && !string.IsNullOrWhiteSpace(firstName)
                 && !string.IsNullOrWhiteSpace(lastName);
         }
+
         [HttpPost]
         public ActionResult SignIn(string emailSignin, string passwordSignin)
         {
