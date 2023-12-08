@@ -45,21 +45,27 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="classify-btn" aria-current="page" 
+                    <a class="classify-btn" aria-current="page"
                        href="@Url.Action("ManageOrder", "Admin", new { status = "All", sort = "ASC", search = "" })">
                         All
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="classify-btn" aria-current="page" 
+                    <a class="classify-btn" aria-current="page"
                        href="@Url.Action("ManageOrder", "Admin", new { status = "Confirmed", sort = "ASC", search = "" })">
                         Confirmed
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="classify-btn" aria-current="page" 
+                    <a class="classify-btn" aria-current="page"
                        href="@Url.Action("ManageOrder", "Admin", new { status = "Cancelled", sort = "ASC", search = "" })">
                         Cancelled
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="classify-btn" aria-current="page"
+                       href="@Url.Action("ManageOrder", "Admin", new { status = "Done", sort = "ASC", search = "" })">
+                        Done
                     </a>
                 </li>
             </ul>

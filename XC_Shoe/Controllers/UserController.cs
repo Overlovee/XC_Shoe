@@ -22,8 +22,9 @@ namespace XC_Shoe.Controllers
         //    return View();
         //}
         public User user { get; set; }
-        public UserController() {
-            
+        public UserController()
+        {
+            ViewBag.search = "";
         }
         public ActionResult ShowHomePage()
         {
@@ -55,7 +56,7 @@ namespace XC_Shoe.Controllers
         }
         public ActionResult CompleteOrder(string orderID = "")
         {
-            
+
             ViewBag.orderID = orderID;
             return View();
         }
@@ -112,19 +113,19 @@ namespace XC_Shoe.Controllers
             {
                 if (shipmentInfo.ContainsKey("shipmentUsername"))
                 {
-                    Username = shipmentInfo["shipmentUsername"];
+                    Username = HttpUtility.UrlDecode(shipmentInfo["shipmentUsername"]);
                 }
                 if (shipmentInfo.ContainsKey("shipmentPhoneNumber"))
                 {
-                    PhoneNumber = shipmentInfo["shipmentPhoneNumber"];
+                    PhoneNumber = HttpUtility.UrlDecode(shipmentInfo["shipmentPhoneNumber"]);
                 }
                 if (shipmentInfo.ContainsKey("shipmentSpecificAddress"))
                 {
-                    SpecificAddress = shipmentInfo["shipmentSpecificAddress"];
+                    SpecificAddress = HttpUtility.UrlDecode(shipmentInfo["shipmentSpecificAddress"]);
                 }
                 if (shipmentInfo.ContainsKey("shipmentAdministrativeBoundaries"))
                 {
-                    AdministrativeBoundaries = shipmentInfo["shipmentAdministrativeBoundaries"];
+                    AdministrativeBoundaries = HttpUtility.UrlDecode(shipmentInfo["shipmentAdministrativeBoundaries"]);
                 }
             }
 
@@ -132,7 +133,7 @@ namespace XC_Shoe.Controllers
             {
                 ConnectOrders connectOrders = new ConnectOrders();
                 int kt = connectOrders.AddToOrder(userID, Username, PhoneNumber, SpecificAddress + "," + AdministrativeBoundaries, 250000, total, DateTime.Now);
-                if(kt != 0)
+                if (kt != 0)
                 {
                     orderID = connectOrders.getOrderID(userID, Username, PhoneNumber, SpecificAddress + "," + AdministrativeBoundaries, 250000, total);
                 }
@@ -145,11 +146,11 @@ namespace XC_Shoe.Controllers
                     ConnectShoes connectShoes = new ConnectShoes();
                     ConnectOrders connectOrders = new ConnectOrders();
                     int kt = connectOrders.AddToOrder(userID, Username, PhoneNumber, SpecificAddress + "," + AdministrativeBoundaries, 250000, total, DateTime.Now);
-                    
+
                     if (kt != 0)
                     {
                         orderID = connectOrders.getOrderID(userID, Username, PhoneNumber, SpecificAddress + "," + AdministrativeBoundaries, 250000, total);
-                        
+
                         for (int i = bags.Count - 1; i >= 0; i--)
                         {
                             Bag bag = bags[i];
@@ -157,11 +158,11 @@ namespace XC_Shoe.Controllers
                             bag.Url = shoe.Url;
                             bag.Price = shoe.Price;
                             bag.ShoesName = shoe.NameShoes;
-                            
+
                             if (bag.BuyingSelectionStatus)
                             {
                                 int rs = connectOrders.AddToOrderDetail(orderID, bag.ShoesID, bag.Quantity, bag.Size, bag.StyleType, bag.ColorName, bag.Price);
-                                if(rs != 0)
+                                if (rs != 0)
                                 {
                                     bags.RemoveAt(i);
                                 }
@@ -169,18 +170,21 @@ namespace XC_Shoe.Controllers
                         }
                         Session["BagList"] = bags;
                     }
-                    return Json(new { success = true, message = "Order successfully", orderID = orderID});
+                    return Json(new { success = true, message = "Order successfully", orderID = orderID });
                 }
             }
 
-            return Json(new { success = true, message = "Order successfully" , orderID = orderID });
+            return Json(new { success = true, message = "Order successfully", orderID = orderID });
         }
         public ActionResult UserProfile(string Email = "")
         {
             ConnectUsers connectUser = new ConnectUsers();
+            ConnectPurchased connectPurchased = new ConnectPurchased();
             User User = connectUser.getUserData(Email);
             List<UserShipment> List = connectUser.getUserShipmentDetails(User.UserID);
+            List<Purchased> listPurchased = connectPurchased.getPurchased(User.UserID);
             ViewBag.UserShipment = List;
+            ViewBag.ListPurchased = listPurchased;
             return View(User);
         }
         [HttpPost]
@@ -215,7 +219,48 @@ namespace XC_Shoe.Controllers
                 string updatedImagePath = Path.Combine(resourcesPath, fileNameOnly);
                 updatedImagePaths.Add(updatedImagePath);
             }
-            return Json(new { avtImg = avt_img, imagesFile = updatedImagePaths, sizes = listSize});
+            return Json(new { avtImg = avt_img, imagesFile = updatedImagePaths, sizes = listSize });
+        }
+
+        [HttpPost]
+        public ActionResult getSearchedProducts(string search = "")
+        {
+            List<Shoe> list = new List<Shoe>();
+            if (search != "")
+            {
+                ConnectShoes connectShoes = new ConnectShoes();
+                list = connectShoes.GetSearchRepresentData("", "", "", search);
+                foreach (Shoe shoe in list)
+                {
+                    shoe.Url = getUrlImgs(shoe.Url);
+                    shoe.UrlToDetail = getUrlToDetail(shoe.ShoesID, shoe.NameColor);
+                }
+                return Json(new { success = true, listSearchProducts = list });
+
+            }
+            return Json(new { success = false, listSearchProducts = list });
+        }
+        private string getUrlImgs(string url)
+        {
+            string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~"); ;
+            string resourcesPath = "/Resources/Shoes/";
+            string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", url);
+            resourcesPath = Path.Combine(resourcesPath, url);
+
+            string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
+
+            string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+            string[] images = Directory.GetFiles(directoryPath, "*.jpg")
+                     .Union(Directory.GetFiles(directoryPath, "*.png"))
+                     .ToArray();
+            string fileNameOnly = Path.GetFileName(imagePath);
+            string avt_img = Path.Combine(resourcesPath, fileNameOnly);
+
+            return avt_img;
+        }
+        private string getUrlToDetail(string ShoesID = "", string NameColor = "")
+        {
+            return "/User/ShowShoesDetail?shoesID=" + ShoesID + "&colourName=" + NameColor;
         }
     }
 }

@@ -24,7 +24,17 @@ namespace XC_Shoe.Controllers
         User user = new User();
         public AdminController()
         {
-            user = connectUsers.getDataByID("US1");
+            var httpContext = System.Web.HttpContext.Current;
+            string userID = "";
+            if (httpContext.Request.Cookies["UserLogin"] != null)
+            {
+                var cookieValue = httpContext.Request.Cookies["UserLogin"].Value;
+
+                userID = httpContext.Request.Cookies["UserLogin"]["UserID"];
+
+            }
+
+            user = connectUsers.getDataByID(userID);
             string resourcesPath = "~/Resources/Account/";
             resourcesPath = Path.Combine(resourcesPath, user.Image);
             ViewBag.ThisAccountImage = resourcesPath;
