@@ -18,7 +18,6 @@ namespace XC_Shoe.Connects
                 "O.UserID, " +
                 "O.PaymentInfo, " +
                 "O.EstimatedDeliveryHandlingFee, " +
-                "O.Email, " +
                 "O.Total, " +
                 "O.PaymentStatus, " +
                 "O.RecipientAddress, " +
@@ -37,7 +36,6 @@ namespace XC_Shoe.Connects
                 "O.UserID, " +
                 "O.PaymentInfo, " +
                 "O.EstimatedDeliveryHandlingFee, " +
-                "O.Email, " +
                 "O.Total, " +
                 "O.PaymentStatus, " +
                 "O.RecipientAddress, " +
@@ -75,15 +73,14 @@ namespace XC_Shoe.Connects
                 emp.UserID = rdr.GetValue(1).ToString();
                 emp.PaymentInfo = rdr.GetValue(2).ToString();
                 emp.EstimatedDeliveryHandlingFee = decimal.Parse(rdr.GetValue(3).ToString());
-                emp.Email = rdr.GetValue(4).ToString();
-                emp.Total = decimal.Parse(rdr.GetValue(5).ToString());
-                emp.PaymentStatus = rdr.GetValue(6).ToString();
-                emp.RecipientAddress = rdr.GetValue(7).ToString();
-                emp.RecipientName = rdr.GetValue(8).ToString();
-                emp.RecipientPhoneNumber = rdr.GetValue(9).ToString();
-                emp.OrderDate = DateTime.Parse(rdr.GetValue(10).ToString());
-                emp.orderSystem.EmployeeID = rdr.GetValue(11).ToString();
-                emp.orderSystem.Status = rdr.GetValue(12).ToString();
+                emp.Total = decimal.Parse(rdr.GetValue(4).ToString());
+                emp.PaymentStatus = rdr.GetValue(5).ToString();
+                emp.RecipientAddress = rdr.GetValue(6).ToString();
+                emp.RecipientName = rdr.GetValue(7).ToString();
+                emp.RecipientPhoneNumber = rdr.GetValue(8).ToString();
+                emp.OrderDate = DateTime.Parse(rdr.GetValue(9).ToString());
+                emp.orderSystem.EmployeeID = rdr.GetValue(10).ToString();
+                emp.orderSystem.Status = rdr.GetValue(11).ToString();
 
                 list.Add(emp);
             }
