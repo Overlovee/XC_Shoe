@@ -35,7 +35,7 @@ namespace XC_Shoe.Connects
                 "GROUP BY S.ShoesID, SD.Name, C.Name, S.StyleType, S.Price, OD.Quantity, I.Url " +
                 "Order by Purchased DESC, S.ShoesID ASC";
 
-            if(sort == "ASC")
+            if (sort == "ASC")
             {
                 sql = "SELECT " +
                 "S.ShoesID, " +
@@ -74,6 +74,42 @@ namespace XC_Shoe.Connects
                 list.Add(emp);
             }
             rdr.Close();
+            return (list);
+        }
+        public List<Models.Purchased> getPurchased(string userID = "")
+        {
+            List<Models.Purchased> list = new List<Purchased>();
+            if (userID != "")
+            {
+                string sql = "Select OD.ShoesID, SD.Name, TS.TypeShoesID, TS.Name, OD.ColourID, C.Name, OD.Size,  OD.StyleType, I.Url " +
+                    "from Orders O " +
+                    "join Order_Detail OD ON O.OrderID = OD.OrderID " +
+                    "join OrderSystem OS ON O.OrderID = OS.OrderID " +
+                    "join Shoes_Details SD ON OD.ShoesID = SD.ShoesID " +
+                    "join Type_Shoes TS ON TS.TypeShoesID = SD.TypeShoesID " +
+                    "join Colours C ON C.ColourID = OD.ColourID " +
+                    "join Images I ON I.ShoesID = OD.ShoesID And I.ColourID = OD.ColourID " +
+                    "where UserID = '" + userID + "' AND OS.Status = 'Done'";
+                SqlDataReader rdr = db.ExcuteQuery(sql);
+                while (rdr.Read())
+                {
+                    Purchased emp = new Purchased();
+                    emp.ShoesID = rdr.GetValue(0).ToString();
+                    emp.ShoesName = rdr.GetValue(1).ToString();
+                    emp.TypeShoesID = Convert.ToInt32(rdr.GetValue(2).ToString());
+                    emp.TypeShoesName = rdr.GetValue(3).ToString();
+                    emp.ColorID = Convert.ToInt32(rdr.GetValue(4).ToString());
+                    emp.ColorName = rdr.GetValue(5).ToString();
+                    emp.Size = Convert.ToInt32(rdr.GetValue(6).ToString());
+                    emp.StyleType = rdr.GetValue(7).ToString();
+                    emp.Url = rdr.GetValue(8).ToString();
+                    list.Add(emp);
+                }
+                rdr.Close();
+
+                return list;
+            }
+
             return (list);
         }
         public decimal getTotalIncome()

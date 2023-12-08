@@ -1,5 +1,6 @@
 ﻿@model XC_Shoe.Models.User
 @using System.Text;
+
 @{
     ViewBag.Title = "User Profile";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
@@ -75,63 +76,40 @@
         <div class="tab-content row justify-content-start">
             <div id="purchased" class="tab-pane show active">
                 <div class="row justify-content-start">
-                    <div class="col-sm-3 mb-4">
-                        <div class="card">
-                            <a href="#">
-                                <img class="card-img-top img-fluid" alt="Men"
-                                     src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
-                            </a>
-                            <div class="card-body">
-                                <a href="#">
-                                    <h2 class="card-title">Basketball</h2>
+                    @foreach(var item in ViewBag.ListPurchased)
+                    {
+                        <div class="col-sm-3 mb-4">
+                            <div class="card">
+                                <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName})">
+                                    @{ 
+                                        string resourcesPath2 = "~/Resources/Shoes/";
+                                        string directoryPath2 = Path.Combine(projectDirectory, "Resources", "Shoes", item.Url);
+                                        resourcesPath2 = Path.Combine(resourcesPath2, item.Url);
+
+                                        string[] imageFiles = Directory.GetFiles(directoryPath2, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath2, "*-AVT.png")).ToArray();
+
+                                        string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath2, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                                        string fileNameOnly = Path.GetFileName(imagePath);
+                                        resourcesPath2 = Path.Combine(resourcesPath2, fileNameOnly);
+                                    }
+                                    <img class="card-img-top img-fluid" alt="Men"
+                                         src="@Url.Content(resourcesPath2)">
                                 </a>
-                                <p class="card-text type-shoes">Sport shoes</p>
-                                <p class="card-text number-colour">1 Colour</p>
-                                <p class="card-text size">Size: 40</p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="#" class="btn categories-shoes-btn">Shopping again</a>
+                                <div class="card-body">
+                                    <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName})">
+                                        <h2 class="card-title">@item.ShoesName</h2>
+                                    </a>
+                                    <p class="card-text type-shoes">@item.StyleType @item.TypeShoesName</p>
+                                    <p class="card-text number-colour">@item.ColorName</p>
+                                    <p class="card-text size">Size: @item.Size</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="@Url.Action("ShowShoesDetail", "User", new { shoesID = item.ShoesID, colourName = item.ColorName})" class="btn categories-shoes-btn">Shopping again</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-3 mb-4">
-                        <div class="card">
-                            <a href="#">
-                                <img class="card-img-top img-fluid" alt="Men"
-                                     src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
-                            </a>
-                            <div class="card-body">
-                                <a href="#">
-                                    <h2 class="card-title">Basketball</h2>
-                                </a>
-                                <p class="card-text type-shoes">Sport shoes</p>
-                                <p class="card-text number-colour">1 Colour</p>
-                                <p class="card-text size">Size: 40</p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="#" class="btn categories-shoes-btn">Shopping again</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 mb-4">
-                        <div class="card">
-                            <a href="#">
-                                <img class="card-img-top img-fluid" alt="Men"
-                                     src="https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png">
-                            </a>
-                            <div class="card-body">
-                                <a href="#">
-                                    <h2 class="card-title">Basketball</h2>
-                                </a>
-                                <p class="card-text type-shoes">Sport shoes</p>
-                                <p class="card-text number-colour">1 Colour</p>
-                                <p class="card-text size">Size: 40</p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="#" class="btn categories-shoes-btn">Shopping again</a>
-                            </div>
-                        </div>
-                    </div>
+                     }
+                    
                 </div>
             </div>
             <div id="account-info" class="tab-pane">

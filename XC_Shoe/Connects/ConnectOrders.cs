@@ -137,7 +137,7 @@ namespace XC_Shoe.Connects
         public int AddToOrder(string UserID, string RecipientName, string RecipPhone, string RecipientAddress, float HandingFee, float Total, DateTime OrderDate)
         {
             int rs = 0;
-            string sql = "EXEC dbo.AddToOrder '" + UserID + "'," + HandingFee + "," + Total + ",'" + RecipientAddress + "','" + RecipientName + "','" + RecipPhone + "','" + OrderDate + "'";
+            string sql = "EXEC dbo.AddToOrder '" + UserID + "'," + HandingFee + "," + Total + ", N'" + RecipientAddress + "', N'" + RecipientName + "', '" + RecipPhone + "', '" + OrderDate + "'";
             rs = db.ExcuteNonQuery(sql);
             db.close();
             return (rs);

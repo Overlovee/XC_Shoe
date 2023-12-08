@@ -431,20 +431,16 @@
             var administrativeBoundaries = $(".form-administrative").val();
             var name = $(".form-name").val();
             var phoneNumber = $(".form-phonenumber").val();
-            console.log(name);
-            console.log(phoneNumber);
-            console.log(specificAddress);
-            console.log(administrativeBoundaries);
 
             if (specificAddress == "" || administrativeBoundaries == "" || name == "" || phoneNumber == "") {
                 alert("Please type all fields");
             }
             else {
                 inforArray.push({
-                    shipmentUsername: name,
-                    shipmentPhoneNumber: phoneNumber,
-                    shipmentSpecificAddress: specificAddress,
-                    shipmentAdministrativeBoundaries: administrativeBoundaries
+                    shipmentUsername: encodeURIComponent(name),
+                    shipmentPhoneNumber: encodeURIComponent(phoneNumber),
+                    shipmentSpecificAddress: encodeURIComponent(specificAddress),
+                    shipmentAdministrativeBoundaries: encodeURIComponent(administrativeBoundaries)
                 });
                 $.ajax({
                     type: "POST",
@@ -470,10 +466,10 @@
 
             if (shipmentUsername && shipmentPhoneNumber && shipmentSpecificAddress && shipmentAdministrativeBoundaries) {
                 inforArray.push({
-                    shipmentUsername: shipmentUsername,
-                    shipmentPhoneNumber: shipmentPhoneNumber,
-                    shipmentSpecificAddress: shipmentSpecificAddress,
-                    shipmentAdministrativeBoundaries: shipmentAdministrativeBoundaries
+                    shipmentUsername: encodeURIComponent(shipmentUsername),
+                    shipmentPhoneNumber: encodeURIComponent(shipmentPhoneNumber),
+                    shipmentSpecificAddress: encodeURIComponent(shipmentSpecificAddress),
+                    shipmentAdministrativeBoundaries: encodeURIComponent(shipmentAdministrativeBoundaries)
                 });
                 $.ajax({
                     type: "POST",

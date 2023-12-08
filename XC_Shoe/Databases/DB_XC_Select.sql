@@ -61,6 +61,20 @@ Where OS.Status Like N'Done'
 GROUP BY S.ShoesID, SD.Name, C.Name, S.StyleType, S.Price, OD.Quantity, I.Url
 Order by Purchased DESC, S.ShoesID ASC
 
+Select OD.ShoesID, SD.Name, TS.TypeShoesID, TS.Name, OD.ColourID, C.Name, OD.Size,  OD.StyleType, I.Url
+from Orders O
+join Order_Detail OD ON O.OrderID = OD.OrderID
+join OrderSystem OS ON O.OrderID = OS.OrderID
+join Shoes_Details SD ON OD.ShoesID = SD.ShoesID
+join Type_Shoes TS ON TS.TypeShoesID = SD.TypeShoesID
+join Colours C ON C.ColourID = OD.ColourID
+join Images I ON I.ShoesID = OD.ShoesID And I.ColourID = OD.ColourID
+where UserID = 'US1'
+AND OS.Status = 'Done'
+
+
+
+
 
 SELECT Count(OrderID)
 FROM OrderSystem OS
