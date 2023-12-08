@@ -123,8 +123,10 @@ namespace XC_Shoe.Controllers
             ViewBag.NumberProductInPage = 0;
             return View(list);
         }
-        public ActionResult ConfirmOrder(string id, string status = "Wait for confirmation", string sort = "ASC", string search = "")
+        public ActionResult ConfirmOrder(string Orderid,string userID, string status = "Wait for confirmation", string sort = "ASC", string search = "")
         {
+            ViewBag.UserID = user.UserID;
+            int rs = connectOrders.ConfirmOrder(Orderid,userID,status);
             return RedirectToAction("ManageOrder");
         }
         [HttpPost]

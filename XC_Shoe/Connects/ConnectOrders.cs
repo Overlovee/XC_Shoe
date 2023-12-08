@@ -167,6 +167,14 @@ namespace XC_Shoe.Connects
             db.close();
             return (rs);
         }
+        public int ConfirmOrder(string OrderID,string userID,string status)
+        {
+            int rs = 0;
+            string sql = "EXEC dbo.ConfirmOrder '" + userID +"','"+ OrderID +"','" + status +"'";
+            rs = db.ExcuteNonQuery(sql); 
+            db.close();
+            return (rs);
+        }
 
     }
 }

@@ -220,13 +220,13 @@
 
                         </div>
                         <div class="footer-detail-order">
-                            <a class="delete-btn col">
+                            <a class="delete-btn col" href="@Url.Action("ConfirmOrder", "Admin", new { Orderid = item.OrderID, userID = ViewBag.UserID, status = "Cancelled", sort = ViewBag.Sort, search = ViewBag.Search })">
                                 Cancel order
                             </a>
-                            <a class="edit-btn col"
-                               @Url.Action("ConfirmOrder", "Admin", new { id = item.OrderID, status = ViewBag.Status, sort = ViewBag.Sort, search = ViewBag.Search })>
+                            <a class="edit-btn col" href="@Url.Action("ConfirmOrder", "Admin", new { Orderid = item.OrderID, userID = ViewBag.UserID, status = "Confirmed", sort = ViewBag.Sort, search = ViewBag.Search })">
                                 Confirm order
                             </a>
+
                         </div>
                     </div>
                 </div>
