@@ -182,7 +182,6 @@ namespace XC_Shoe.Controllers
             int rs = 0;
             rs = connectShoes.AddNewShoes(IconID, TypeShoesID, NameShoes, Price, StyleType, Colour);
             return RedirectToAction("ManageProduct");
-
         }
 
         public ActionResult ShowStartAdminPage()
