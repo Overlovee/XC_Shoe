@@ -120,7 +120,7 @@ namespace XC_Shoe.Controllers
             ViewBag.MainTitle = user.UserName;
             return View(user);
         }
-        public ActionResult ManageOrder(string status = "Cancelled", string sort = "ASC", string search = "")
+        public ActionResult ManageOrder(string status = "Wait for confirmation", string sort = "ASC", string search = "")
         {
             List<Order> list = connectOrders.getFullOrderData(status, sort, search);
             ViewBag.Title = "Manage Orders";
@@ -132,7 +132,7 @@ namespace XC_Shoe.Controllers
             ViewBag.NumberProductInPage = 0;
             return View(list);
         }
-        public ActionResult ConfirmOrder(string Orderid,string userID, string status = "Wait for confirmation", string sort = "ASC", string search = "")
+        public ActionResult ConfirmOrder(string Orderid ,string userID , string status = "Wait for confirmation", string sort = "ASC", string search = "")
         {
             ViewBag.UserID = user.UserID;
             int rs = connectOrders.ConfirmOrder(Orderid,userID,status);
