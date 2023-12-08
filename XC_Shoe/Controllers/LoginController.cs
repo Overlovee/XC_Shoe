@@ -149,7 +149,7 @@ namespace XC_Shoe.Controllers
             else
             {
                 ViewBag.ThongBao = "Invalid email or password.";
-                return RedirectToAction("Sigin", "Login");
+                return RedirectToAction("SingIn", "Login");
             }
         }
         private bool IsValidLogin(string email, string password)
@@ -191,7 +191,7 @@ namespace XC_Shoe.Controllers
             {
                 return RedirectToAction("ShowStartAdminPage", "Admin");
             }
-            return RedirectToAction("ShowHomePage", "Login");
+            return RedirectToAction("ShowHomePage", "User");
         }
     }
 }
