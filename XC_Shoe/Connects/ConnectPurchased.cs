@@ -89,7 +89,7 @@ namespace XC_Shoe.Connects
                     "join Type_Shoes TS ON TS.TypeShoesID = SD.TypeShoesID " +
                     "join Colours C ON C.ColourID = OD.ColourID " +
                     "join Images I ON I.ShoesID = OD.ShoesID And I.ColourID = OD.ColourID " +
-                    "where UserID = '" + userID + "' AND OS.Status = 'Done'";
+                    "where UserID = '" + userID + "' AND OS.Status = 'Confirmed'";
                 SqlDataReader rdr = db.ExcuteQuery(sql);
                 while (rdr.Read())
                 {
