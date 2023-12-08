@@ -52,7 +52,6 @@ namespace XC_Shoe.Connects
             {
                 sql += "And " +
                     "(O.RecipientName like N'%" + search + "%' " +
-                    "Or O.Email like N'%" + search + "%' " +
                     "Or O.RecipientPhoneNumber like '%" + search + "%') ";
             }
             if (sort == "DESC")

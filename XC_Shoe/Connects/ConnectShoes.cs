@@ -255,5 +255,13 @@ namespace XC_Shoe.Connects
             db.close();
             return (rs);
         }
+        public int DeleteShoes(string ShoesID, string ColourName)
+        {
+            int rs = 0;
+            string sql = "EXEC dbo.DeleteShoes '"+ShoesID +"','"+ColourName+"'";
+            rs = db.ExcuteNonQuery(sql);
+            db.close();
+            return (rs);
+        }
     }
 }

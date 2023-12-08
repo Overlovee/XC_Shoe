@@ -167,7 +167,7 @@
                                         <label for="dropdownExample" class="form-label fs-6">Icon</label>
                                         <select class="form-select sm-6" id="IconID" name="IconsID" aria-label="Select itemName" style="text-align: center; font-size: 15px; background-color: aliceblue">
                                             <option value="">Select Colour</option>
-                                            @foreach (var item1 in Icons)
+                                            @foreach (var item1 in ShoesName)
                                             {
                                                 <option value1="@item1.Value">@item1.Text</option>
                                             }
@@ -294,7 +294,7 @@
                                     data-bs-toggle="modal" data-bs-target="#@item.ShoesID">
                                 Edit
                             </button>
-                            <button class="delete-btn col">@Html.ActionLink("Delete", "Delete", new { id = item.ShoesID })</button>
+                            <button class="delete-btn col"><a href="@Url.Action("DeleteShoes", "Admin", new { ShoesID = item.ShoesID, ColourName = item.NameColor })">Delete</a></button>
                         </div>
                     </div>
                     <div class="modal fade" id="@item.ShoesID" data-bs-backdrop="static"

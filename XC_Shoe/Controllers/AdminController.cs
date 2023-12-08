@@ -58,7 +58,7 @@ namespace XC_Shoe.Controllers
             List<TypeShoes> list1 = connectTypeShoes.getTypeShoesData();
             List<Colours> list2 = ConnectColour.getColourShoesData();
             List<Shoe> list = connectShoes.getShoesDataByStyleType(styleStyle, sort, search);
-            //List<Shoe> list3 = connectShoes.GetRepresentData(styleStyle);
+            //List<Shoe> list3 = connectShoes.GetRepresentData(styleStyle, sort, search);
             ViewBag.Icons = new SelectList(icons, "IconID", "NameIcon");
             ViewBag.lstTypeShoes = new SelectList(list1, "TypeShoesID", "NameTS");
             ViewBag.lstColor = new SelectList(list2, "ColourID", "ColourName");
@@ -110,7 +110,6 @@ namespace XC_Shoe.Controllers
             ViewBag.MainTitle = user.UserName;
             return View(user);
         }
-
         public ActionResult ManageOrder(string status = "Wait for confirmation", string sort = "ASC", string search = "")
         {
             List<Order> list = connectOrders.getFullOrderData(status, sort, search);
@@ -189,6 +188,11 @@ namespace XC_Shoe.Controllers
         public ActionResult ShowStartAdminPage()
         {
             return View();
+        }
+        public ActionResult DeleteShoes(string ShoesID,string ColourName)
+        {
+            int rs = connectShoes.DeleteShoes(ShoesID, ColourName);
+            return RedirectToAction("ManageProduct");
         }
     }
 }
