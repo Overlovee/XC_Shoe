@@ -120,7 +120,7 @@ namespace XC_Shoe.Controllers
             ViewBag.MainTitle = user.UserName;
             return View(user);
         }
-        public ActionResult ManageOrder(string status = "Wait for confirmation", string sort = "ASC", string search = "")
+        public ActionResult ManageOrder(string status = "Cancelled", string sort = "ASC", string search = "")
         {
             List<Order> list = connectOrders.getFullOrderData(status, sort, search);
             ViewBag.Title = "Manage Orders";

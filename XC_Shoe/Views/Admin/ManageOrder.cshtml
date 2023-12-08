@@ -1,9 +1,36 @@
 ﻿@model IEnumerable<XC_Shoe.Models.Order>
-
+@using System.Text
 @{
     ViewBag.Title = "Manage Orders";
     Layout = "~/Views/Shared/AdminLayoutPage.cshtml";
     string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+    string userID = "";
+    string userName = "";
+    string Email = "";
+    string Account_Img = "";
+    string Role = "";
+    var myCookie = HttpContext.Current.Request.Cookies["UserLogin"];
+
+    if (myCookie != null)
+    {
+        userID = myCookie["UserID"].ToString();
+        userName = HttpUtility.UrlDecode(myCookie["UserName"], Encoding.UTF8);
+        Email = myCookie["Email"].ToString();
+        Account_Img = myCookie["Account_Img"].ToString();
+        Role = myCookie["Role"].ToString();
+    }
+
+    if (Uri.IsWellFormedUriString(Account_Img, UriKind.Absolute))
+    {
+
+    }
+    else
+    {
+        string resourcesPath = "~/Resources/Account/";
+        string directoryPath = Path.Combine(projectDirectory, "Resources", "Account", Account_Img);
+        resourcesPath = Path.Combine(resourcesPath, Account_Img);
+        Account_Img = resourcesPath;
+    }
 }
 
 <nav class="navbar navbar-expand-md box d-flex flex-column">
@@ -122,85 +149,85 @@
                 {
                     ViewBag.NumberProductInPage = ViewBag.NumberProductInPage + 1;
 
-            <div class="row order-item">
-                <div class="card">
-                    <div class="card-serial">
-                        <h2 class="serial">@ViewBag.NumberProductInPage</h2>
-                    </div>
-                    <div class="card-body col-md d-flex flex-row">
-                        <div class="flex-child">
-                            <a href="#" class="order-id">
-                                @item.OrderID
-                            </a>
-                        </div>
-                        <div class="flex-child">
-                            <span class="card-text">@item.OrderDate</span>
-                        </div>
-                        <div class="flex-child">
-                            <span class="card-text">Total: @item.Total VND</span>
-                        </div>
-                    </div>
-                    <div class="col-md action-btn d-flex">
-                        <div class="wait-for-confirm-box col">
-                            <span class="card-text">
-                                @item.orderSystem.Status
-                            </span>
-                        </div>
-                        <button class="detail-btn col"
-                                data-bs-toggle="collapse" href="#@item.OrderID" role="button"
-                                aria-expanded="false" aria-controls="@item.OrderID">
-                            Detail
-                        </button>
-                    </div>
-                </div>
-                <div class="collapse" id="@item.OrderID">
-                    <div class="detail-order">
-                        <div class="infor-customer row">
-                            <div class="col-md-2">
-                                <span class="card-text">@item.RecipientName</span>
+                    <div class="row order-item">
+                        <div class="card">
+                            <div class="card-serial">
+                                <h2 class="serial">@ViewBag.NumberProductInPage</h2>
                             </div>
-                            <div class="col-md-2">
-                                <span class="card-text">@item.RecipientPhoneNumber</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span class="card-text">@item.PaymentStatus</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span class="card-text">@item.RecipientAddress</span>
-                            </div>
-                        </div>
-                        <div class="order-product-list">
-                            @foreach (var detail in item.orderDetails)
-                            {
-                                <div class="product-item row">
-                                    <a href="#" class="col-md-2 product-img">
-                                        @{
-                                            string url = @detail.ShoesID + "-" + @detail.StyleType + "-" + @detail.ColourID;
-                                            string resourcesPath = "~/Resources/Shoes/";
-                                            string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", url);
-                                            resourcesPath = Path.Combine(resourcesPath, url);
-
-                                            string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
-
-                                            string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
-                                            string fileNameOnly = Path.GetFileName(imagePath);
-                                            resourcesPath = Path.Combine(resourcesPath, fileNameOnly);
-                                        }
-                                        <img class="img-fluid" alt="Product-Img"
-                                             src="@Url.Content(resourcesPath)">
+                            <div class="card-body col-md d-flex flex-row">
+                                <div class="flex-child">
+                                    <a href="#" class="order-id">
+                                        @item.OrderID
                                     </a>
-                                    <div class="card-body col-md-5">
-                                        <a href="#">
-                                            <h2 class="card-title">@detail.ProductName</h2>
-                                        </a>
-                                        <p class="card-text type-shoes">@detail.StyleType</p>
-                                        <p class="card-text number-colour">@detail.ColourName</p>
+                                </div>
+                                <div class="flex-child">
+                                    <span class="card-text">@item.OrderDate</span>
+                                </div>
+                                <div class="flex-child">
+                                    <span class="card-text">Total: @item.Total VND</span>
+                                </div>
+                            </div>
+                            <div class="col-md action-btn d-flex">
+                                <div class="wait-for-confirm-box col">
+                                    <span class="card-text">
+                                        @item.orderSystem.Status
+                                    </span>
+                                </div>
+                                <button class="detail-btn col"
+                                        data-bs-toggle="collapse" href="#@item.OrderID" role="button"
+                                        aria-expanded="false" aria-controls="@item.OrderID">
+                                    Detail
+                                </button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="@item.OrderID">
+                            <div class="detail-order">
+                                <div class="infor-customer row">
+                                    <div class="col-md-2">
+                                        <span class="card-text">@item.RecipientName</span>
                                     </div>
-                                    <div class="quantity-box col-md-3">
-                                        <span class="card-text quantity">@detail.Quantity</span> x
-                                        <span id="formattedPrice" class="detail-price">@detail.Price</span>
+                                    <div class="col-md-2">
+                                        <span class="card-text">@item.RecipientPhoneNumber</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span class="card-text">@item.PaymentStatus</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span class="card-text">@item.RecipientAddress</span>
+                                    </div>
+                                </div>
+                                <div class="order-product-list">
+                                    @foreach (var detail in item.orderDetails)
+                                    {
+                                        <div class="product-item row">
+                                            <a href="#" class="col-md-2 product-img">
+                                                @{
+                                                    string url = @detail.ShoesID + "-" + @detail.StyleType + "-" + @detail.ColourID;
+                                                    string resourcesPath = "~/Resources/Shoes/";
+                                                    string directoryPath = Path.Combine(projectDirectory, "Resources", "Shoes", url);
+                                                    resourcesPath = Path.Combine(resourcesPath, url);
 
-                                        <script>
+                                                    string[] imageFiles = Directory.GetFiles(directoryPath, "*-AVT.jpg").Union(Directory.GetFiles(directoryPath, "*-AVT.png")).ToArray();
+
+                                                    string imagePath = imageFiles.Length > 0 ? Path.Combine(directoryPath, Path.GetFileName(imageFiles[0])) : "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b207c97d-1d63-4e43-9339-375b26222ae2/air-jordan-xxxviii-fiba-pf-basketball-shoes-XnhFhP.png";
+                                                    string fileNameOnly = Path.GetFileName(imagePath);
+                                                    resourcesPath = Path.Combine(resourcesPath, fileNameOnly);
+                                                }
+                                                <img class="img-fluid" alt="Product-Img"
+                                                     src="@Url.Content(resourcesPath)">
+                                            </a>
+                                            <div class="card-body col-md-5">
+                                                <a href="#">
+                                                    <h2 class="card-title">@detail.ProductName</h2>
+                                                </a>
+                                                <p class="card-text type-shoes">@detail.StyleType</p>
+                                                <p class="card-text number-colour">@detail.ColourName</p>
+                                            </div>
+                                            <div class="quantity-box col-md-3">
+                                                <span class="card-text quantity">@detail.Quantity</span> x
+                                                <span id="formattedPrice" class="detail-price">@detail.Price</span>
+
+                                                <script>
                                         // JavaScript function to format number with commas
                                         function formatNumberWithCommas(number) {
                                             return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -212,32 +239,38 @@
 
                                         // Insert the formatted price into the designated span element
                                         document.getElementById('formattedPrice').innerText = formattedPrice;
-                                        </script>
-                                        <span class="unit-money">VND</span>
-                                    </div>
-                                    <div class="summary-box col-md-2">
-                                        @{
-                                            decimal totalOfOrder = @detail.Quantity * @detail.Price;
-                                        }
-                                        <p class="card-text total-of-product-item">@totalOfOrder <span class"unit">VND</span>
-                                    </div>
+                                                </script>
+                                                <span class="unit-money">VND</span>
+                                            </div>
+                                            <div class="summary-box col-md-2">
+                                                @{
+                                                    decimal totalOfOrder = @detail.Quantity * @detail.Price;
+                                                }
+                                                <p class="card-text total-of-product-item">@totalOfOrder <span class"unit">VND</span>
+                                            </div>
+                                        </div>
+                                    }
+
                                 </div>
-                            }
+                                <div class="footer-detail-order">
+                                    @{
+                                        if (item.orderSystem.Status == "Wait for confirmation")
+                                        {
+                                            <a class="delete-btn col" href="@Url.Action("ConfirmOrder", "Admin", new { Orderid = item.OrderID, userID = userID, status = "Cancelled", sort = ViewBag.Sort, search = ViewBag.Search })">
+                                                Cancel order
+                                            </a>
+                                            <a class="edit-btn col" href="@Url.Action("ConfirmOrder", "Admin", new { Orderid = item.OrderID, userID = userID, status = "Confirmed", sort = ViewBag.Sort, search = ViewBag.Search })">
+                                                Confirm order
+                                            </a>
+                                        }
+                                    }
 
-                        </div>
-                        <div class="footer-detail-order">
-                            <a class="delete-btn col" href="@Url.Action("ConfirmOrder", "Admin", new { Orderid = item.OrderID, userID = ViewBag.UserID, status = "Cancelled", sort = ViewBag.Sort, search = ViewBag.Search })">
-                                Cancel order
-                            </a>
-                            <a class="edit-btn col" href="@Url.Action("ConfirmOrder", "Admin", new { Orderid = item.OrderID, userID = ViewBag.UserID, status = "Confirmed", sort = ViewBag.Sort, search = ViewBag.Search })">
-                                Confirm order
-                            </a>
 
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        }
+                }
             </div>
         </div>
     </div>
