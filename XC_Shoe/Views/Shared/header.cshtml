@@ -106,27 +106,27 @@
                             <ul class="sub-nav">
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="./index.html">New & Featured</a>
-                                        <li><a href="#">Latest Shoes</a></li>
-                                        <li>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "", icon = "" , type = "", search = "" })">New & Featured</a>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "", icon = "" , type = "", search = "" })">Latest Shoes</a></li>
+                                        @*<li>
                                             <a href="#">Latest Clothing</a>
-                                        </li>
+                                        </li>*@
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="#">
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "" , type = "", search = "" })">
                                             New
                                             For
                                             Men
                                         </a>
                                         <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "" , type = "", search = "" })">Shoes</a></li>
-                                        <li><a href="#">Clothing</a></li>
+                                        @*<li><a href="#">Clothing</a></li>*@
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="#">
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Women", icon = "" , type = "", search = "" })">
                                             New
                                             For
                                             Women
@@ -138,7 +138,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item-title" href="#" target="_blank" rel="noopener noreferrer">Men</a>
+                        <a class="nav-item-title" href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "" , type = "", search = "" })" target="_blank" rel="noopener noreferrer">Men</a>
                         <div class="sub-nav-box">
                             <ul class="sub-nav">
                                 <li class="sub-nav-item">
@@ -149,68 +149,68 @@
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="#">Clothing</a>
-                                        <li><a href="#">All Clothing</a></li>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "" , type = "", search = "" })">Icons</a>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "AF" , type = "", search = "" })">Air Force</a></li>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "AM" , type = "", search = "" })">Air Max</a></li>
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="#">Sale</a>
-                                        <li><a href="#">Shoes</a></li>
-                                        <li><a href="#">Clothing</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-item-title" href="#" target="_blank" rel="noopener noreferrer">Women</a>
-                        <div class="sub-nav-box">
-                            <ul class="sub-nav">
-                                <li class="sub-nav-item">
-                                    <ul>
-                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "" , type = "", search = "" })">Shoes</a>
-                                        <li>@Html.ActionLink("Show ALL", "ShoesPage", new { gender = "Women", icon = "", type = "", search = "" })</li>
-                                    </ul>
-                                </li>
-                                <li class="sub-nav-item">
-                                    <ul>
-                                        <a class="sub-nav-title" href="#">Clothing</a>
-                                        <li><a href="#">All Clothing</a></li>
-                                    </ul>
-                                </li>
-                                <li class="sub-nav-item">
-                                    <ul>
-                                        <a class="sub-nav-title" href="#">Sale</a>
-                                        <li><a href="#">Shoes</a></li>
-                                        <li><a href="#">Clothing</a></li>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "" , type = "", search = "" })">Sales</a>
+                                        @*<li><a href="@Url.Action("ShoesPage", "User", new { gender = "Women", icon = "" , type = "", search = "" })">New shoes</a></li>*@
                                     </ul>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item-title" href="#" target="_blank" rel="noopener noreferrer">Sale</a>
+                        <a class="nav-item-title" href="@Url.Action("ShoesPage", "User", new { gender = "Women", icon = "" , type = "", search = "" })" target="_blank" rel="noopener noreferrer">Women</a>
                         <div class="sub-nav-box">
                             <ul class="sub-nav">
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="./index.html">Featured</a>
-                                        <li><a href="#">Shop All Sale</a></li>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Women", icon = "" , type = "", search = "" })">Shoes</a>
+                                        <li>@Html.ActionLink("All shoes", "ShoesPage", new { gender = "Women", icon = "", type = "", search = "" })</li>
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="#">Men's sale</a>
-                                        <li><a href="#">Shoes</a></li>
-                                        <li><a href="#">Clothing</a></li>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Women", icon = "" , type = "", search = "" })">Icons</a>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Women", icon = "AF" , type = "", search = "" })">Air Force</a></li>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Women", icon = "AM" , type = "", search = "" })">Air Max</a></li>
                                     </ul>
                                 </li>
                                 <li class="sub-nav-item">
                                     <ul>
-                                        <a class="sub-nav-title" href="#">Women's sale</a>
-                                        <li><a href="#">Shoes</a></li>
-                                        <li><a href="#">Clothing</a></li>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Women", icon = "" , type = "", search = "" })">Sales</a>
+                                        @*<li><a href="@Url.Action("ShoesPage", "User", new { gender = "Women", icon = "" , type = "", search = "" })">New shoes</a></li>*@
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-item-title" href="@Url.Action("ShoesPage", "User", new { gender = "", icon = "" , type = "", search = "" })" target="_blank" rel="noopener noreferrer">Sale</a>
+                        <div class="sub-nav-box">
+                            <ul class="sub-nav">
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "", icon = "" , type = "", search = "" })">Featured</a>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "", icon = "" , type = "", search = "" })">Shop All Sale</a></li>
+                                    </ul>
+                                </li>
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "" , type = "", search = "" })">Men's sale</a>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Men", icon = "" , type = "", search = "" })">Shoes</a></li>
+                                        @*<li><a href="#">Clothing</a></li>*@
+                                    </ul>
+                                </li>
+                                <li class="sub-nav-item">
+                                    <ul>
+                                        <a class="sub-nav-title" href="@Url.Action("ShoesPage", "User", new { gender = "Women", icon = "" , type = "", search = "" })">Women's sale</a>
+                                        <li><a href="@Url.Action("ShoesPage", "User", new { gender = "Women", icon = "" , type = "", search = "" })">Shoes</a></li>
+                                        @*<li><a href="#">Clothing</a></li>*@
                                     </ul>
                                 </li>
                             </ul>
@@ -235,7 +235,7 @@
                     </button>
                 </div>
                 <div class="search-frame">
-                    <p>yameta</p>
+
                 </div>
             </div>
 
@@ -295,3 +295,21 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Lắng nghe sự kiện keyup trên thẻ input
+    $('#search-input').keyup(function (e) {
+        // Kiểm tra nếu phím Enter được nhấn
+        if (e.keyCode === 13) {
+            // Gọi hàm để thực hiện công việc cần thiết (truyền giá trị search)
+            performSearch();
+        }
+    });
+
+    // Hàm thực hiện công việc gọi tới action ShoesPage
+    function performSearch() {
+        // Lấy giá trị từ thẻ input
+        var searchValue = $('#search-input').val();
+        window.location.href = '/User/ShoesPage?Gender=@ViewBag.gender&icon=@ViewBag.icon&type=@ViewBag.type&search=' + encodeURIComponent(searchValue);
+    }
+</script>

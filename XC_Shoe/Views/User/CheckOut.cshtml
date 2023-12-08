@@ -481,7 +481,7 @@
                     data: { userID: "@userID", infor: inforArray, total: @total },
                     success: function (result) {
                         if (result.success) {
-                            window.location.href = "/User/CheckOut?orderID=" + result.orderID;
+                            window.location.href = "/User/CompleteOrder?orderID=" + result.orderID;
                         }
                     },
                     error: function (error) {

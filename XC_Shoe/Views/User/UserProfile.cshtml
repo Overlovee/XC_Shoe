@@ -1,15 +1,44 @@
 ﻿@model XC_Shoe.Models.User
+@using System.Text;
 @{
     ViewBag.Title = "User Profile";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
+
+    string userID = "";
+    string userName = "";
+    string Email = "";
+    string Account_Img = "";
+    var myCookie = HttpContext.Current.Request.Cookies["UserLogin"];
+    string projectDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~");
+
+    if (myCookie != null)
+    {
+        userID = myCookie["UserID"].ToString();
+        userName = HttpUtility.UrlDecode(myCookie["UserName"], Encoding.UTF8);
+        Email = myCookie["Email"].ToString();
+        Account_Img = myCookie["Account_Img"].ToString();
+    }
+
+    if (Uri.IsWellFormedUriString(Account_Img, UriKind.Absolute))
+    {
+
+    }
+    else
+    {
+        string resourcesPath = "~/Resources/Account/";
+        string directoryPath = Path.Combine(projectDirectory, "Resources", "Account", Account_Img);
+        resourcesPath = Path.Combine(resourcesPath, Account_Img);
+        Account_Img = resourcesPath;
+    }
+
 }
 
 <div class="profile row">
     <div class="header-profile row">
         <div class="avt-img">
             <a href="#">
-                <img src="https://scontent.fsgn19-1.fna.fbcdn.net/v/t39.30808-6/387823916_335737738965711_7433931418569751694_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_ohc=yCQpdKnYZmAAX997ksK&_nc_ht=scontent.fsgn19-1.fna&oh=00_AfBRDfek383UvxdxavuNDET1HbBMMoaBDzP35zYS-gNlWA&oe=655B3E02"
-                     alt="Minh Thu">
+                <img src="@Url.Content(Account_Img)"
+                     alt="@userName">
             </a>
             <button class="edit-avt-btn">Choose <i class="fa-regular fa-pen-to-square"></i></button>
         </div>
@@ -347,53 +376,53 @@
 </div>
 
 <script>
-        const actionButtons = document.querySelectorAll('.information-action');
+    const actionButtons = document.querySelectorAll('.information-action');
 
-        actionButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                actionButtons.forEach(btn => {
-                    btn.classList.remove('information-action-selected');
-                });
-
-                this.classList.add('information-action-selected');
-                const target = this.getAttribute('data-target');
-                // Ẩn tất cả tab-pane
-                const tabPanes = document.querySelectorAll('.tab-pane');
-                tabPanes.forEach(tabPane => {
-                    tabPane.classList.remove('show', 'active');
-                });
-
-                // Hiển thị tab-pane tương ứng với nút được chọn
-                const selectedTab = document.getElementById(target);
-                selectedTab.classList.add('show', 'active');
-
+    actionButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            actionButtons.forEach(btn => {
+                btn.classList.remove('information-action-selected');
             });
+
+            this.classList.add('information-action-selected');
+            const target = this.getAttribute('data-target');
+            // Ẩn tất cả tab-pane
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            tabPanes.forEach(tabPane => {
+                tabPane.classList.remove('show', 'active');
+            });
+
+            // Hiển thị tab-pane tương ứng với nút được chọn
+            const selectedTab = document.getElementById(target);
+            selectedTab.classList.add('show', 'active');
+
         });
+    });
 </script>
 <script>
-        function getInputTagOfEditBtn(element, selector = '.account-info-item') {
-            while (element.parentElement) {
-                if (element.parentElement.matches(selector)) {
-                    return element.parentElement.querySelector('input');
-                }
-                element = element.parentElement;
+    function getInputTagOfEditBtn(element, selector = '.account-info-item') {
+        while (element.parentElement) {
+            if (element.parentElement.matches(selector)) {
+                return element.parentElement.querySelector('input');
             }
+            element = element.parentElement;
         }
-        const editInfoBtns = document.querySelectorAll('.account-info-edit-btn');
-        editInfoBtns.forEach(button => {
-            button.addEventListener('click', function () {
-                const targetInput = getInputTagOfEditBtn(button);
-                if (this.matches('.account-info-edit-btn-selected')) {
-                    this.classList.remove('account-info-edit-btn-selected');
-                    targetInput.setAttribute("disabled", "disabled");
-                    targetInput.classList.add('disabled-input');
-                }
-                else {
-                    this.classList.add('account-info-edit-btn-selected');
-                    targetInput.removeAttribute("disabled");
-                    targetInput.classList.remove('disabled-input');
-                }
-            });
+    }
+    const editInfoBtns = document.querySelectorAll('.account-info-edit-btn');
+    editInfoBtns.forEach(button => {
+        button.addEventListener('click', function () {
+            const targetInput = getInputTagOfEditBtn(button);
+            if (this.matches('.account-info-edit-btn-selected')) {
+                this.classList.remove('account-info-edit-btn-selected');
+                targetInput.setAttribute("disabled", "disabled");
+                targetInput.classList.add('disabled-input');
+            }
+            else {
+                this.classList.add('account-info-edit-btn-selected');
+                targetInput.removeAttribute("disabled");
+                targetInput.classList.remove('disabled-input');
+            }
         });
+    });
 </script>
 

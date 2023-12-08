@@ -134,15 +134,6 @@ namespace XC_Shoe.Connects
             }
             return (list);
         }
-        public int AddToOrder(string UserID,float HandingFee,float Total,string RecipientAddress,string RecipientName,string RecipPhone,DateTime OrderDate)
-        {
-            int rs = 0;
-            string sql = "EXEC dbo.AddToOrder '" +UserID+"',"+HandingFee+","+Total+",'"+RecipientAddress+"','"+RecipientName+"','"+RecipPhone+"','"+OrderDate+"'";
-            rs = db.ExcuteNonQuery(sql);
-            db.close();
-            return (rs);
-        }
-
         public int AddToOrder(string UserID, string RecipientName, string RecipPhone, string RecipientAddress, float HandingFee, float Total, DateTime OrderDate)
         {
             int rs = 0;
@@ -155,8 +146,8 @@ namespace XC_Shoe.Connects
         public string getOrderID(string UserID, string RecipientName, string RecipPhone, string RecipientAddress, float HandingFee, float total)
         {
             string id = "";
-            string sql = "SELECT dbo.Get_OrderID('"+ UserID + "', '"+ HandingFee + "', '"+ total + "', " +
-                "N'"+ RecipientAddress + "', N'"+ RecipientName + "', '"+ RecipPhone + "') AS ResultOrderID;";
+            string sql = "SELECT dbo.Get_OrderID('"+ UserID + "', "+ HandingFee + ", "+ total + ", " +
+                "N'"+ RecipientAddress + "', N'"+ RecipientName + "', N'"+ RecipPhone + "') AS ResultOrderID;";
 
             SqlDataReader rdr = db.ExcuteQuery(sql);
 
